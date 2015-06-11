@@ -14,11 +14,11 @@ else:
 
 raw = corsika.RawFile(filename)
 block = corsika.Block()
-raw.get_next_block(block)
-raw.get_next_block(block)
+raw.get_next_block(block) # RUNH
+raw.get_next_block(block) # EVTH
 raw_particle_it = raw.particles()
 
-
+# Fill a numpy array with particles
 raw_ptype = numpy.dtype([('code',int), ('h',int), ('level',int), ('px',float), ('py',float), ('pz',float), ('x',float), ('y',float), ('z_or_t', float)])
 
 def raw_particle2dtype(particle, row):
@@ -41,11 +41,13 @@ for p in raw_particle_it:
     raw_particle2dtype(p, raw_particles[i])
     i += 1
 
-m = (raw_particles['code']==6)+(raw_particles['code']==5)+(raw_particles['code']==95)+(raw_particles['code']==96)
+# find the muons at observation level 1 and their parents
+m = ((raw_particles['code']==6)+(raw_particles['code']==5)+(raw_particles['code']==95)+(raw_particles['code']==96))*(raw_particles['level']==1)
 daughters_raw = raw_particles[numpy.where(m)[0]]
 parents_raw = raw_particles[numpy.where(m)[0] - 2]
 grand_parents_raw = raw_particles[numpy.where(m)[0] - 1]
 
+# count them and plot
 x_bins = sorted(set(daughters_raw['code']))
 x_names = [corsika.ParticleList.name_from_corsika(c) for c in x_bins]
 y_bins = sorted(set(parents_raw['code']))
@@ -53,7 +55,7 @@ y_names = [corsika.ParticleList.name_from_corsika(c) for c in y_bins]
 yy_bins = sorted(set(grand_parents_raw['code']))
 yy_names = [corsika.ParticleList.name_from_corsika(c) for c in yy_bins]
 
-contents_raw = numpy.zeros((len(x_bins), len(y_bins)))
+contents_raw = numpy.zeros((len(x_bins), len(y_bins)), dtype=int)
 for i,x in enumerate(x_bins):
     for j,y in enumerate(y_bins):
         contents_raw[i,j] = numpy.sum((daughters_raw['code']==x)*(parents_raw['code']==y))
@@ -64,7 +66,7 @@ plt.xticks(range(len(x_names)), x_names, rotation=30)
 plt.yticks(range(len(y_names)), y_names)
 plt.colorbar()
 
-grand_contents_raw = numpy.zeros((len(x_bins), len(yy_bins)))
+grand_contents_raw = numpy.zeros((len(x_bins), len(yy_bins)), dtype=int)
 for i,x in enumerate(x_bins):
     for j,y in enumerate(yy_bins):
         grand_contents_raw[i,j] = numpy.sum((daughters_raw['code']==x)*(grand_parents_raw['code']==y))

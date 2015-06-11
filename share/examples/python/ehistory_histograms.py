@@ -56,7 +56,7 @@ y_names = [corsika.ParticleList().name_from_corsika(c) for c in y_bins]
 yy_bins = sorted(set(grand_parents['code']))
 yy_names = [corsika.ParticleList().name_from_corsika(c) for c in yy_bins]
 
-contents = numpy.zeros((len(x_bins), len(y_bins)))
+contents = numpy.zeros((len(x_bins), len(y_bins)), dtype=int)
 for i,x in enumerate(x_bins):
     for j,y in enumerate(y_bins):
         contents[i,j] = numpy.sum((daughters['code']==x)*(parents['code']==y))
@@ -67,10 +67,10 @@ plt.xticks(range(len(x_names)), x_names, rotation=30)
 plt.yticks(range(len(y_names)), y_names)
 plt.colorbar()
 
-grand_contents = numpy.zeros((len(x_bins), len(yy_bins)))
+grand_contents = numpy.zeros((len(x_bins), len(yy_bins)), dtype=int)
 for i,x in enumerate(x_bins):
     for j,y in enumerate(yy_bins):
-        grand_contents[i,j] = numpy.sum((daughters['code']==x)*(parents['code']==y))
+        grand_contents[i,j] = numpy.sum((daughters['code']==x)*(grand_parents['code']==y))
 
 figure = plt.figure('grand_parent_daughter')
 plt.imshow(grand_contents.T, interpolation='nearest')

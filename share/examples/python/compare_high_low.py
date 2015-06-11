@@ -56,8 +56,8 @@ particle_it = shower.particles
 
 raw = corsika.RawFile(filename)
 block = corsika.Block()
-raw.get_next_block(block)
-raw.get_next_block(block)
+raw.get_next_block(block) # RUNH
+raw.get_next_block(block) # EVTH
 raw_particle_it = raw.particles()
 
 raw_particles = numpy.zeros(len([p for p in raw_particle_it]), dtype=raw_ptype)
