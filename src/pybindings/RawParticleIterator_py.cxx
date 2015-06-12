@@ -6,8 +6,9 @@ using namespace boost::python;
 using std::cout;
 using std::endl;
 
-struct VRawParticleIterator: public corsika::VRawParticleIterator, boost::python::wrapper<corsika::VRawParticleIterator>
+class VRawParticleIterator: public corsika::VRawParticleIterator, public boost::python::wrapper<corsika::VRawParticleIterator>
 {
+public:
   VRawParticleIterator(){}
   VRawParticleIterator(const corsika::VRawParticleIterator& it):corsika::VRawParticleIterator(it){}
 
@@ -89,7 +90,7 @@ void register_RawIterator(std::string name)
 
 void register_RawParticleIterator()
 {
-  class_<VRawParticleIterator>("VRawIterator")
+  class_<VRawParticleIterator,boost::noncopyable>("VRawIterator")
     .def("rewind", &VRawParticleIterator::Rewind)
     ;
 
