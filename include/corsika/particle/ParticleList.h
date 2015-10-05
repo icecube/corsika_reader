@@ -15,6 +15,7 @@ static const char CVSId_corsika_ParticleList[] =
 
 #include <corsika/particle/VParticleProperties.h>
 #include <corsika/particle/ParticleProperties.h>
+#include <corsika/particle/NucleusProperties.h>
 #include <map>
 #include <boost/shared_ptr.hpp>
 
@@ -49,10 +50,11 @@ namespace corsika {
     static void InsertCorsikaToPDG(int theCorsikaCode, int thePDGCode);
     static void InitCorsikaToPDGMap();
 
-    typedef boost::shared_ptr<corsika::VParticleProperties> PropertiesPtr;
-    static std::map<int, PropertiesPtr> GetList();
+    static void SetList();
 
     static std::map<int, int> corsikaToPDGMap_;
+    static std::map<int, corsika::ParticleProperties> particles_;
+    static std::map<int, corsika::NucleusProperties> nuclei_;
   };
 
 } // corsika
