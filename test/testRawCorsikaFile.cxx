@@ -68,7 +68,7 @@ namespace testRawCorsikaFileNS {
       c = Corsika::eGZip;
     }
 
-    ifstream f(filename);
+    ifstream f(filename.c_str());
     corsika::Corsika::RawFile rawUnthinnedStream(f, c);
 
     Corsika::Block<corsika::Corsika::NotThinned> block;
