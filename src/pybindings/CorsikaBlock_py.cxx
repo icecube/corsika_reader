@@ -113,7 +113,7 @@ struct register_block<corsika::Corsika::NotThinned> {
       // .def("AsCherenkovBlock", &Block::AsCherenkovBlock)
       .add_property("ID", &Block::ID)
       ;
-    typedef typename Block::ParticleData ParticleData;
+    typedef Block::ParticleData ParticleData;
     class_<ParticleData >("ParticleData")
       .def("__str__",&ParticleData::String)
       .add_property("is_particle", &ParticleData::IsParticle)
