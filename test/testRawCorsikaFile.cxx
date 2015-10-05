@@ -19,7 +19,7 @@ namespace testRawCorsikaFileNS {
   void test_copy(string filename)
   {
     corsika::Corsika::RawFile rawUnthinnedFile;
-    rawUnthinnedFile.Open(filename);
+    rawUnthinnedFile.Open(filename.c_str());
 
     Corsika::Block<corsika::Corsika::NotThinned> block;
     rawUnthinnedFile.GetNextBlock(block);
@@ -35,10 +35,10 @@ namespace testRawCorsikaFileNS {
   void test_basic(string filename)
   {
     corsika::Corsika::RawFile rawUnthinnedFile;
-    rawUnthinnedFile.Open(filename);
+    rawUnthinnedFile.Open(filename.c_str());
     rawUnthinnedFile.Close();
 
-    rawUnthinnedFile.Open(filename);
+    rawUnthinnedFile.Open(filename.c_str());
     ENSURE(rawUnthinnedFile.IsValid());
 
     Corsika::Block<corsika::Corsika::NotThinned> block;
