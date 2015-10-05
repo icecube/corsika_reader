@@ -92,7 +92,8 @@ CorsikaShowerFileParticleIterator::increment()
       grandparent = value_;
       continue;
     }
-    if (particleId == 75 && particleId == 76 && particleId == 85 && particleId == 86) {
+    const int temp = int(value_->fDescription/1000);
+    if (temp == 75 || temp == 76  && !muaddi) {
       muaddi = value_;
       continue;
     }
