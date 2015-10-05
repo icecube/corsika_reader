@@ -104,7 +104,8 @@ namespace corsika {
   NucleusProperties::GetMass()
     const
   {
-    static double protonMass = ParticleList::Get(CorsikaParticle::eProton).GetMass();
+    static const double protonMass        = 938.271998  * MeV;
+    //double protonMass = ParticleList::Get(CorsikaParticle::eProton).GetMass();
     return GetAtomicNumber() * protonMass;
   }
 
