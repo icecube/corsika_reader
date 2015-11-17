@@ -79,9 +79,9 @@ TEST(testCorsikaFile)
   for (unsigned int i = 0; i != filenames.size(); ++i) {
     std::cout << "testing header " << filenames[i] << std::endl;
     test_header(dir + filenames[i]);
+    std::cout << "testing particles " << filenames[i] << std::endl;
+    test_particles(dir + filenames[i]);
   }
-  std::cout << "testing particles " << filenames[0] << std::endl;
-  test_particles(dir + filenames[0]);
 }
 
 
