@@ -163,12 +163,15 @@ RawStream<Thinning, Padding>::SeekTo(const PositionType thePosition)
   }
   else if (fFile) {
     unsigned int current = GetNextPosition();
-    Close();
-    fFile->close();
-    boost::shared_ptr<RawStream<Thinning, Padding> > other = boost::dynamic_pointer_cast<RawStream<Thinning, Padding> >(RawStreamFactory::Create(fName));
-    if (!other)
-      throw CorsikaIOException("Failed in dumb seek");
-    Move(*other);
+    if (current > thePosition) {
+      Close();
+      fFile->close();
+      boost::shared_ptr<RawStream<Thinning, Padding> > other = boost::dynamic_pointer_cast<RawStream<Thinning, Padding> >(RawStreamFactory::Create(fName));
+      if (!other)
+	throw CorsikaIOException("Failed in dumb seek");
+      Move(*other);
+      current = GetNextPosition();
+    }
     Block<Thinning> block;
     while (thePosition > 0 && thePosition > current) {
       GetNextBlock(block);
