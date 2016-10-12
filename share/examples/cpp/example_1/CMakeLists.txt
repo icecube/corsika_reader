@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.7)
 project(corsika_example CXX)
 
-set (CORSIKA_READER_HOME /data/user/jgonzalez/CorsikaReader-install)
+set (CORSIKA_READER_HOME )
 
 #find_package (Boost REQUIRED COMPONENTS iostreams python unit_test_framework)
 
