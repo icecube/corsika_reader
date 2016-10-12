@@ -1,0 +1,8 @@
+A simple example of how to use the C++ interface. To compile:
+
+  cmake .
+  make
+
+Use it:
+  ./corsika_example_1 <some_corsika_file>
+
