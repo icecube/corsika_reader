@@ -17,9 +17,10 @@ find_package (ZLIB REQUIRED)
 find_package (BZip2 REQUIRED)
 find_package (Boost REQUIRED COMPONENTS iostreams python unit_test_framework)
 
-message ("${ZLIB_LIBRARIES}")
-message ("${Boost_LIBRARIES}")
-message ("${PYTHON_LIBRARIES}")
+message (STATUS "zlib library: ${ZLIB_LIBRARIES}")
+message (STATUS "Boost lib dir: ${Boost_LIBRARY_DIRS}")
+message (STATUS "Boost libraries: ${Boost_LIBRARIES}")
+message (STATUS "Python library: ${PYTHON_LIBRARIES}")
 
 add_definitions(
   -DCORSIKA_TEST_DIR="${CMAKE_SOURCE_DIR}/share/data"
@@ -111,6 +112,9 @@ if (PYTHONLIBS_FOUND)
   install(DIRECTORY share/examples/
     DESTINATION share/${Corsika_PACKAGE_NAME}/examples
     FILES_MATCHING PATTERN "*.py"
+    		   PATTERN "*.cpp"
+    		   PATTERN "*.txt"
+		   PATTERN "README"
     )
 
   install (TARGETS ${Corsika_PACKAGE_NAME}
@@ -123,6 +127,7 @@ install (TARGETS CorsikaReader
 )
 
 install(FILES
+  include/corsika/Index.h
   include/corsika/Constants.h
   include/corsika/CorsikaUnits.h
   include/corsika/CorsikaBlock.h
@@ -136,14 +141,14 @@ install(FILES
   include/corsika/CorsikaShowerFileParticleIterator.h
   include/corsika/ShowerParticleList.h
   include/corsika/GaisserHillasParameter.h
-  DESTINATION include/icetop_corsika
+  DESTINATION include/corsika
 )
 install(FILES
   include/corsika/particle/NucleusProperties.h
   include/corsika/particle/ParticleList.h
   include/corsika/particle/ParticleProperties.h
   include/corsika/particle/VParticleProperties.h
-  DESTINATION include/icetop_corsika/particle
+  DESTINATION include/corsika/particle
 )
 
 
