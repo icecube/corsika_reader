@@ -1,4 +1,4 @@
-A simple example of how to use the C++ interface. To compile:
+A simple example of how to use the C++ interface. To compile, open CMakeLists.txt and set the CORSIKA_READER_HOME variable to point to wherever you installed the corsika reader and then:
 
   cmake .
   make
