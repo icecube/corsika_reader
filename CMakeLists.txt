@@ -161,6 +161,9 @@ add_executable(test_corsika
 
 target_link_libraries(test_corsika CorsikaReader ${PYTHON_LIBRARIES})
 
+enable_testing()
+add_test(corsika test_corsika)
+
 SET(FILE         corsika_example_data)
 SET(SOURCE       http://www.bartol.udel.edu/~javierg)
 SET(TO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/share)
