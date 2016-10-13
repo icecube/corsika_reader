@@ -1,30 +1,26 @@
 ================
 CORSIKA reader
 ================
----------------------------------------------
-C++/Python utility for reading CORSIKA files.
----------------------------------------------
-
 [![Build Status](https://travis-ci.org/IceCube-SPNO/corsika_reader.svg?branch=master)](https://travis-ci.org/IceCube-SPNO/corsika_reader)
-#
-## Author: Javier Gonzalez
+
+C++/Python utility for reading CORSIKA files.
 
 Requirements:
 =============
 
-1.- CMake.
-2.- Boost development libraries (libboost-...-dev): python, iostreams, test
+0. CMake.
+0. Boost development libraries (libboost-...-dev): python, iostreams, test
 
 installation:
 =============
 
-```cmake /path/to/source -DCMAKE_INSTALL_PREFIX=/path/to/install -DFETCH_CORSIKA_DATA=True
+```
+cmake /path/to/source -DCMAKE_INSTALL_PREFIX=/path/to/install -DFETCH_CORSIKA_DATA=True
 make
 make install
 ```
 
-Compile issues:
-===============
+### Compile issues:
 
 A problem occurs when using some older versions of boost with cmake-2.8.6-rc2 or later causing the following error:
   make[2]: *** No rule to make target `/usr/lib64/lib64/libboost_iostreams-mt.so.5'
@@ -42,4 +38,4 @@ or
 Examples:
 =========
 
-There are a few python examples that get installed in share/corsika/examples/python. For some plotting examples you need PyRoot, but these will be removed. For others you need matplotlib.
+There are a few python examples that get installed in share/corsika/examples. For some plotting examples you need PyRoot, but these will be removed. For others you need matplotlib.
