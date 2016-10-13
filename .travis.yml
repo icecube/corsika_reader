@@ -1,5 +1,7 @@
-language: cpp
+language: python
 sudo: required
+python:
+  - 2.7
 compiler:
   - gcc
 os: linux
