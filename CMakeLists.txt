@@ -163,6 +163,11 @@ target_link_libraries(test_corsika CorsikaReader ${PYTHON_LIBRARIES})
 
 enable_testing()
 add_test(corsika test_corsika)
+add_test(raw ${CMAKE_SOURCE_DIR}/share/examples/python/raw_example.py)
+add_test(raw_2 ${CMAKE_SOURCE_DIR}/share/examples/python/raw_example_2.py)
+add_test(read ${CMAKE_SOURCE_DIR}/share/examples/python/read_example.py)
+add_test(ehistory ${CMAKE_SOURCE_DIR}/share/examples/python/check_ehistory.py)
+add_test(high_low ${CMAKE_SOURCE_DIR}/share/examples/python/compare_high_low.py)
 
 SET(FILE         corsika_example_data)
 SET(SOURCE       http://www.bartol.udel.edu/~javierg)
