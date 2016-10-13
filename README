@@ -1,27 +1,30 @@
-###  README --- CORSIKA reader
+================
+CORSIKA reader
+================
+---------------------------------------------
+C++/Python utility for reading CORSIKA files.
+---------------------------------------------
+
+[![Build Status](https://travis-ci.org/IceCube-SPNO/corsika_reader.svg?branch=master)](https://travis-ci.org/IceCube-SPNO/corsika_reader)
 #
 ## Author: Javier Gonzalez
 
-C++/Python utility for reading CORSIKA files. This is based on the Auger corsika reader.
+Requirements:
+=============
 
-----------------
-| Requirements:
-----------------
+1.- CMake.
+2.- Boost development libraries (libboost-...-dev): python, iostreams, test
 
- 1.- CMake.
- 2.- Boost development libraries (libboost-...-dev): python, iostreams, test
+installation:
+=============
 
-----------------
-| installation:
-----------------
+```cmake /path/to/source -DCMAKE_INSTALL_PREFIX=/path/to/install -DFETCH_CORSIKA_DATA=True
+make
+make install
+```
 
-  cmake /path/to/source -DCMAKE_INSTALL_PREFIX=/path/to/install -DFETCH_CORSIKA_DATA=True
-  make
-  make install
-
-----------------
-| Compile issues
-----------------
+Compile issues:
+===============
 
 A problem occurs when using some older versions of boost with cmake-2.8.6-rc2 or later causing the following error:
   make[2]: *** No rule to make target `/usr/lib64/lib64/libboost_iostreams-mt.so.5'
@@ -36,8 +39,7 @@ or
  -DPYTHON_INCLUDE_DIR=/cvmfs/icecube.opensciencegrid.org/standard/RHEL_6_x86_64/include/python2.7 -DPYTHON_LIBRARY=/cvmfs/icecube.opensciencegrid.org/standard/RHEL_6_x86_64/lib/libpython2.7.so
  -DBOOST_INCLUDEDIR=$I3_PORTS/include/boost-1.38.0 -DBOOST_LIBRARYDIR=$I3_PORTS/lib/boost-1.38.0
 
-------------
-| Examples:
-------------
+Examples:
+=========
 
 There are a few python examples that get installed in share/corsika/examples/python. For some plotting examples you need PyRoot, but these will be removed. For others you need matplotlib.
