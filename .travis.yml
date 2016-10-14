@@ -5,8 +5,6 @@ python:
 compiler:
   - gcc
 os: linux
-env:
-  - PYTHONPATH=$TRAVIS_BUILD_DIR/IceCube-SPNO/corsika_reader/build:$TRAVIS_BUILD_DIR/build:$PYTHONPATH
 before_script:
   - sudo apt-get update -qq
   - sudo apt-get install libboost-iostreams-dev libboost-python-dev libboost-test-dev
@@ -15,7 +13,7 @@ script:
   - cd build
   - cmake .. && make
   - pwd
-  - export PYTHONPATH=$PYTHONPATH:$(pwd)
+  - export PYTHONPATH=$(pwd)
   - echo $PYTHONPATH
   - ctest --verbose
 branches:
