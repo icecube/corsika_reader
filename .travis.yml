@@ -15,6 +15,7 @@ script:
   - cd build
   - cmake .. && make
   - pwd
+  - export PYTHONPATH=$PYTHONPATH:$(pwd)
   - echo $PYTHONPATH
   - ctest --verbose
 branches:
