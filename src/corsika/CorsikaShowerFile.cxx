@@ -25,11 +25,13 @@ static const char CVSId[] =
 #include <iostream>
 
 #include <boost/tokenizer.hpp>
+#include <boost/filesystem.hpp>
 
 using corsika::kSpeedOfLight;
 using corsika::kEarthRadius;
 using namespace std;
 using namespace corsika;
+namespace bfs = boost::filesystem;
 
 typedef boost::tokenizer<boost::char_separator<char> > mytok;
 
@@ -85,14 +87,22 @@ CorsikaShowerFile::Open(const std::string& theFileName, bool scan)
   // Compute the name for the long file
   string file = theFileName;
 
-  if (file.find(".part") == string::npos)
+
+  bfs::path p(theFileName);
+  if ( p.extension() == "" )
     fLongFile = file + ".long";
   else
-    fLongFile = file.replace(file.find(".part"), 5, ".long");
+    fLongFile = file.replace(file.find(p.extension().c_str()), 5, ".long");
 
-  // ostringstream msg;
-  // msg << "CORSIKA longitudinal file: " << fLongFile;
-  // INFO(msg);
+  p = bfs::path(fLongFile);
+  if ( !(bfs::exists(p) && bfs::is_regular_file(p)) ) {
+    fLongFile = "";
+  }
+  // else {
+  //   ostringstream msg;
+  //   msg << "CORSIKA longitudinal file: " << fLongFile;
+  //   INFO(msg);
+  // }
 
   fRawStream = Corsika::RawStreamFactory::Create(theFileName);
   fIsThinned = fRawStream->IsThinned();
@@ -247,7 +257,7 @@ CorsikaShowerFile::Read()
 
   if (fIndex.longBlocks.size() > 0)
     ReadLongBlocks<Thinning>();
-  else
+  else if ( fLongFile != "" )
     ReadLongFile();
 
   ++fCurrentPosition;
@@ -323,7 +333,10 @@ CorsikaShowerFile::ReadLongFile()
 
   longDataFile.open(fLongFile.c_str());
   if (!longDataFile.is_open()) {
-    return eSuccess;
+    ostringstream msg;
+    msg << "failed opening file" << fLongFile.c_str() << endl;
+    ERROR(msg);
+    return eFail;
   }
   bool aux_flag = false;
   string line;
@@ -581,19 +594,19 @@ CorsikaShowerFile::ReadLongFile()
         "X0 = " << ax0 << ", "
         "zenith = " << acos(cosZenith)/deg
            << (isSlantDepthProfile ? " (SLANT DEPTH)" : " (VERTICAL DEPTH)");
-      INFO(info);
+      // INFO(info);
 
       // Adding GH information to simulated shower
       // if (!theShower.HasGHParameters() && hasValidGHfit)
       //   theShower.MakeGHParameters(gh);
 
-      if (!hasValidGHfit) {
-        ostringstream err;
-        err << "CORISKA shower with invalid GH fit: Xmax=" << axmax
-            << " Nmax=" << anmax << " X0=" << ax0
-            << " chi2/ndf=" << achi;
-        ERROR(err);
-      }
+      // if (!hasValidGHfit) {
+      //   ostringstream err;
+      //   err << "CORISKA shower with invalid GH fit: Xmax=" << axmax
+      //       << " Nmax=" << anmax << " X0=" << ax0
+      //       << " chi2/ndf=" << achi;
+      //   ERROR(err);
+      // }
 
       break;
     }
