@@ -44,7 +44,7 @@ extensions = [
 # after modifying the doxyfile
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 if on_rtd:
-    print("On readthedocs, generating doxygen")
+    print("On readthedocs, generating doxygen in %s"%(os.getcwd()+'/docs/xml'))
     import subprocess
     doxyfile = open('Doxyfile')
     doxy = ''.join(doxyfile.readlines()).replace('${CMAKE_SOURCE_DIR}','.')
