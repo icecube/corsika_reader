@@ -171,6 +171,12 @@ add_test(read ${CMAKE_SOURCE_DIR}/share/examples/python/read_example.py ${CMAKE_
 add_test(ehistory ${CMAKE_SOURCE_DIR}/share/examples/python/check_ehistory.py ${CMAKE_SOURCE_DIR}/share/data/DAT000011-proton-EHISTORY-MUPROD)
 add_test(high_low ${CMAKE_SOURCE_DIR}/share/examples/python/compare_high_low.py ${CMAKE_SOURCE_DIR}/share/data/DAT000011-proton-EHISTORY-MUPROD)
 
+configure_file(docs/Doxyfile docs/Doxyfile)
+add_custom_target(docs doxygen ${CMAKE_BINARY_DIR}/docs/Doxyfile
+  COMMAND ${CMAKE_COMMAND} -E env DOXYGEN_XML=${CMAKE_BINARY_DIR}/docs/xml sphinx-build -b html ${CMAKE_SOURCE_DIR}/docs docs/html
+  COMMENT building documentation
+  )
+
 SET(FILE         corsika_example_data)
 SET(SOURCE       http://www.bartol.udel.edu/~javierg)
 SET(TO_DIR ${CMAKE_CURRENT_SOURCE_DIR}/share)
