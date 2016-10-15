@@ -46,6 +46,8 @@ struct RawFile_helper
 void
 register_RawFile(std::string name)
 {
+  docstring_options local_docstring_options(true, true, false);
+
   typedef  Corsika::RawFile RawFile;
   typedef  RawFile_helper helper;
   class_<RawFile>(name.c_str())
