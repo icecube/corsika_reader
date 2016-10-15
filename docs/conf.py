@@ -42,7 +42,9 @@ extensions = [
 
 # the following runs doxygen inside the source docs directory
 # after modifying the doxyfile
-if 'READTHEDOCS' in os.environ:
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+if on_rtd:
+    print("On readthedocs, generating doxygen")
     import subprocess
     doxyfile = open('Doxyfile')
     doxy = ''.join(doxyfile.readlines()).replace('${CMAKE_SOURCE_DIR}','.')
@@ -53,8 +55,10 @@ if 'READTHEDOCS' in os.environ:
     subprocess.call('doxygen', shell=True)
     breathe_projects = { "corsika_reader": "docs/xml" }
 elif 'DOXYGEN_XML' in os.environ:
+    print("Doxygen XML in %s"%os.environ['DOXYGEN_XML'])
     breathe_projects = { "corsika_reader": os.environ['DOXYGEN_XML'] }
 else:
+    print("Doxygen XML in xml (default)")
     breathe_projects = { "corsika_reader": "xml" }
 
 breathe_default_project = "corsika_reader"
