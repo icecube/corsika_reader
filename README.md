@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/IceCube-SPNO/corsika_reader.svg?branch=master)](https://travis-ci.org/IceCube-SPNO/corsika_reader)
 
+[![Documentation Status](https://readthedocs.org/projects/corsika-reader/badge/?version=latest)](http://corsika-reader.readthedocs.io/en/latest/?badge=latest)
+
 ================
 CORSIKA reader
 ================
