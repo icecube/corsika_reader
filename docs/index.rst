@@ -3,11 +3,10 @@ CORSIKA Reader
 
 .. toctree::
    intro
-   low_level
-   high_level
    python_example
    cpp_example
-
+   python_api
+   cpp_api
 
 
 
