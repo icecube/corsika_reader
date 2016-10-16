@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Interface Reference &mdash; corsika_reader 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="corsika_reader 0.9 documentation" href="index.html" />
+    <link rel="next" title="C++ Interface Reference" href="cpp_api.html" />
+    <link rel="prev" title="Reading CORSIKA Files in C++" href="cpp_example.html" /> 
+  </head>
+  <body role="document">
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">corsika_reader 0.9 documentation</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="cpp_example.html" title="Reading CORSIKA Files in C++"
+             accesskey="P">previous</a> |
+          <a href="cpp_api.html" title="C++ Interface Reference"
+             accesskey="N">next</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="python-interface-reference">
+<span id="python-corsikareader"></span><span id="index-0"></span><h1>Python Interface Reference<a class="headerlink" href="#python-interface-reference" title="Permalink to this headline">¶</a></h1>
+<p>The python interface currently does not show in readthedocs. It requires that the C++ library is built so sphinx can inspect it.</p>
+<div class="section" id="high-level-interface">
+<h2>High-level Interface<a class="headerlink" href="#high-level-interface" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="corsika.CorsikaShowerFile">
+<em class="property">class </em><code class="descclassname">corsika.</code><code class="descname">CorsikaShowerFile</code><a class="headerlink" href="#corsika.CorsikaShowerFile" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="corsika.CorsikaShowerFile.close">
+<code class="descname">close</code><span class="sig-paren">(</span><em>(CorsikaShowerFile)arg1</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#corsika.CorsikaShowerFile.close" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>void close(corsika::CorsikaShowerFile {lvalue})</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="corsika.CorsikaShowerFile.events">
+<code class="descname">events</code><span class="sig-paren">(</span><em>(CorsikaShowerFile)arg1</em><span class="sig-paren">)</span> &rarr; ShowerIterator :<a class="headerlink" href="#corsika.CorsikaShowerFile.events" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>ShowerIterator events(corsika::CorsikaShowerFile {lvalue})</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="corsika.CorsikaShowerFile.find_event">
+<code class="descname">find_event</code><span class="sig-paren">(</span><em>(CorsikaShowerFile)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; Status :<a class="headerlink" href="#corsika.CorsikaShowerFile.find_event" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>corsika::Status find_event(corsika::CorsikaShowerFile {lvalue},unsigned int)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="corsika.CorsikaShowerFile.open">
+<code class="descname">open</code><span class="sig-paren">(</span><em>(CorsikaShowerFile)arg1</em>, <em>(str)arg2</em>, <em>(bool)arg3</em><span class="sig-paren">)</span> &rarr; None :<a class="headerlink" href="#corsika.CorsikaShowerFile.open" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>void open(corsika::CorsikaShowerFile {lvalue},std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt;,bool)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="corsika.CorsikaShowerFile.shower">
+<code class="descname">shower</code><span class="sig-paren">(</span><em>(CorsikaShowerFile)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; CorsikaShower :<a class="headerlink" href="#corsika.CorsikaShowerFile.shower" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>corsika::CorsikaShower {lvalue} shower(corsika::CorsikaShowerFile {lvalue},int)</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="corsika.CorsikaParticle">
+<em class="property">class </em><code class="descclassname">corsika.</code><code class="descname">CorsikaParticle</code><a class="headerlink" href="#corsika.CorsikaParticle" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="staticmethod">
+<dt id="corsika.CorsikaParticle.nucleus_code">
+<em class="property">static </em><code class="descname">nucleus_code</code><span class="sig-paren">(</span><em>(int)arg1</em>, <em>(int)arg2</em><span class="sig-paren">)</span> &rarr; int :<a class="headerlink" href="#corsika.CorsikaParticle.nucleus_code" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>int nucleus_code(int,int)</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="low-level-interface">
+<h2>Low-level Interface<a class="headerlink" href="#low-level-interface" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="corsika.RawFile">
+<em class="property">class </em><code class="descclassname">corsika.</code><code class="descname">RawFile</code><a class="headerlink" href="#corsika.RawFile" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="corsika.RawFile.close">
+<code class="descname">close</code><span class="sig-paren">(</span><em>(RawFile)arg1</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#corsika.RawFile.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="corsika.RawFile.get_next_block">
+<code class="descname">get_next_block</code><span class="sig-paren">(</span><em>(RawFile)arg1</em>, <em>(Block)arg2</em><span class="sig-paren">)</span> &rarr; bool<a class="headerlink" href="#corsika.RawFile.get_next_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>get_next_block( (RawFile)arg1, (Block_thin)arg2) -&gt; bool</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="corsika.RawFile.open">
+<code class="descname">open</code><span class="sig-paren">(</span><em>(RawFile)arg1</em>, <em>(str)arg2</em><span class="sig-paren">)</span> &rarr; None<a class="headerlink" href="#corsika.RawFile.open" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="corsika.RawFile.particles">
+<code class="descname">particles</code><span class="sig-paren">(</span><em>(RawFile)arg1</em><span class="sig-paren">)</span> &rarr; VRawIterator<a class="headerlink" href="#corsika.RawFile.particles" title="Permalink to this definition">¶</a></dt>
+<dd><p>particles( (RawFile)arg1, (int)arg2) -&gt; VRawIterator</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="corsika.Block">
+<em class="property">class </em><code class="descclassname">corsika.</code><code class="descname">Block</code><a class="headerlink" href="#corsika.Block" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="corsika.Block.data">
+<code class="descname">data</code><a class="headerlink" href="#corsika.Block.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>The underlying buffer</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block.is_control">
+<code class="descname">is_control</code><a class="headerlink" href="#corsika.Block.is_control" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the block is not a particle block</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block.is_eventHeader">
+<code class="descname">is_eventHeader</code><a class="headerlink" href="#corsika.Block.is_eventHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the block is EVTH</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block.is_event_trailer">
+<code class="descname">is_event_trailer</code><a class="headerlink" href="#corsika.Block.is_event_trailer" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the block is EVTE</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block.is_longitudinal">
+<code class="descname">is_longitudinal</code><a class="headerlink" href="#corsika.Block.is_longitudinal" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the block is LONG</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block.is_run_header">
+<code class="descname">is_run_header</code><a class="headerlink" href="#corsika.Block.is_run_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the block is RUNH</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block.is_run_trailer">
+<code class="descname">is_run_trailer</code><a class="headerlink" href="#corsika.Block.is_run_trailer" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the block is RUNE</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_example.html">Reading CORSIKA Files in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpp_example.html">Reading CORSIKA Files in C++</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python Interface Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#high-level-interface">High-level Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#low-level-interface">Low-level Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cpp_api.html">C++ Interface Reference</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="cpp_example.html" title="Reading CORSIKA Files in C++"
+              >previous</a> |
+            <a href="cpp_api.html" title="C++ Interface Reference"
+              >next</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/python_api.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Javier Gonzalez.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Reading CORSIKA Files in Python &mdash; corsika_reader 0.9 documentation</title>
+    
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="corsika_reader 0.9 documentation" href="index.html" />
+    <link rel="next" title="Reading CORSIKA Files in C++" href="cpp_example.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+  </head>
+  <body role="document">
+    <div class="header-wrapper" role="banner">
+      <div class="header">
+        <div class="headertitle"><a
+          href="index.html">corsika_reader 0.9 documentation</a></div>
+        <div class="rel" role="navigation" aria-label="related navigation">
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |
+          <a href="cpp_example.html" title="Reading CORSIKA Files in C++"
+             accesskey="N">next</a> |
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a>
+        </div>
+       </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+        <div class="document">
+            
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="reading-corsika-files-in-python">
+<h1>Reading CORSIKA Files in Python<a class="headerlink" href="#reading-corsika-files-in-python" title="Permalink to this headline">¶</a></h1>
+<p>It is quite easy to inspect a CORSIKA file using the low-level
+interface. This interface provides an iterator over Blocks, which
+correspond to the blocks described in the CORSIKA manual. The Block
+class has a method to access the data buffer as a numpy array:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">corsika</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">corsika</span><span class="o">.</span><span class="n">RawCorsikaFile</span><span class="p">()</span>
+<span class="n">block</span> <span class="o">=</span> <span class="n">corsika</span><span class="o">.</span><span class="n">Block</span><span class="p">()</span>
+<span class="n">f</span><span class="o">.</span><span class="n">GetNextBlock</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">block</span><span class="o">.</span><span class="n">ID</span><span class="p">()</span>
+<span class="n">f</span><span class="o">.</span><span class="n">GetNextBlock</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">block</span><span class="o">.</span><span class="n">ID</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">block</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+<p>The particles in a low-level file (RawCorsikaFile) can be accessed
+using the particle iterator. In this case, the iteration over blocks
+is done behind the scenes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">particles</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span><span class="o">.</span><span class="n">fX</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">fY</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">fZ</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">particles</span><span class="p">()]</span>
+</pre></div>
+</div>
+<p>Inspecting a CORSIKA file using the high-level interface in python:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">corsika</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">corsika</span><span class="o">.</span><span class="n">CorsikaShowerFile</span><span class="p">()</span>
+<span class="n">shower</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">GetEvent</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">particles</span> <span class="o">=</span> <span class="n">shower</span><span class="o">.</span><span class="n">particles</span><span class="p">()</span>
+<span class="k">print</span> <span class="nb">len</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">particles</span><span class="p">]),</span> <span class="s1">&#39;particles&#39;</span>
+<span class="n">particles</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>More examples can be found in the examples directory.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="sidebar">
+          <h3>Table Of Contents</h3>
+          <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reading CORSIKA Files in Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpp_example.html">Reading CORSIKA Files in C++</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python_api.html">Python Interface Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cpp_api.html">C++ Interface Reference</a></li>
+</ul>
+
+          <div role="search">
+            <h3 style="margin-top: 1.5em;">Search</h3>
+            <form class="search" action="search.html" method="get">
+                <input type="text" name="q" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+            </form>
+          </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+    <div class="footer-wrapper">
+      <div class="footer">
+        <div class="left">
+          <div role="navigation" aria-label="related navigaton">
+            <a href="installation.html" title="Installation"
+              >previous</a> |
+            <a href="cpp_example.html" title="Reading CORSIKA Files in C++"
+              >next</a> |
+            <a href="genindex.html" title="General Index"
+              >index</a>
+          </div>
+          <div role="note" aria-label="source link">
+              <br/>
+              <a href="_sources/python_example.txt"
+                rel="nofollow">Show Source</a>
+          </div>
+        </div>
+
+        <div class="right">
+          
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Javier Gonzalez.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.4.1.
+    </div>
+        </div>
+        <div class="clearer"></div>
+      </div>
+    </div>
+
+  </body>
+</html>
