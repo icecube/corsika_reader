@@ -2,8 +2,8 @@
 .. index:: C++ Interface
 .. _cpp_CorsikaReader:
 
-C++ Interface
-=============
+C++ Interface Reference
+=======================
 
 High-level Interface
 --------------------
