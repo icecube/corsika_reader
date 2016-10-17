@@ -8,8 +8,8 @@
     
     <title>Python Interface Reference &mdash; corsika_reader 0.9 documentation</title>
     
-    <link rel="stylesheet" href="static/agogo.css" type="text/css" />
-    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/agogo.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -20,9 +20,9 @@
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="static/jquery.js"></script>
-    <script type="text/javascript" src="static/underscore.js"></script>
-    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="top" title="corsika_reader 0.9 documentation" href="index.html" />
     <link rel="next" title="C++ Interface Reference" href="cpp_api.html" />
@@ -54,9 +54,10 @@
             
   <div class="section" id="python-interface-reference">
 <span id="python-corsikareader"></span><span id="index-0"></span><h1>Python Interface Reference<a class="headerlink" href="#python-interface-reference" title="Permalink to this headline">¶</a></h1>
-<p>The python interface currently does not show in readthedocs. It requires that the C++ library is built so sphinx can inspect it.</p>
 <div class="section" id="high-level-interface">
 <h2>High-level Interface<a class="headerlink" href="#high-level-interface" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="corsikashowerfile">
+<h3>CorsikaShowerFile<a class="headerlink" href="#corsikashowerfile" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="corsika.CorsikaShowerFile">
 <em class="property">class </em><code class="descclassname">corsika.</code><code class="descname">CorsikaShowerFile</code><a class="headerlink" href="#corsika.CorsikaShowerFile" title="Permalink to this definition">¶</a></dt>
@@ -107,6 +108,9 @@
 
 </dd></dl>
 
+</div>
+<div class="section" id="corsikaparticle">
+<h3>CorsikaParticle<a class="headerlink" href="#corsikaparticle" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="corsika.CorsikaParticle">
 <em class="property">class </em><code class="descclassname">corsika.</code><code class="descname">CorsikaParticle</code><a class="headerlink" href="#corsika.CorsikaParticle" title="Permalink to this definition">¶</a></dt>
@@ -122,8 +126,35 @@
 </dd></dl>
 
 </div>
+<div class="section" id="eventheader">
+<h3>EventHeader<a class="headerlink" href="#eventheader" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="corsika.EventHeader">
+<em class="property">class </em><code class="descclassname">corsika.</code><code class="descname">EventHeader</code><a class="headerlink" href="#corsika.EventHeader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="particlelist">
+<h3>ParticleList<a class="headerlink" href="#particlelist" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="corsika.ParticleList">
+<em class="property">class </em><code class="descclassname">corsika.</code><code class="descname">ParticleList</code><a class="headerlink" href="#corsika.ParticleList" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">members:</th><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div class="section" id="low-level-interface">
 <h2>Low-level Interface<a class="headerlink" href="#low-level-interface" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="rawfile">
+<h3>RawFile<a class="headerlink" href="#rawfile" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="corsika.RawFile">
 <em class="property">class </em><code class="descclassname">corsika.</code><code class="descname">RawFile</code><a class="headerlink" href="#corsika.RawFile" title="Permalink to this definition">¶</a></dt>
@@ -151,6 +182,9 @@
 
 </dd></dl>
 
+</div>
+<div class="section" id="block">
+<h3>Block<a class="headerlink" href="#block" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
 <dt id="corsika.Block">
 <em class="property">class </em><code class="descclassname">corsika.</code><code class="descname">Block</code><a class="headerlink" href="#corsika.Block" title="Permalink to this definition">¶</a></dt>
@@ -199,6 +233,66 @@
 </dd></dl>
 
 </div>
+<div class="section" id="block-thin">
+<h3>Block_thin<a class="headerlink" href="#block-thin" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="corsika.Block_thin">
+<em class="property">class </em><code class="descclassname">corsika.</code><code class="descname">Block_thin</code><a class="headerlink" href="#corsika.Block_thin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="corsika.Block_thin.ID">
+<code class="descname">ID</code><span class="sig-paren">(</span><em>(Block_thin)arg1</em><span class="sig-paren">)</span> &rarr; str :<a class="headerlink" href="#corsika.Block_thin.ID" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>C++ signature :</dt>
+<dd>std::__1::basic_string&lt;char, std::__1::char_traits&lt;char&gt;, std::__1::allocator&lt;char&gt; &gt; ID(corsika::Corsika::Block&lt;corsika::Corsika::Thinned&gt; {lvalue})</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block_thin.data">
+<code class="descname">data</code><a class="headerlink" href="#corsika.Block_thin.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>The underlying buffer</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block_thin.is_control">
+<code class="descname">is_control</code><a class="headerlink" href="#corsika.Block_thin.is_control" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the block is not a particle block</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block_thin.is_event_header">
+<code class="descname">is_event_header</code><a class="headerlink" href="#corsika.Block_thin.is_event_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the block is EVTH</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block_thin.is_event_trailer">
+<code class="descname">is_event_trailer</code><a class="headerlink" href="#corsika.Block_thin.is_event_trailer" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the block is EVTE</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block_thin.is_longitudinal">
+<code class="descname">is_longitudinal</code><a class="headerlink" href="#corsika.Block_thin.is_longitudinal" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the block is LONG</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block_thin.is_run_header">
+<code class="descname">is_run_header</code><a class="headerlink" href="#corsika.Block_thin.is_run_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the block is RUNH</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="corsika.Block_thin.is_run_trailer">
+<code class="descname">is_run_trailer</code><a class="headerlink" href="#corsika.Block_thin.is_run_trailer" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the block is RUNE</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
 </div>
 
 
@@ -214,8 +308,19 @@
 <li class="toctree-l1"><a class="reference internal" href="python_example.html">Reading CORSIKA Files in Python</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cpp_example.html">Reading CORSIKA Files in C++</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Python Interface Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#high-level-interface">High-level Interface</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#low-level-interface">Low-level Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#high-level-interface">High-level Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#corsikashowerfile">CorsikaShowerFile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#corsikaparticle">CorsikaParticle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#eventheader">EventHeader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#particlelist">ParticleList</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#low-level-interface">Low-level Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#rawfile">RawFile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#block">Block</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#block-thin">Block_thin</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cpp_api.html">C++ Interface Reference</a></li>
@@ -248,7 +353,7 @@
           </div>
           <div role="note" aria-label="source link">
               <br/>
-              <a href="sources/python_api.txt"
+              <a href="_sources/python_api.txt"
                 rel="nofollow">Show Source</a>
           </div>
         </div>

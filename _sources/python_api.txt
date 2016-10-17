@@ -5,23 +5,54 @@
 Python Interface Reference
 ==========================
 
-The python interface currently does not show in readthedocs. It requires that the C++ library is built so sphinx can inspect it.
 
 High-level Interface
 --------------------
 
+CorsikaShowerFile
+`````````````````
 .. autoclass:: corsika.CorsikaShowerFile
    :members:
+
+CorsikaParticle
+```````````````
 
 .. autoclass:: corsika.CorsikaParticle
    :members:
 
+EventHeader
+```````````
+
+.. autoclass:: corsika.EventHeader
+   :members:
+
+
+ParticleList
+````````````
+
+.. autoclass:: corsika.ParticleList
+:members:
+
+
 Low-level Interface
 -------------------
 
+RawFile
+```````
+
 .. autoclass:: corsika.RawFile
    :members: open, close, get_next_block, particles, is_open, is_valid
+
+Block
+`````
+
 .. autoclass:: corsika.Block
+   :members:
+
+Block_thin
+``````````
+
+.. autoclass:: corsika.Block_thin
    :members:
 
 
