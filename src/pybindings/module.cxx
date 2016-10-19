@@ -38,7 +38,8 @@ namespace bp = boost::python;
   (CorsikaBlock)(RawParticleIterator)(RawCorsikaFile)                   \
   (CorsikaUnits)(MathConstants)(PhysicalConstants)                      \
   (CorsikaParticle)(CorsikaShower)(CorsikaShowerFile)                   \
-  (CorsikaShowerFileParticleIterator)(ParticleList)(ParticleProperties)
+  (CorsikaShowerFileParticleIterator)(ParticleList)(ParticleProperties) \
+  (CorsikaLongProfile) (CorsikaLongFile)
 
 
 

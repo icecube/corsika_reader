@@ -16,6 +16,7 @@ static const char CVSId_corsika_CorsikaShowerFile[] =
 #include <corsika/RawStream.h>
 #include <corsika/CorsikaIOException.h>
 #include <corsika/CorsikaShower.h>
+#include <corsika/CorsikaLongFile.h>
 
 #include <string>
 #include <map>
@@ -77,8 +78,6 @@ namespace corsika {
     template <class Thinning>
     Status ReadLongBlocks();
 
-    static bool SplitLine(std::string l, std::vector<std::string>& vec, std::string s = " ");
-
     CorsikaShower fCurrentShower;
 
     boost::shared_ptr<corsika::Corsika::VRawStream> fRawStream;
@@ -88,6 +87,8 @@ namespace corsika {
     unsigned int fObservationLevel;
     bool fIsThinned;
     bool fFileScanned;
+
+    boost::shared_ptr<corsika::CorsikaLongFile> fCorsikaLongFile;
   };
 
 }

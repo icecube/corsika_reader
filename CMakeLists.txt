@@ -49,6 +49,8 @@ set (Corsika_HEADERS
   include/corsika/particle/ParticleList.h
   include/corsika/particle/ParticleProperties.h
   include/corsika/particle/VParticleProperties.h
+  include/corsika/CorsikaLongProfile.h
+  include/corsika/CorsikaLongFile.h
   DESTINATION include
 )
 
@@ -66,6 +68,7 @@ set (Corsika_SOURCES
   src/corsika/particle/ParticleProperties.cxx
   src/corsika/particle/ParticleList.cxx
   src/corsika/RawParticleIterator.cxx
+  src/corsika/CorsikaLongFile.cxx
 )
 
 
@@ -83,6 +86,8 @@ set (Corsika_BoostPython_SOURCES
   src/pybindings/RawCorsikaFile_py.cxx
   src/pybindings/RawParticleIterator_py.cxx
   src/pybindings/ShowerParticleList_py.cxx
+  src/pybindings/CorsikaLongProfile_py.cxx
+  src/pybindings/CorsikaLongFile_py.cxx
   src/pybindings/module.cxx
 )
 

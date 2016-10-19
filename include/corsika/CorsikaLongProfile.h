@@ -14,17 +14,28 @@ static const char CVSId_corsika_CorsikaLongProfile[] =
 "$Id$";
 
 #include <vector>
+#include <corsika/GaisserHillasParameter.h>
 
 namespace corsika {
 
   class CorsikaLongProfile {
   public:
+    CorsikaLongProfile(){}
+    ~CorsikaLongProfile(){}
+
     std::vector<double> fChargeProfile;
     std::vector<double> fGammaProfile;
     std::vector<double> fElectronProfile;
     std::vector<double> fMuonProfile;
     std::vector<double> fDepth;
+    std::vector<double> fdEdX;
+    std::vector<double> fDepth_dE;
+
+    double fCalorimetricEnergy;
+    corsika::GaisserHillasParameter fGaisserHillas;
 
   };
 
 }
+
+#endif
