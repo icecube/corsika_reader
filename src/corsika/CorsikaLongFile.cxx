@@ -191,6 +191,7 @@ CorsikaLongFile::FetchProfile(int findShower)
     ERROR("Reading failed for some reason.");
     return CorsikaLongProfile();
   }
+  fLongDataFile->clear();
   fLongDataFile->seekg(fPartProfiles[findShower]);
 
   vector<string> tokens;
