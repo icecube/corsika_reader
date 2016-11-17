@@ -104,7 +104,7 @@ namespace corsika {
       float TotalEnergy() const;
 
       bool HasParent() const
-      { return fParent; }
+      { return bool(fParent); }
 
       void SetParent(const CorsikaParticle& p)
       { fParent.reset(new CorsikaParticle(p)); }
@@ -117,7 +117,7 @@ namespace corsika {
       { return *fGrandParent; }
 
       bool HasMuonInfo() const
-      { return fMuonInfo; }
+      { return bool(fMuonInfo); }
 
       void SetMuonInfo(const CorsikaParticle& p)
       { fMuonInfo.reset(new CorsikaParticle(p));  }

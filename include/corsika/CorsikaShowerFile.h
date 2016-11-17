@@ -61,7 +61,7 @@ namespace corsika {
     bool IsValid();
 
     bool IsOpen()
-    { return fRawStream; }
+    { return bool(fRawStream); }
 
     static bool IsValid(const std::string& theFileName);
 
