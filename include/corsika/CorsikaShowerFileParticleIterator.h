@@ -46,7 +46,6 @@ namespace corsika {
   {
 
   public:
-    typedef VRawStream::PositionType PositionType;
     // the following things implement an iterator interface using iterator_facade. This might be removed.
     typedef CorsikaParticle& result_type;
 

@@ -22,7 +22,7 @@ static const char CVSId_Index[] =
 
 namespace corsika {
   namespace detail {
-    unsigned int digitize(const std::vector<double>& arr, double x);
+    size_t digitize(const std::vector<double>& arr, double x);
     bool less(double i, double j);
     bool less_equal(double i, double j);
     bool greater(double i, double j);

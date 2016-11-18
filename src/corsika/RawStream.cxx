@@ -118,7 +118,7 @@ RawStream<Thinning, Padding>::ReadDiskBlock()
 {
   //cout << "new disk block (currently at " << fDiskStream->tellg() << ": '" << fDiskBlockBuffer.fBlock[0].ID() << "')" << endl;
   const unsigned int size = sizeof(DiskBlock);
-  const int rc = boost::iostreams::read(*fDiskStream, reinterpret_cast<char*>(&fDiskBlockBuffer), size);
+  size_t rc = boost::iostreams::read(*fDiskStream, reinterpret_cast<char*>(&fDiskBlockBuffer), size);
   if (rc <= 0) {
     return false;
   }
@@ -136,12 +136,11 @@ RawStream<Thinning, Padding>::ReadDiskBlock()
 
 
 template <class Thinning, int Padding>
-void
-RawStream<Thinning, Padding>::SeekTo(const PositionType thePosition)
+void RawStream<Thinning, Padding>::SeekTo(size_t thePosition)
 {
   //cout << "SeekTo" << endl;
-  PositionType newBlockNumber = thePosition / kBlocksInDiskBlock;
-  unsigned int newIndexInBlock = thePosition % kBlocksInDiskBlock;
+  size_t newBlockNumber = thePosition / kBlocksInDiskBlock;
+  size_t newIndexInBlock = thePosition % kBlocksInDiskBlock;
   //if (newBlockNumber == fCurrentBlockNumber && newIndexInBlock == fIndexInDiskBlock)
   //  return;
 
@@ -154,7 +153,7 @@ RawStream<Thinning, Padding>::SeekTo(const PositionType thePosition)
     fBlockBufferValid   = false;
     fIndexInDiskBlock   = newIndexInBlock;
 
-    const unsigned int size = sizeof(DiskBlock);
+    const size_t size = sizeof(DiskBlock);
     if (fDiskStream->tellg() < 0){
       fDiskStream->clear();
     }
@@ -162,7 +161,7 @@ RawStream<Thinning, Padding>::SeekTo(const PositionType thePosition)
     //cout << "seeked to " << fDiskStream->tellg() << endl;
   }
   else if (fFile) {
-    unsigned int current = GetNextPosition();
+    size_t current = GetNextPosition();
     if (current > thePosition) {
       Close();
       fFile->close();
@@ -194,7 +193,7 @@ RawStream<Thinning, Padding>::IsValid()
     return true;
   }
 
-  const PositionType currentBlockNumber = GetNextPosition();
+  const size_t currentBlockNumber = GetNextPosition();
   const bool blockBufferValid = fBlockBufferValid;
 
   bool fail = false;
@@ -363,7 +362,7 @@ namespace corsika {
       if (!force && !stream.IsSeekable())
         return index;
 
-      typename corsika::RawStream<Thinning, Padding>::PositionType startingBlockNumber = stream.GetNextPosition();
+      size_t startingBlockNumber = stream.GetNextPosition();
       if (stream.IsSeekable())
         stream.SeekTo(0);
 
@@ -381,7 +380,7 @@ namespace corsika {
         if (blockUnth.IsEventHeader()) {
           foundEventHeader = true;
           foundLongBlock = false;
-          typename RawStream<Thinning, Padding>::PositionType rawPosition = stream.GetNextPosition();
+          size_t rawPosition = stream.GetNextPosition();
           index.eventHeaders.push_back(rawPosition - 1);
           index.IDToPosition[int(blockUnth.AsEventHeader().fEventNumber)] = eventsSoFar;
           ++eventsSoFar;

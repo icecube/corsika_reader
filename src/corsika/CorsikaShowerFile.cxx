@@ -277,8 +277,8 @@ CorsikaShowerFile::FindEvent(const unsigned int eventId)
 }
 
 
-int
-CorsikaShowerFile::GetNEvents()
+
+size_t CorsikaShowerFile::GetNEvents()
 {
   if (!fRawStream) {
     const string msg = "Cannot request number of events from closed file";

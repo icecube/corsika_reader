@@ -39,7 +39,7 @@ RawParticleIterator() :
 
 template <class Thinning>
 RawParticleIterator<Thinning>::
-RawParticleIterator(const VRawStream& rawStream, const PositionType startPosition) :
+RawParticleIterator(const VRawStream& rawStream, size_t startPosition) :
   fRawStream(rawStream.Clone()),
   fStartPosition(startPosition),
   fCurrentBlockIndex(0),

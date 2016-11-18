@@ -73,7 +73,6 @@ namespace corsika
 
     class VRawStream: public boost::enable_shared_from_this<VRawStream> {
     public:
-      typedef unsigned long int PositionType;
 
       virtual ~VRawStream()
       {
@@ -86,10 +85,10 @@ namespace corsika
       virtual bool GetNextBlock(Block<NotThinned>& theBlock) = 0;
 
       /// Number of the block read by the next call to GetNextBlock
-      virtual PositionType GetNextPosition() const = 0;
+      virtual size_t GetNextPosition() const = 0;
 
       /// Seek to a given block, the next block will be \a thePosition
-      virtual void SeekTo(const PositionType thePosition) = 0;
+      virtual void SeekTo(size_t thePosition) = 0;
       virtual bool IsSeekable() const = 0;
 
       virtual bool IsValid() = 0;
@@ -98,7 +97,7 @@ namespace corsika
       virtual boost::shared_ptr<VRawStream> Clone() const
       { return const_cast<VRawStream*>(this)->shared_from_this(); } // I know... const_cast... argh...
 
-      virtual boost::shared_ptr<VRawParticleIterator> GetVParticleIt(PositionType start=0) const = 0;
+      virtual boost::shared_ptr<VRawParticleIterator> GetVParticleIt(size_t start=0) const = 0;
 
       virtual FileIndex Scan(bool force) = 0;
       virtual void Close() = 0;
@@ -159,7 +158,6 @@ namespace corsika
     template <class Thinning, int Padding=1>
     class RawStream: public VRawStream {
     public:
-      typedef unsigned long int PositionType;
       typedef Thinning ThinningType;
 
       static const unsigned int kBlocksInDiskBlock = Thinning::kSubBlocksPerBlock;
@@ -195,24 +193,24 @@ namespace corsika
       bool GetNextBlockImpl(Block<Thinning>& theBlock);
 
       /// Number of the block read by the next call to GetNextBlock
-      PositionType GetNextPosition() const
+      size_t GetNextPosition() const
       { return fIndexInDiskBlock + kBlocksInDiskBlock * fCurrentBlockNumber; }
 
       bool IsSeekable() const
       { return fRandomAccess || fFile; }
 
       /// Seek to a given block, the next block will be \a thePosition
-      void SeekTo(const PositionType thePosition);
+      void SeekTo(size_t thePosition);
 
       bool IsValid();
 
       bool IsThinned() const
       { return Thinning::kBytesPerBlock == Thinned::kBytesPerBlock; }
 
-      boost::shared_ptr<VRawParticleIterator> GetVParticleIt(PositionType start=0) const
+      boost::shared_ptr<VRawParticleIterator> GetVParticleIt(size_t start=0) const
       { return boost::dynamic_pointer_cast<VRawParticleIterator>(GetParticleIt(start)); }
 
-      boost::shared_ptr<RawParticleIterator<Thinning> > GetParticleIt(PositionType start=0) const
+      boost::shared_ptr<RawParticleIterator<Thinning> > GetParticleIt(size_t start=0) const
       {
         if (start == 0) {// if there is something we KNOW, it is that particles are not in block zero.
           start = GetNextPosition();
@@ -266,11 +264,11 @@ namespace corsika
       std::istream* fDiskStream;
       boost::shared_ptr<boost::iostreams::filtering_istream> fFilterStream;
       boost::shared_ptr<std::ifstream> fFile;
-      PositionType  fCurrentBlockNumber;
+      size_t  fCurrentBlockNumber;
 
       DiskBlock fDiskBlockBuffer;
 
-      unsigned int  fIndexInDiskBlock;
+      size_t  fIndexInDiskBlock;
       bool          fBlockBufferValid;
       bool          fRandomAccess;
 

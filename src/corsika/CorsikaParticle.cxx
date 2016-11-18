@@ -7,10 +7,6 @@
    \date 04 May 2011
 */
 
-static const char CVSId[] =
-"$Id$";
-
-
 #include <corsika/CorsikaParticle.h>
 #include <corsika/CorsikaBlock.h>
 #include <corsika/particle/ParticleList.h>

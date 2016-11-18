@@ -10,7 +10,7 @@ namespace corsika {
     bool greater(double i, double j) { return i>j; }
     bool greater_equal(double i, double j) { return i>=j; }
 
-    unsigned int digitize(const std::vector<double>& arr, double x)
+    size_t digitize(const std::vector<double>& arr, double x)
     {
       // my own binary search:
       // if (arr.size() == 0 || x < arr[0]) return 0;

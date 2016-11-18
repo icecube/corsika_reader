@@ -48,12 +48,9 @@ namespace corsika {
   {
 
   public:
-    typedef unsigned long int PositionType;
-
-    //typedef corsika::Corsika::VRawStream::PositionType PositionType;
 
     RawParticleIterator();
-    RawParticleIterator(const VRawStream& rawStream, const PositionType startPosition);
+    RawParticleIterator(const VRawStream& rawStream, size_t startPosition);
 
     ~RawParticleIterator() { }
 
@@ -83,8 +80,8 @@ namespace corsika {
 
     boost::shared_ptr<VRawStream> fRawStream;
 
-    PositionType fStartPosition;
-    PositionType fCurrentBlockIndex;
+    size_t fStartPosition;
+    size_t fCurrentBlockIndex;
     int fParticleInBlock;
 
     Block<Thinning> fCurrentBlock;

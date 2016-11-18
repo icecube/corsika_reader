@@ -23,7 +23,6 @@ namespace corsika
 
     class VRawFile {
     public:
-      typedef unsigned long int PositionType;
 
       virtual ~VRawFile(){}
 
@@ -36,10 +35,10 @@ namespace corsika
       //bool GetNextBlock(Block<Thinning>& theBlock);
 
       /// Number of the block read by the next call to GetNextBlock
-      virtual PositionType GetNextPosition() const = 0;
+      virtual size_t GetNextPosition() const = 0;
 
       /// Seek to a given block, the next block will be \a thePosition
-      virtual void SeekTo(const PositionType thePosition) = 0;
+      virtual void SeekTo(size_t thePosition) = 0;
 
       /// Check if the file is open
       virtual bool IsOpen() const = 0;
@@ -48,7 +47,7 @@ namespace corsika
 
       virtual bool IsThinned() const = 0;
 
-      virtual boost::shared_ptr<VRawParticleIterator> GetVParticleIt(PositionType start=0) const = 0;
+      virtual boost::shared_ptr<VRawParticleIterator> GetVParticleIt(size_t start=0) const = 0;
 
       std::string   fName;
     };
@@ -74,7 +73,6 @@ namespace corsika
 
     class RawFile: public VRawFile {
     public:
-      typedef unsigned long int PositionType;
 
       RawFile();
 
@@ -106,11 +104,11 @@ namespace corsika
       { return fCorsikaStream->GetNextBlock(theBlock); }
 
       /// Number of the block read by the next call to GetNextBlock
-      PositionType GetNextPosition() const
+      size_t GetNextPosition() const
       { return fCorsikaStream->GetNextPosition(); }
 
       /// Seek to a given block, the next block will be \a thePosition
-      void SeekTo(const PositionType thePosition)
+      void SeekTo(size_t thePosition)
       { fCorsikaStream->SeekTo(thePosition); }
       virtual bool IsSeekable() const
       { return fCorsikaStream->IsSeekable(); }
@@ -121,7 +119,7 @@ namespace corsika
       bool IsThinned() const
       { return fCorsikaStream->IsThinned(); }
 
-      boost::shared_ptr<VRawParticleIterator> GetVParticleIt(PositionType start=0) const
+      boost::shared_ptr<VRawParticleIterator> GetVParticleIt(size_t start=0) const
       { return fCorsikaStream->GetVParticleIt(start); }
 
       FileIndex Scan()

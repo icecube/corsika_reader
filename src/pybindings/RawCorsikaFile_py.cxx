@@ -18,7 +18,7 @@ struct RawFile_helper
     return self.GetVParticleIt();
   }
   static
-  boost::shared_ptr<VRawParticleIterator> GetParticleIt_1(const RawFile& self, RawFile::PositionType start)
+  boost::shared_ptr<VRawParticleIterator> GetParticleIt_1(const RawFile& self, size_t start)
   {
     return self.GetVParticleIt(start);
   }

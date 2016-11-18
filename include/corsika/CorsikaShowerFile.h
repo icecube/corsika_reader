@@ -56,7 +56,7 @@ namespace corsika {
 
     virtual Status FindEvent(unsigned int eventId);
 
-    virtual int GetNEvents();
+    virtual size_t GetNEvents();
 
     bool IsValid();
 
@@ -69,7 +69,7 @@ namespace corsika {
     CorsikaShower& GetCurrentShower() {return fCurrentShower;}
 
   private:
-    typedef std::vector<VRawStream::PositionType> PositionVector;
+    typedef std::vector<size_t> PositionVector;
     typedef std::map<unsigned int, unsigned int> IdToPositionMap;
 
     template <class Thinning>
