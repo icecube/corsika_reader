@@ -20,9 +20,6 @@
 #include <cmath>
 
 using namespace corsika;
-using ::corsika::Corsika::Thinned;
-using ::corsika::Corsika::NotThinned;
-using ::corsika::Corsika::RawStream;
 
 #define ERROR(mess) std::cerr << mess << std::endl;
 #define INFO(mess) std::cout << mess << std::endl;
@@ -38,8 +35,8 @@ CorsikaShowerFileParticleIterator() :
 { }
 
 CorsikaShowerFileParticleIterator::
-CorsikaShowerFileParticleIterator(const Corsika::VRawStream& rawStream,
-				  Corsika::EventHeader event_header,
+CorsikaShowerFileParticleIterator(const VRawStream& rawStream,
+				  EventHeader event_header,
                                    unsigned long int start,
                                   const double timeOffset,
                                   const unsigned int observationLevel,

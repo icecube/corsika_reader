@@ -23,9 +23,9 @@ namespace testRawStreamNS {
   void test_copy(string filename)
   {
     ifstream f(filename.c_str());
-    corsika::Corsika::RawStream<corsika::Corsika::NotThinned> rawUnthinnedStream(f);
+    corsika::RawStream<corsika::NotThinned> rawUnthinnedStream(f);
 
-    Corsika::Block<corsika::Corsika::NotThinned> block;
+    Block<corsika::NotThinned> block;
     rawUnthinnedStream.GetNextBlock(block);
     rawUnthinnedStream.GetNextBlock(block);
   }
@@ -34,17 +34,17 @@ namespace testRawStreamNS {
   {
     boost::iostreams::filtering_istream filter;
     boost::shared_ptr<std::ifstream> f(new ifstream(filename.c_str()));
-    boost::shared_ptr<corsika::Corsika::RawStream<corsika::Corsika::NotThinned> > rawUnthinnedStream(new corsika::Corsika::RawStream<corsika::Corsika::NotThinned>(*f, true));
+    boost::shared_ptr<corsika::RawStream<corsika::NotThinned> > rawUnthinnedStream(new corsika::RawStream<corsika::NotThinned>(*f, true));
 
-    Corsika::Block<corsika::Corsika::NotThinned> block;
+    Block<corsika::NotThinned> block;
     rawUnthinnedStream->GetNextBlock(block);
     ENSURE(block.IsRunHeader());
 
     rawUnthinnedStream->GetNextBlock(block);
     ENSURE(block.IsEventHeader());
 
-    ENSURE(rawUnthinnedStream->DiskBlockBuffer().fPaddingBeginning[0] == corsika::Corsika::NotThinned::kBytesPerBlock);
-    ENSURE(rawUnthinnedStream->DiskBlockBuffer().fPaddingEnd[0] == corsika::Corsika::NotThinned::kBytesPerBlock);
+    ENSURE(rawUnthinnedStream->DiskBlockBuffer().fPaddingBeginning[0] == corsika::NotThinned::kBytesPerBlock);
+    ENSURE(rawUnthinnedStream->DiskBlockBuffer().fPaddingEnd[0] == corsika::NotThinned::kBytesPerBlock);
 
     int i = 0;
     while (rawUnthinnedStream->GetNextBlock(block) && i < 5000) {

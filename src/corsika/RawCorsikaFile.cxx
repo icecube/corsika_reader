@@ -23,7 +23,7 @@
 
 using namespace std;
 using std::string;
-using namespace corsika::Corsika;
+using namespace corsika;
 
 #define ERROR(mess) cerr << mess << endl;
 
@@ -38,7 +38,7 @@ RawFile::RawFile(const std::string& theName):
 }
 
 
-RawFile::RawFile(std::istream& in, Corsika::Compression c):
+RawFile::RawFile(std::istream& in, Compression c):
   fFromFile(false)
 {
   Open(in, c);
@@ -81,7 +81,7 @@ RawFile::Open(const std::string& theName)
 
 
 void
-RawFile::Open(std::istream& in, Corsika::Compression c)
+RawFile::Open(std::istream& in, Compression c)
 {
   fName = "stream";
   fCorsikaStream = RawStreamFactory::Create(in, false, c);

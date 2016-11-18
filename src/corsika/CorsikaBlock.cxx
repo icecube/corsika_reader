@@ -21,7 +21,7 @@ static const char CVSId[] =
 #include <cstdlib>
 #include <string.h>             // the C-language header
 
-using namespace corsika::Corsika;
+using namespace corsika;
 using std::ostringstream;
 using std::endl;
 using std::string;
@@ -56,11 +56,8 @@ BlockID::Is(const char* const theID)
 
 namespace corsika
 {
-    namespace Corsika
-    {
-        template class Block<Thinned>;
-        template class Block<NotThinned>;
-    }
+    template class Block<Thinned>;
+    template class Block<NotThinned>;
 }
 
 

@@ -20,8 +20,6 @@
 #include <cmath>
 
 using namespace corsika;
-using ::corsika::Corsika::Block;
-using ::corsika::Corsika::RawStream;
 
 #define ERROR(mess) std::cerr << mess << std::endl;
 #define INFO(mess) std::cout << mess << std::endl;
@@ -41,7 +39,7 @@ RawParticleIterator() :
 
 template <class Thinning>
 RawParticleIterator<Thinning>::
-RawParticleIterator(const Corsika::VRawStream& rawStream, const PositionType startPosition) :
+RawParticleIterator(const VRawStream& rawStream, const PositionType startPosition) :
   fRawStream(rawStream.Clone()),
   fStartPosition(startPosition),
   fCurrentBlockIndex(0),
@@ -85,7 +83,7 @@ RawParticleIterator<Thinning>::Rewind()
 
 
 template <class Thinning>
-const typename corsika::Corsika::Block<Thinning>::ParticleData*
+const typename Block<Thinning>::ParticleData*
 RawParticleIterator<Thinning>::GetOneParticle()
 {
   using std::ostringstream;
@@ -122,8 +120,8 @@ RawParticleIterator<Thinning>::GetOneParticle()
 
 namespace corsika
 {
-    template class RawParticleIterator<corsika::Corsika::Thinned>;
-    template class RawParticleIterator<corsika::Corsika::NotThinned>;
+    template class RawParticleIterator<Thinned>;
+    template class RawParticleIterator<NotThinned>;
 }
 
 

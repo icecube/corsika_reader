@@ -25,7 +25,7 @@
 
 using namespace std;
 using std::string;
-using namespace corsika::Corsika;
+using namespace corsika;
 
 #define ERROR(mess) cerr << mess << endl;
 
@@ -254,14 +254,14 @@ FormatSpec::FormatSpec(std::istream& in):
   }
 
   invalid = false;
-  if ( len32 == corsika::Corsika::Thinned::kBytesPerBlock || len64 == corsika::Corsika::Thinned::kBytesPerBlock)
+  if ( len32 == corsika::Thinned::kBytesPerBlock || len64 == corsika::Thinned::kBytesPerBlock)
     thinned = true;
-  else if ( len32 == corsika::Corsika::NotThinned::kBytesPerBlock || len64 == corsika::Corsika::NotThinned::kBytesPerBlock)
+  else if ( len32 == corsika::NotThinned::kBytesPerBlock || len64 == corsika::NotThinned::kBytesPerBlock)
     thinned = false;
   else {
     invalid = true;
   }
-  if (len64 != corsika::Corsika::Thinned::kBytesPerBlock && len64 != corsika::Corsika::NotThinned::kBytesPerBlock)
+  if (len64 != corsika::Thinned::kBytesPerBlock && len64 != corsika::NotThinned::kBytesPerBlock)
     size_32 = true;
 }
 
@@ -276,12 +276,12 @@ RawStreamFactory::Create(const std::string& theName)
     throw std::exception();
   }
 
-  Corsika::Compression c = Corsika::eNone;
+  Compression c = eNone;
   if (boost::algorithm::ends_with(theName, ".bz2")) {
-    c = Corsika::eBZip2;
+    c = eBZip2;
   }
   else if (boost::algorithm::ends_with(theName, ".gz")) {
-    c = Corsika::eGZip;
+    c = eGZip;
   }
   boost::shared_ptr<VRawStream> corsikaStream(RawStreamFactory::Create(*file, true, c));
   if (!corsikaStream) {
@@ -298,7 +298,7 @@ boost::shared_ptr<VRawStream>
 RawStreamFactory::Create(std::istream& in, bool randomAccess, Compression c)
 {
   std::istream* input = &in;
-  randomAccess *= c==Corsika::eNone;
+  randomAccess *= c==eNone;
 
   FormatSpec spec(in);
   boost::shared_ptr<std::istream> f = GetFilter(in, c);
@@ -312,18 +312,18 @@ RawStreamFactory::Create(std::istream& in, bool randomAccess, Compression c)
   boost::shared_ptr<VRawStream> ret;
   if (spec.thinned) {
     if (spec.size_32) {
-      ret.reset( new RawStream<Corsika::Thinned, 1>(*input, randomAccess));
+      ret.reset( new RawStream<Thinned, 1>(*input, randomAccess));
     }
     else {
-      ret.reset( new RawStream<Corsika::Thinned, 2>(*input, randomAccess));
+      ret.reset( new RawStream<Thinned, 2>(*input, randomAccess));
     }
   }
   else {
     if (spec.size_32) {
-      ret.reset( new RawStream<Corsika::NotThinned, 1>(*input, randomAccess));
+      ret.reset( new RawStream<NotThinned, 1>(*input, randomAccess));
     }
     else {
-      ret.reset( new RawStream<Corsika::NotThinned, 2>(*input, randomAccess));
+      ret.reset( new RawStream<NotThinned, 2>(*input, randomAccess));
     }
   }
   if (f)
@@ -333,19 +333,18 @@ RawStreamFactory::Create(std::istream& in, bool randomAccess, Compression c)
 
 
 namespace corsika {
-  namespace Corsika{
 
     boost::shared_ptr<std::istream> GetFilter(std::istream& in, Compression c)
     {
       boost::shared_ptr<std::istream> f;
-      if (c != corsika::Corsika::eNone) {
+      if (c != corsika::eNone) {
         boost::iostreams::filtering_istream* filter = new boost::iostreams::filtering_istream();
-        if (c == corsika::Corsika::eBZip2) {
+        if (c == corsika::eBZip2) {
           //cout << "using bzip2 decompression 2" << endl;
           filter->set_auto_close(false);
           filter->push(boost::iostreams::bzip2_decompressor());
         }
-        else if (c == corsika::Corsika::eGZip) {
+        else if (c == corsika::eGZip) {
           //cout << "using gzip decompression 2" << endl;
           filter->push(boost::iostreams::gzip_decompressor());
         }
@@ -357,14 +356,14 @@ namespace corsika {
 
 
     template <class Thinning, int Padding>
-    FileIndex Scan(corsika::Corsika::RawStream<Thinning, Padding>& stream, bool force)
+    FileIndex Scan(corsika::RawStream<Thinning, Padding>& stream, bool force)
     {
       FileIndex index;
 
       if (!force && !stream.IsSeekable())
         return index;
 
-      typename corsika::Corsika::RawStream<Thinning, Padding>::PositionType startingBlockNumber = stream.GetNextPosition();
+      typename corsika::RawStream<Thinning, Padding>::PositionType startingBlockNumber = stream.GetNextPosition();
       if (stream.IsSeekable())
         stream.SeekTo(0);
 
@@ -375,14 +374,14 @@ namespace corsika {
       bool foundRunHeader = false;
       bool foundLongBlock = false;
 
-      Corsika::Block<Thinning> blockUnth;
+      Block<Thinning> blockUnth;
       while (stream.GetNextBlock(blockUnth) &&
              !blockUnth.IsRunTrailer()) {
         ++blockIndex;
         if (blockUnth.IsEventHeader()) {
           foundEventHeader = true;
           foundLongBlock = false;
-          typename Corsika::RawStream<Thinning, Padding>::PositionType rawPosition = stream.GetNextPosition();
+          typename RawStream<Thinning, Padding>::PositionType rawPosition = stream.GetNextPosition();
           index.eventHeaders.push_back(rawPosition - 1);
           index.IDToPosition[int(blockUnth.AsEventHeader().fEventNumber)] = eventsSoFar;
           ++eventsSoFar;
@@ -437,24 +436,20 @@ namespace corsika {
     }
 
 
-    template FileIndex Scan<Corsika::Thinned, 1>(corsika::Corsika::RawStream<Corsika::Thinned, 1>& stream, bool force);
-    template FileIndex Scan<Corsika::NotThinned, 1>(corsika::Corsika::RawStream<Corsika::NotThinned, 1>& stream, bool force);
-    template FileIndex Scan<Corsika::Thinned, 2>(corsika::Corsika::RawStream<Corsika::Thinned, 2>& stream, bool force);
-    template FileIndex Scan<Corsika::NotThinned, 2>(corsika::Corsika::RawStream<Corsika::NotThinned, 2>& stream, bool force);
+    template FileIndex Scan<Thinned, 1>(corsika::RawStream<Thinned, 1>& stream, bool force);
+    template FileIndex Scan<NotThinned, 1>(corsika::RawStream<NotThinned, 1>& stream, bool force);
+    template FileIndex Scan<Thinned, 2>(corsika::RawStream<Thinned, 2>& stream, bool force);
+    template FileIndex Scan<NotThinned, 2>(corsika::RawStream<NotThinned, 2>& stream, bool force);
 
-  }
 }
 
 namespace corsika
 {
-    namespace Corsika
-    {
-        template class RawStream<Thinned, 1>;
-        template class RawStream<NotThinned, 1>;
-        
-        template class RawStream<Thinned, 2>;
-        template class RawStream<NotThinned, 2>;
-    }
+    template class RawStream<Thinned, 1>;
+    template class RawStream<NotThinned, 1>;
+    
+    template class RawStream<Thinned, 2>;
+    template class RawStream<NotThinned, 2>;
 }
 
 

@@ -33,10 +33,10 @@ inline object identity(object const& o) { return o; }
  */
 
 template<typename Thinning>
-const typename corsika::Corsika::Block<Thinning>::ParticleData&
+const typename corsika::Block<Thinning>::ParticleData&
 next_particle(corsika::RawParticleIterator<Thinning>& o)
 {
-  const typename corsika::Corsika::Block<Thinning>::ParticleData*
+  const typename corsika::Block<Thinning>::ParticleData*
     result = o.GetOneParticle();
   if (!result) {
     PyErr_SetString(PyExc_StopIteration, "No more data.");
@@ -46,7 +46,7 @@ next_particle(corsika::RawParticleIterator<Thinning>& o)
 }
 
 template<typename Thinning>
-const typename corsika::Corsika::Block<Thinning>::ParticleData&
+const typename corsika::Block<Thinning>::ParticleData&
 next_particle_2(corsika::VRawParticleIterator& o)
 {
   corsika::RawParticleIterator<Thinning>* ptr = dynamic_cast<corsika::RawParticleIterator<Thinning>*>(&o);
@@ -54,7 +54,7 @@ next_particle_2(corsika::VRawParticleIterator& o)
     PyErr_SetString(PyExc_StopIteration, "Could not cast particle iterator.");
     boost::python::throw_error_already_set();
   }
-  const typename corsika::Corsika::Block<Thinning>::ParticleData*
+  const typename corsika::Block<Thinning>::ParticleData*
     result = ptr->GetOneParticle();
   if (!result) {
     PyErr_SetString(PyExc_StopIteration, "No more data.");
@@ -96,6 +96,6 @@ void register_RawParticleIterator()
 
   register_ptr_to_python<boost::shared_ptr<corsika::VRawParticleIterator> >();
 
-  register_RawIterator<corsika::Corsika::NotThinned>("RawParticleIterator");
-  register_RawIterator<corsika::Corsika::Thinned>("RawParticleIterator_thin");
+  register_RawIterator<corsika::NotThinned>("RawParticleIterator");
+  register_RawIterator<corsika::Thinned>("RawParticleIterator_thin");
 }

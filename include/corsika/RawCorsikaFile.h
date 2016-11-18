@@ -18,9 +18,8 @@
 #include <corsika/RawParticleIterator.h>
 #include <corsika/RawStream.h>
 
-namespace corsika {
-
-  namespace Corsika {
+namespace corsika
+{
 
     class VRawFile {
     public:
@@ -81,13 +80,13 @@ namespace corsika {
 
       /// Construct and open file
       RawFile(const std::string& theName);
-      RawFile(std::istream& in, Corsika::Compression c=Corsika::eNone);
+      RawFile(std::istream& in, Compression c=eNone);
       RawFile(const RawFile& other);
       RawFile& operator=(const RawFile& other);
 
 
       void Open(const std::string& theName);
-      void Open(std::istream& in, Corsika::Compression c=Corsika::eNone);
+      void Open(std::istream& in, Compression c=eNone);
 
       /// Close file (no-op for closed file).
       void Close()
@@ -135,7 +134,6 @@ namespace corsika {
       bool fFromFile;
     };
 
-  } // Corsika
 } // corsika
 
 

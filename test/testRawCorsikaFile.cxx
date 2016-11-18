@@ -18,13 +18,13 @@ TEST_GROUP(CorsikaTest);
 namespace testRawCorsikaFileNS {
   void test_copy(string filename)
   {
-    corsika::Corsika::RawFile rawUnthinnedFile;
+    corsika::RawFile rawUnthinnedFile;
     rawUnthinnedFile.Open(filename.c_str());
 
-    Corsika::Block<corsika::Corsika::NotThinned> block;
+    Block<corsika::NotThinned> block;
     rawUnthinnedFile.GetNextBlock(block);
     rawUnthinnedFile.GetNextBlock(block);
-    corsika::Corsika::RawFile rawUnthinnedFile2(rawUnthinnedFile);
+    corsika::RawFile rawUnthinnedFile2(rawUnthinnedFile);
     ENSURE_EQUAL(rawUnthinnedFile2.GetNextPosition(), rawUnthinnedFile.GetNextPosition());
 
     rawUnthinnedFile.GetNextBlock(block);
@@ -34,22 +34,22 @@ namespace testRawCorsikaFileNS {
 
   void test_basic(string filename)
   {
-    corsika::Corsika::RawFile rawUnthinnedFile;
+    corsika::RawFile rawUnthinnedFile;
     rawUnthinnedFile.Open(filename.c_str());
     rawUnthinnedFile.Close();
 
     rawUnthinnedFile.Open(filename.c_str());
     ENSURE(rawUnthinnedFile.IsValid());
 
-    Corsika::Block<corsika::Corsika::NotThinned> block;
+    Block<corsika::NotThinned> block;
     rawUnthinnedFile.GetNextBlock(block);
     ENSURE(block.IsRunHeader());
 
     rawUnthinnedFile.GetNextBlock(block);
     ENSURE(block.IsEventHeader());
 
-    //ENSURE(rawUnthinnedFile.DiskBlockBuffer().fPaddingBeginning[0] == corsika::Corsika::NotThinned::kBytesPerBlock);
-    //ENSURE(rawUnthinnedFile.DiskBlockBuffer().fPaddingEnd[0] == corsika::Corsika::NotThinned::kBytesPerBlock);
+    //ENSURE(rawUnthinnedFile.DiskBlockBuffer().fPaddingBeginning[0] == corsika::NotThinned::kBytesPerBlock);
+    //ENSURE(rawUnthinnedFile.DiskBlockBuffer().fPaddingEnd[0] == corsika::NotThinned::kBytesPerBlock);
 
     int i = 0;
     while (rawUnthinnedFile.GetNextBlock(block) && i < 5000) {
@@ -60,26 +60,26 @@ namespace testRawCorsikaFileNS {
 
   void test_basic_stream(string filename)
   {
-    Corsika::Compression c = Corsika::eNone;
+    Compression c = eNone;
     if (boost::algorithm::ends_with(filename, ".bz2")) {
-      c = Corsika::eBZip2;
+      c = eBZip2;
     }
     else if (boost::algorithm::ends_with(filename, ".gz")) {
-      c = Corsika::eGZip;
+      c = eGZip;
     }
 
     ifstream f(filename.c_str());
-    corsika::Corsika::RawFile rawUnthinnedStream(f, c);
+    corsika::RawFile rawUnthinnedStream(f, c);
 
-    Corsika::Block<corsika::Corsika::NotThinned> block;
+    Block<corsika::NotThinned> block;
     rawUnthinnedStream.GetNextBlock(block);
     ENSURE(block.IsRunHeader());
 
     rawUnthinnedStream.GetNextBlock(block);
     ENSURE(block.IsEventHeader());
 
-    //ENSURE(rawUnthinnedStream.DiskBlockBuffer().fPaddingBeginning[0] == corsika::Corsika::NotThinned::kBytesPerBlock);
-    //ENSURE(rawUnthinnedStream.DiskBlockBuffer().fPaddingEnd[0] == corsika::Corsika::NotThinned::kBytesPerBlock);
+    //ENSURE(rawUnthinnedStream.DiskBlockBuffer().fPaddingBeginning[0] == corsika::NotThinned::kBytesPerBlock);
+    //ENSURE(rawUnthinnedStream.DiskBlockBuffer().fPaddingEnd[0] == corsika::NotThinned::kBytesPerBlock);
 
     int i = 0;
     while (rawUnthinnedStream.GetNextBlock(block) && i < 5000) {
@@ -114,8 +114,8 @@ TEST(testRawCorsikaFile)
 TEST(testBlock)
 {
   // This test makes an explicit check on the sizes of corsika blocks
-  Corsika::Block<Corsika::NotThinned> not_thin_block;
-  Corsika::Block<Corsika::NotThinned>::ParticleData particle;
+  Block<NotThinned> not_thin_block;
+  Block<NotThinned>::ParticleData particle;
 
   // one sub-block has 273 "words" each
   ENSURE_EQUAL(sizeof(float)*273, sizeof(not_thin_block));
@@ -129,8 +129,8 @@ TEST(testBlock)
   ENSURE_EQUAL(sizeof(not_thin_block), sizeof(not_thin_block.AsCherenkovBlock()));
   ENSURE_EQUAL(sizeof(not_thin_block), sizeof(not_thin_block.AsLongitudinalBlock()));
 
-  Corsika::Block<Corsika::Thinned> thin_block;
-  Corsika::Block<Corsika::Thinned>::ParticleData thin_particle;
+  Block<Thinned> thin_block;
+  Block<Thinned>::ParticleData thin_particle;
   // comparing thinned blocks to their standard counterparts (only particle blocks change in size, the rest are zero-padded)
   ENSURE_EQUAL(sizeof(not_thin_block.AsRunHeader()), sizeof(thin_block.AsRunHeader()));
   ENSURE_EQUAL(sizeof(not_thin_block.AsRunTrailer()), sizeof(thin_block.AsRunTrailer()));

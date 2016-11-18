@@ -7,34 +7,34 @@
 using namespace boost::python;
 using namespace corsika;
 
-//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(particle_overloads, Corsika::RawFile::GetParticleIt, 0, 1)
+//BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(particle_overloads, RawFile::GetParticleIt, 0, 1)
 
 
 struct RawFile_helper
 {
   static
-  boost::shared_ptr<VRawParticleIterator> GetParticleIt_0(const Corsika::RawFile& self)
+  boost::shared_ptr<VRawParticleIterator> GetParticleIt_0(const RawFile& self)
   {
     return self.GetVParticleIt();
   }
   static
-  boost::shared_ptr<VRawParticleIterator> GetParticleIt_1(const Corsika::RawFile& self, Corsika::RawFile::PositionType start)
+  boost::shared_ptr<VRawParticleIterator> GetParticleIt_1(const RawFile& self, RawFile::PositionType start)
   {
     return self.GetVParticleIt(start);
   }
 
   static
-  bool GetNextBlock_th(Corsika::RawFile& self, Corsika::Block<Corsika::Thinned>& theBlock)
+  bool GetNextBlock_th(RawFile& self, Block<Thinned>& theBlock)
   {
     return self.GetNextBlock(theBlock);
   }
   static
-  bool GetNextBlock_notth(Corsika::RawFile& self, Corsika::Block<Corsika::NotThinned>& theBlock)
+  bool GetNextBlock_notth(RawFile& self, Block<NotThinned>& theBlock)
   {
     return self.GetNextBlock(theBlock);
   }
   static
-  void Open_str(Corsika::RawFile& self,  const std::string& theName)
+  void Open_str(RawFile& self,  const std::string& theName)
   {
     self.Open(theName);
   }
@@ -48,7 +48,7 @@ register_RawFile(std::string name)
 {
   docstring_options local_docstring_options(true, true, false);
 
-  typedef  Corsika::RawFile RawFile;
+  typedef  RawFile RawFile;
   typedef  RawFile_helper helper;
   class_<RawFile>(name.c_str())
     .def(init<std::string>())

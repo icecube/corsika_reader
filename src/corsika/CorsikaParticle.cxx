@@ -35,7 +35,7 @@ CorsikaParticle::CorsikaParticle():
 }
 
 
-CorsikaParticle::CorsikaParticle(const Corsika::Block<Corsika::Thinned>::ParticleData* particle):
+CorsikaParticle::CorsikaParticle(const Block<Thinned>::ParticleData* particle):
   fDescription(particle->fDescription),
   fPx(particle->fPx),
   fPy(particle->fPy),
@@ -48,7 +48,7 @@ CorsikaParticle::CorsikaParticle(const Corsika::Block<Corsika::Thinned>::Particl
 }
 
 
-CorsikaParticle::CorsikaParticle(const Corsika::Block<Corsika::NotThinned>::ParticleData* particle):
+CorsikaParticle::CorsikaParticle(const Block<NotThinned>::ParticleData* particle):
   fDescription(particle->fDescription),
   fPx(particle->fPx),
   fPy(particle->fPy),

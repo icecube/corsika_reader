@@ -28,8 +28,8 @@ namespace corsika {
       fParticleIterator(0),
       fParticles(fParticleIterator)
     {}
-    CorsikaShower(const corsika::Corsika::EventHeader& header,
-                  const corsika::Corsika::EventTrailer& trailer,
+    CorsikaShower(const EventHeader& header,
+                  const EventTrailer& trailer,
                   CorsikaShowerFileParticleIterator* particleIt);
     ~CorsikaShower(){}
 
@@ -78,10 +78,10 @@ namespace corsika {
     { return fEventHeader.fArrayRotation; }
 
 
-    const corsika::Corsika::EventHeader& EventHeader() const
+    const EventHeader& EventHeader() const
     { return fEventHeader; }
 
-    // corsika::Corsika::EventTrailer& EventTrailer()
+    // EventTrailer& EventTrailer()
     // { return fEventTrailer; }
 
     std::vector<double> fdEdX;
@@ -93,8 +93,8 @@ namespace corsika {
     std::vector<double> fDepth_dE;
 
   private:
-    corsika::Corsika::EventHeader fEventHeader;
-    corsika::Corsika::EventTrailer fEventTrailer;
+    struct EventHeader fEventHeader;
+    EventTrailer fEventTrailer;
 
     int fPrimaryParticle;
     float fEnergy;

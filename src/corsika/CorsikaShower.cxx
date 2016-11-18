@@ -20,8 +20,8 @@ using namespace corsika;
 using namespace std;
 
 
-CorsikaShower::CorsikaShower(const Corsika::Block<Corsika::NotThinned>::EventHeader& header,
-                             const Corsika::Block<Corsika::NotThinned>::EventTrailer& trailer,
+CorsikaShower::CorsikaShower(const Block<NotThinned>::EventHeader& header,
+                             const Block<NotThinned>::EventTrailer& trailer,
                              CorsikaShowerFileParticleIterator* particleIt):
   fEventHeader(header),
   fEventTrailer(trailer),

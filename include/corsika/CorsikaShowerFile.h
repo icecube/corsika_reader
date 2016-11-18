@@ -69,7 +69,7 @@ namespace corsika {
     CorsikaShower& GetCurrentShower() {return fCurrentShower;}
 
   private:
-    typedef std::vector<corsika::Corsika::VRawStream::PositionType> PositionVector;
+    typedef std::vector<VRawStream::PositionType> PositionVector;
     typedef std::map<unsigned int, unsigned int> IdToPositionMap;
 
     template <class Thinning>
@@ -80,9 +80,9 @@ namespace corsika {
 
     CorsikaShower fCurrentShower;
 
-    boost::shared_ptr<corsika::Corsika::VRawStream> fRawStream;
+    boost::shared_ptr<VRawStream> fRawStream;
     std::string fLongFile;
-    Corsika::FileIndex fIndex;
+    FileIndex fIndex;
     unsigned int fCurrentPosition;
     unsigned int fObservationLevel;
     bool fIsThinned;

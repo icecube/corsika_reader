@@ -23,11 +23,8 @@ static const char CVSId__CorsikaShowerFileParticleIterator[] =
 
 namespace corsika {
 
-  namespace Corsika {
     class VRawStream;
-  }
-
-  class CorsikaParticle;
+    class CorsikaParticle;
 
 
   /**
@@ -49,7 +46,7 @@ namespace corsika {
   {
 
   public:
-    typedef corsika::Corsika::VRawStream::PositionType PositionType;
+    typedef VRawStream::PositionType PositionType;
     // the following things implement an iterator interface using iterator_facade. This might be removed.
     typedef CorsikaParticle& result_type;
 
@@ -64,8 +61,8 @@ namespace corsika {
     }
 
     CorsikaShowerFileParticleIterator();
-    CorsikaShowerFileParticleIterator(const Corsika::VRawStream& rawStream,
-				      Corsika::EventHeader event_header, // passed by value
+    CorsikaShowerFileParticleIterator(const VRawStream& rawStream,
+				      EventHeader event_header, // passed by value
                                       unsigned long int start,
                                       const double timeOffset,
                                       const unsigned int observationLevel,
@@ -86,7 +83,7 @@ namespace corsika {
     { return iterator_ && iterator_->IsValid(); }
 
     mutable boost::optional<CorsikaParticle> value_;
-    Corsika::EventHeader event_header_;
+    EventHeader event_header_;
     boost::shared_ptr<VRawParticleIterator> iterator_;
 
     double fTimeOffset;

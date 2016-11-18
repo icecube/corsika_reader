@@ -10,7 +10,7 @@ using namespace corsika;
 template <class Thinning>
 struct register_block_helper {
   static dict
-  BlockBuffer_array_interface(Corsika::Block<Thinning>& self) {
+  BlockBuffer_array_interface(Block<Thinning>& self) {
     dict d;
     const int s = Thinning::kWordsPerSubBlock;
     d["shape"] = make_tuple(s);
@@ -24,7 +24,7 @@ struct register_block_helper {
 struct expose_arrays {
   static
   object
-  EventHeader_observation_levels(Corsika::EventHeader& self)
+  EventHeader_observation_levels(EventHeader& self)
   {
     std::vector<double> a(self.fObservationLevels);
     for (int i = 0; i < self.fObservationLevels; ++i) {
@@ -41,7 +41,7 @@ template <class Thinning>
 struct register_block_data
 {
   static object
-  BlockBuffer_data(Corsika::Block<Thinning>& self) {
+  BlockBuffer_data(Block<Thinning>& self) {
     object numpy = import("numpy");
     object asarray = numpy.attr("asarray");
     return asarray(object(self));
@@ -53,11 +53,11 @@ struct register_block {
   static void
   go(std::string name)
   {
-    typedef Corsika::Block<Thinning> Block;
+    typedef Block<Thinning> Block;
     scope block_scope =
       class_<Block >(name.c_str())
-      .add_property("__array_interface__", &register_block_helper<corsika::Corsika::Thinned>::BlockBuffer_array_interface)
-      .add_property("data", &register_block_data<corsika::Corsika::Thinned>::BlockBuffer_data, "The underlying buffer")
+      .add_property("__array_interface__", &register_block_helper<corsika::Thinned>::BlockBuffer_array_interface)
+      .add_property("data", &register_block_data<corsika::Thinned>::BlockBuffer_data, "The underlying buffer")
       .add_property("is_run_header", &Block::IsRunHeader      , "True if the block is RUNH")
       .add_property("is_run_trailer", &Block::IsRunTrailer    , "True if the block is RUNE")
       .add_property("is_event_header", &Block::IsEventHeader  , "True if the block is EVTH")
@@ -89,15 +89,15 @@ struct register_block {
 };
 
 template<>
-struct register_block<corsika::Corsika::NotThinned> {
+struct register_block<corsika::NotThinned> {
   static void
   go(std::string name)
   {
-    typedef Corsika::Block<corsika::Corsika::NotThinned> Block;
+    typedef Block<corsika::NotThinned> Block;
     scope block_scope =
       class_<Block >(name.c_str())
-      .add_property("__array_interface__", &register_block_helper<corsika::Corsika::NotThinned>::BlockBuffer_array_interface)
-      .add_property("data", &register_block_data<corsika::Corsika::NotThinned>::BlockBuffer_data, "The underlying buffer")
+      .add_property("__array_interface__", &register_block_helper<corsika::NotThinned>::BlockBuffer_array_interface)
+      .add_property("data", &register_block_data<corsika::NotThinned>::BlockBuffer_data, "The underlying buffer")
       .add_property("is_run_header", &Block::IsRunHeader      , "True if the block is RUNH")
       .add_property("is_run_trailer", &Block::IsRunTrailer    , "True if the block is RUNE")
       .add_property("is_eventHeader", &Block::IsEventHeader   , "True if the block is EVTH")
@@ -134,7 +134,7 @@ struct register_subblocks {
   static void
   go()
   {
-    typedef Corsika::EventHeader EventHeader;
+    typedef EventHeader EventHeader;
     class_<EventHeader>("EventHeader")
       .def_readonly("shower_number", &EventHeader::fEventNumber)
       .def_readonly("primary_id", &EventHeader::fParticleId)
@@ -230,8 +230,8 @@ struct register_subblocks {
 
 void register_CorsikaBlock()
 {
-  register_block<Corsika::NotThinned>::go("Block");
-  register_block<Corsika::Thinned>::go("Block_thin");
+  register_block<NotThinned>::go("Block");
+  register_block<Thinned>::go("Block_thin");
 
   register_subblocks::go();
 }

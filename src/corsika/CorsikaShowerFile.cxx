@@ -29,8 +29,6 @@ static const char CVSId[] =
 #include <boost/tokenizer.hpp>
 #include <boost/filesystem.hpp>
 
-using corsika::kSpeedOfLight;
-using corsika::kEarthRadius;
 using namespace std;
 using namespace corsika;
 
@@ -100,7 +98,7 @@ CorsikaShowerFile::Open(const std::string& theFileName, bool scan)
     fLongFile = "";
   }
 
-  fRawStream = Corsika::RawStreamFactory::Create(theFileName);
+  fRawStream = RawStreamFactory::Create(theFileName);
   fIsThinned = fRawStream->IsThinned();
   if (scan && fRawStream->IsSeekable()) {
     fIndex = fRawStream->Scan(false);
@@ -150,7 +148,7 @@ CorsikaShowerFile::Read()
 
   fRawStream->SeekTo(fIndex.eventHeaders[fCurrentPosition]);
 
-  Corsika::Block<Thinning> headerBlock;
+  Block<Thinning> headerBlock;
   if (!fRawStream->GetNextBlock(headerBlock)) {
     ostringstream err;
     err << "Cannot read CORSIKA shower header for position "
@@ -166,11 +164,11 @@ CorsikaShowerFile::Read()
     FATAL(err);
     return eFail;
   }
-  const typename Corsika::EventHeader& header = headerBlock.AsEventHeader();
+  const EventHeader& header = headerBlock.AsEventHeader();
 
   fRawStream->SeekTo(fIndex.eventTrailers[fCurrentPosition]);
 
-  Corsika::Block<Thinning> trailerBlock;
+  Block<Thinning> trailerBlock;
   if (!fRawStream->GetNextBlock(trailerBlock)) {
     ostringstream err;
     err << "Cannot read CORSIKA shower trailer for position "
@@ -186,7 +184,7 @@ CorsikaShowerFile::Read()
     return eFail;
   }
 
-  const typename Corsika::EventTrailer& trailer = trailerBlock.AsEventTrailer();
+  const EventTrailer& trailer = trailerBlock.AsEventTrailer();
 
   if (fObservationLevel > header.fObservationLevels) {
     ostringstream info;
@@ -273,9 +271,9 @@ CorsikaShowerFile::FindEvent(const unsigned int eventId)
 
   fCurrentPosition = iter->second;
   if (fIsThinned) {
-    return Read<Corsika::Thinned>();
+    return Read<Thinned>();
   }
-  return Read<Corsika::NotThinned>();
+  return Read<NotThinned>();
 }
 
 
@@ -332,7 +330,7 @@ CorsikaShowerFile::ReadLongFile()
 
     fCurrentShower.SetCalorimetricEnergy(0);
 
-    corsika::GaisserHillasParameter gh;
+    GaisserHillasParameter gh;
     fCurrentShower.SetGaisserHillasParams(gh);
   }
   return eSuccess;
@@ -345,7 +343,7 @@ CorsikaShowerFile::ReadLongBlocks()
 {
   fRawStream->SeekTo(fIndex.longBlocks[fCurrentPosition]);
 
-  Corsika::Block<Thinning> block;
+  Block<Thinning> block;
   if (!fRawStream->GetNextBlock(block)) {
     ostringstream err;
     err << "Cannot read CORSIKA long block at position "
@@ -361,7 +359,7 @@ CorsikaShowerFile::ReadLongBlocks()
     FATAL(err);
     return eFail;
   }
-  const typename Corsika::Block<Thinning>::LongitudinalBlock& longBlock = block.AsLongitudinalBlock();
+  const typename Block<Thinning>::LongitudinalBlock& longBlock = block.AsLongitudinalBlock();
 
 
   vector<double> auxDeltaEn;
@@ -376,7 +374,7 @@ CorsikaShowerFile::ReadLongBlocks()
   //cout << int(longBlock.fStepsAndBlocks/100)<< " steps in " << nBlocks << " blocks" << endl;
   int i = 0;
 
-  for (; i != Corsika::Block<Thinning>::kLongEntriesPerBlock; ++i) {
+  for (; i != Block<Thinning>::kLongEntriesPerBlock; ++i) {
     if (i && !longBlock.fEntries[i].fDepth)
       break;
     auxDeltaEn.push_back(0);
@@ -396,8 +394,8 @@ CorsikaShowerFile::ReadLongBlocks()
       FATAL(err);
       return eFail;
     }
-    const typename Corsika::Block<Thinning>::LongitudinalBlock& longBlock = block.AsLongitudinalBlock();
-    for (int j = 0; j != Corsika::Block<Thinning>::kLongEntriesPerBlock; ++j,++i) {
+    const typename Block<Thinning>::LongitudinalBlock& longBlock = block.AsLongitudinalBlock();
+    for (int j = 0; j != Block<Thinning>::kLongEntriesPerBlock; ++j,++i) {
       if (i && !longBlock.fEntries[j].fDepth)
         break;
       auxDeltaEn.push_back(0);

@@ -21,7 +21,6 @@ static const char CVSId_corsika_CorsikaParticle[] =
 namespace corsika {
 
 
-    struct ParticleData;
 
     class CorsikaParticle {
     public:
@@ -65,8 +64,8 @@ namespace corsika {
       };
 
       CorsikaParticle();
-      CorsikaParticle(const Corsika::Block<Corsika::Thinned>::ParticleData* particle);
-      CorsikaParticle(const Corsika::Block<Corsika::NotThinned>::ParticleData* particle);
+      CorsikaParticle(const Block<Thinned>::ParticleData* particle);
+      CorsikaParticle(const Block<NotThinned>::ParticleData* particle);
       ~CorsikaParticle();
 
 

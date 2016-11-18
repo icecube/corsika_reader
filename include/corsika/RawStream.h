@@ -23,10 +23,8 @@
 #include <boost/iostreams/filtering_stream.hpp>
 #include <corsika/RawParticleIterator.h>
 
-namespace corsika {
-
-  namespace Corsika {
-
+namespace corsika
+{
     enum Compression {
       eNone,
       eGZip,
@@ -54,7 +52,7 @@ namespace corsika {
         return str.str();
       }
     };
-    template <class Thinning, int Padding> FileIndex Scan(corsika::Corsika::RawStream<Thinning, Padding>& stream, bool force=false);
+    template <class Thinning, int Padding> FileIndex Scan(RawStream<Thinning, Padding>& stream, bool force=false);
     boost::shared_ptr<std::istream> GetFilter(std::istream& in, Compression c);
 
     struct FormatSpec {
@@ -209,7 +207,7 @@ namespace corsika {
       bool IsValid();
 
       bool IsThinned() const
-      { return Thinning::kBytesPerBlock == Corsika::Thinned::kBytesPerBlock; }
+      { return Thinning::kBytesPerBlock == Thinned::kBytesPerBlock; }
 
       boost::shared_ptr<VRawParticleIterator> GetVParticleIt(PositionType start=0) const
       { return boost::dynamic_pointer_cast<VRawParticleIterator>(GetParticleIt(start)); }
@@ -225,8 +223,7 @@ namespace corsika {
       const DiskBlock& DiskBlockBuffer() const
       { return fDiskBlockBuffer; }
 
-      FileIndex Scan(bool force)
-      { return corsika::Corsika::Scan(*this, force); }
+      FileIndex Scan(bool force) { return corsika::Scan(*this, force); }
 
       void Close();
 
@@ -278,9 +275,6 @@ namespace corsika {
       bool          fRandomAccess;
 
     };
-
-
-  } // Corsika
 } // corsika
 
 

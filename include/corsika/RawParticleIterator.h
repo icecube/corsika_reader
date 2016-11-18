@@ -22,11 +22,8 @@ static const char CVSId__RawParticleIterator[] =
 
 namespace corsika {
 
-  namespace Corsika {
     class VRawStream;
-  }
-
-  class CorsikaParticle;
+    class CorsikaParticle;
 
 
   class VRawParticleIterator {
@@ -56,13 +53,13 @@ namespace corsika {
     //typedef corsika::Corsika::VRawStream::PositionType PositionType;
 
     RawParticleIterator();
-    RawParticleIterator(const Corsika::VRawStream& rawStream, const PositionType startPosition);
+    RawParticleIterator(const VRawStream& rawStream, const PositionType startPosition);
 
     ~RawParticleIterator() { }
 
     virtual boost::optional<CorsikaParticle> GetCorsikaParticle() const
     {
-      const typename corsika::Corsika::Block<Thinning>::ParticleData* d = GetOneParticle();
+      const typename Block<Thinning>::ParticleData* d = GetOneParticle();
       if(d) {
         CorsikaParticle p(d);
         return boost::optional<CorsikaParticle>(p);
@@ -70,9 +67,9 @@ namespace corsika {
       return boost::optional<CorsikaParticle>();
     }
 
-    const typename corsika::Corsika::Block<Thinning>::ParticleData* GetOneParticle();
+    const typename Block<Thinning>::ParticleData* GetOneParticle();
 
-    const typename corsika::Corsika::Block<Thinning>::ParticleData* GetOneParticle() const
+    const typename Block<Thinning>::ParticleData* GetOneParticle() const
     { return const_cast<RawParticleIterator<Thinning>*>(this)->GetOneParticle(); }
 
     void Rewind();
@@ -84,13 +81,13 @@ namespace corsika {
 
   private:
 
-    boost::shared_ptr<corsika::Corsika::VRawStream> fRawStream;
+    boost::shared_ptr<VRawStream> fRawStream;
 
     PositionType fStartPosition;
     PositionType fCurrentBlockIndex;
     int fParticleInBlock;
 
-    corsika::Corsika::Block<Thinning> fCurrentBlock;
+    Block<Thinning> fCurrentBlock;
 
     bool fIteratorValid;
     bool fBlockBufferValid;

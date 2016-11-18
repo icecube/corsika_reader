@@ -21,9 +21,8 @@ static const char CVSId_corsika_Corsika_Block[] =
 #include <sstream>
 
 
-namespace corsika {
-
-  namespace Corsika {
+namespace corsika
+{
 
     // These are here so the code is explicit. These define the file structure.
     static const int kParticlesInBlock  = 39;
@@ -32,14 +31,14 @@ namespace corsika {
     struct Thinned {
       static const int kWordsPerSubBlock = 312;
       static const int kSubBlocksPerBlock = 21;
-      static const int kParticlesInBlock  = corsika::Corsika::kParticlesInBlock;
+      static const int kParticlesInBlock  = corsika::kParticlesInBlock;
       static const int kBytesPerBlock = 26208;
     };
 
     struct NotThinned {
       static const int kWordsPerSubBlock = 273;
       static const int kSubBlocksPerBlock = 21;
-      static const int kParticlesInBlock  = corsika::Corsika::kParticlesInBlock;
+      static const int kParticlesInBlock  = corsika::kParticlesInBlock;
       static const int kBytesPerBlock = 22932;
     };
 
@@ -436,26 +435,26 @@ namespace corsika {
     template <class Thinning=Thinned>
     class Block {
     public:
-      static const int kParticlesInBlock  = ::corsika::Corsika::kParticlesInBlock;
-      static const int kLongEntriesPerBlock = ::corsika::Corsika::kLongEntriesPerBlock;
+      static const int kParticlesInBlock  = corsika::kParticlesInBlock;
+      static const int kLongEntriesPerBlock = corsika::kLongEntriesPerBlock;
 
-      typedef ::corsika::Corsika::BlockID BlockID;
+      typedef corsika::BlockID BlockID;
 
-      typedef ::corsika::Corsika::GenericBlock<Thinning> GenericBlock;
-      typedef ::corsika::Corsika::RunHeader RunHeader;
-      typedef ::corsika::Corsika::RunTrailer RunTrailer;
-      typedef ::corsika::Corsika::EventHeader EventHeader;
-      typedef ::corsika::Corsika::EventTrailer EventTrailer;
-      typedef ::corsika::Corsika::LongitudinalEntry LongitudinalEntry;
-      typedef ::corsika::Corsika::LongitudinalBlock LongitudinalBlock;
+      typedef corsika::GenericBlock<Thinning> GenericBlock;
+      typedef corsika::RunHeader RunHeader;
+      typedef corsika::RunTrailer RunTrailer;
+      typedef corsika::EventHeader EventHeader;
+      typedef corsika::EventTrailer EventTrailer;
+      typedef corsika::LongitudinalEntry LongitudinalEntry;
+      typedef corsika::LongitudinalBlock LongitudinalBlock;
 
-      typedef ::corsika::Corsika::ParticleData<Thinning> ParticleData;
+      typedef corsika::ParticleData<Thinning> ParticleData;
 
       struct ParticleBlock {
         ParticleData fParticle[kParticlesInBlock];
       };
 
-      typedef ::corsika::Corsika::CherenkovData<Thinning> CherenkovData;
+      typedef corsika::CherenkovData<Thinning> CherenkovData;
 
       struct CherenkovBlock {
         CherenkovData fParticle[kParticlesInBlock];
@@ -518,7 +517,6 @@ namespace corsika {
       SubBlock fSubBlock;
 
     }; // Block
-  }
 } // io
 
 
