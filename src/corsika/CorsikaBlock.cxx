@@ -38,7 +38,7 @@ BlockID::SetID(const char* const theID)
     ostringstream msg;
     msg << "Length of string \"" << theID
         << "\" is different from " << kLength;
-    FATAL(msg);
+    FATAL(msg.str());
     throw std::exception();
   }
 
@@ -54,8 +54,15 @@ BlockID::Is(const char* const theID)
 }
 
 
-template class Block<Thinned>;
-template class Block<NotThinned>;
+namespace corsika
+{
+    namespace Corsika
+    {
+        template class Block<Thinned>;
+        template class Block<NotThinned>;
+    }
+}
+
 
 // Configure (x)emacs for this file ...
 // Local Variables:

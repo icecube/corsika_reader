@@ -445,12 +445,19 @@ namespace corsika {
   }
 }
 
+namespace corsika
+{
+    namespace Corsika
+    {
+        template class RawStream<Thinned, 1>;
+        template class RawStream<NotThinned, 1>;
+        
+        template class RawStream<Thinned, 2>;
+        template class RawStream<NotThinned, 2>;
+    }
+}
 
-template class RawStream<Thinned, 1>;
-template class RawStream<NotThinned, 1>;
 
-template class RawStream<Thinned, 2>;
-template class RawStream<NotThinned, 2>;
 
 // Configure (x)emacs for this file ...
 // Local Variables:

@@ -97,7 +97,7 @@ RawParticleIterator<Thinning>::GetOneParticle()
     if (!dynamic_cast<RawStream<Thinning>& >(*fRawStream).GetNextBlock(fCurrentBlock)) {
       ostringstream msg;
       msg << "Error reading block " << fCurrentBlockIndex << " in CORSIKA file.";
-      ERROR(msg);
+      ERROR(msg.str());
       throw CorsikaIOException(msg.str());
     }
     if (fCurrentBlock.IsControl() || fCurrentBlock.IsLongitudinal()) { // end of particle records
@@ -120,9 +120,13 @@ RawParticleIterator<Thinning>::GetOneParticle()
   return currentRecord;
 }
 
+namespace corsika
+{
+    template class RawParticleIterator<corsika::Corsika::Thinned>;
+    template class RawParticleIterator<corsika::Corsika::NotThinned>;
+}
 
-template class RawParticleIterator<corsika::Corsika::Thinned>;
-template class RawParticleIterator<corsika::Corsika::NotThinned>;
+
 
 // Configure (x)emacs for this file ...
 // Local Variables:
