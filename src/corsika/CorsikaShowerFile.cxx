@@ -93,7 +93,7 @@ CorsikaShowerFile::Open(const std::string& theFileName, bool scan)
 
   bfs::path p(theFileName);
   p.replace_extension(".long");
-  fLongFile = p.generic_string();
+  fLongFile = p.string();
 
   p = bfs::path(fLongFile);
   if ( !(bfs::exists(p) && bfs::is_regular_file(p)) ) {
