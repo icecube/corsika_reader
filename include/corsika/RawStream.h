@@ -95,9 +95,6 @@ namespace corsika
       virtual bool IsValid() = 0;
       virtual bool IsThinned() const = 0;
 
-      virtual boost::shared_ptr<VRawStream> Clone() const
-      { return const_cast<VRawStream*>(this)->shared_from_this(); } // I know... const_cast... argh...
-
       virtual boost::shared_ptr<VRawParticleIterator> GetVParticleIt(size_t start=0) const = 0;
 
       virtual FileIndex Scan(bool force) = 0;
@@ -213,10 +210,11 @@ namespace corsika
 
       boost::shared_ptr<RawParticleIterator<Thinning> > GetParticleIt(size_t start=0) const
       {
-        if (start == 0) {// if there is something we KNOW, it is that particles are not in block zero.
-          start = GetNextPosition();
-        }
-        return boost::shared_ptr<RawParticleIterator<Thinning> >(new RawParticleIterator<Thinning>(*this, start));
+          if (start == 0) // if there is something we KNOW, it is that particles are not in block zero.
+              start = GetNextPosition();
+        
+          VRawStream* stream = const_cast<RawStream<Thinning, Padding>*>(this);
+          return boost::shared_ptr<RawParticleIterator<Thinning> >(new RawParticleIterator<Thinning>(stream->shared_from_this(), start));
       }
 
       const DiskBlock& DiskBlockBuffer() const
