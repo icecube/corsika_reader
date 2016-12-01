@@ -264,9 +264,37 @@ FormatSpec::FormatSpec(std::istream& in):
     size_32 = true;
 }
 
+boost::shared_ptr<VRawStream> raw_stream_init_from_stream(std::istream& in, bool randomAccess, Compression c)
+{
+    std::istream* input = &in;
+    randomAccess *= c==eNone;
+    
+    FormatSpec spec(in);
+    boost::shared_ptr<std::istream> f = GetFilter(in, c);
+    if (f)
+    {
+        spec = FormatSpec(*f);
+        input = f.get();
+        c = eNone;
+    }
+    
+    boost::shared_ptr<VRawStream> ret;
+    if (spec.thinned)
+    {
+        if (spec.size_32) ret.reset( new RawStream<Thinned, 1>(*input, randomAccess));
+        else ret.reset( new RawStream<Thinned, 2>(*input, randomAccess));
+    }
+    else
+    {
+        if (spec.size_32) ret.reset( new RawStream<NotThinned, 1>(*input, randomAccess));
+        else ret.reset( new RawStream<NotThinned, 2>(*input, randomAccess));
+    }
+    if (f) ret->Hold(f);
+    return ret;
+}
 
-boost::shared_ptr<VRawStream>
-RawStreamFactory::Create(const std::string& theName)
+
+boost::shared_ptr<VRawStream> RawStreamFactory::Create(const std::string& theName)
 {
   boost::shared_ptr<std::ifstream> file(new std::ifstream(theName.c_str()));
   if (!(*file)) {
@@ -282,7 +310,7 @@ RawStreamFactory::Create(const std::string& theName)
   else if (boost::algorithm::ends_with(theName, ".gz")) {
     c = eGZip;
   }
-  boost::shared_ptr<VRawStream> corsikaStream(RawStreamFactory::Create(*file, true, c));
+  boost::shared_ptr<VRawStream> corsikaStream(raw_stream_init_from_stream(*file, true, c));
   if (!corsikaStream) {
     ostringstream msg;
     msg << "failed to initialize CORSIKA stream from " << theName;
@@ -293,42 +321,7 @@ RawStreamFactory::Create(const std::string& theName)
 }
 
 
-boost::shared_ptr<VRawStream>
-RawStreamFactory::Create(std::istream& in, bool randomAccess, Compression c)
-{
-  std::istream* input = &in;
-  randomAccess *= c==eNone;
 
-  FormatSpec spec(in);
-  boost::shared_ptr<std::istream> f = GetFilter(in, c);
-  if (f) {
-    spec = FormatSpec(*f);
-    input = f.get();
-    c = eNone;
-  }
-  //cout << spec.String() << endl;
-
-  boost::shared_ptr<VRawStream> ret;
-  if (spec.thinned) {
-    if (spec.size_32) {
-      ret.reset( new RawStream<Thinned, 1>(*input, randomAccess));
-    }
-    else {
-      ret.reset( new RawStream<Thinned, 2>(*input, randomAccess));
-    }
-  }
-  else {
-    if (spec.size_32) {
-      ret.reset( new RawStream<NotThinned, 1>(*input, randomAccess));
-    }
-    else {
-      ret.reset( new RawStream<NotThinned, 2>(*input, randomAccess));
-    }
-  }
-  if (f)
-    ret->Hold(f);
-  return ret;
-}
 
 
 namespace corsika {

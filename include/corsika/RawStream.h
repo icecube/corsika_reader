@@ -14,7 +14,6 @@
 #include <boost/shared_ptr.hpp>
 
 #include <corsika/CorsikaBlock.h>
-#include <string>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -114,10 +113,9 @@ namespace corsika
 
     };
 
-    class RawStreamFactory {
-    public:
-      static boost::shared_ptr<VRawStream> Create(const std::string& theName);
-      static boost::shared_ptr<VRawStream> Create(std::istream& in, bool randomAccess, Compression c=eNone);
+    struct RawStreamFactory
+    {
+        static boost::shared_ptr<VRawStream> Create(const std::string& theName);
     };
 
     template<class Stream, class BlockThinning>
