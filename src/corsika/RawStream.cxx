@@ -118,7 +118,7 @@ RawStream<Thinning, Padding>::ReadDiskBlock()
 {
   //cout << "new disk block (currently at " << fDiskStream->tellg() << ": '" << fDiskBlockBuffer.fBlock[0].ID() << "')" << endl;
   const unsigned int size = sizeof(DiskBlock);
-  size_t rc = boost::iostreams::read(*fDiskStream, reinterpret_cast<char*>(&fDiskBlockBuffer), size);
+  long rc = boost::iostreams::read(*fDiskStream, reinterpret_cast<char*>(&fDiskBlockBuffer), size);
   if (rc <= 0) {
     return false;
   }
