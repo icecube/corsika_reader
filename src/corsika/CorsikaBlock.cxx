@@ -6,63 +6,41 @@
    \version $Id$
    \date 19 Nov 2003
 */
-
-static const char CVSId[] =
-"$Id$";
-
 #include <corsika/CorsikaBlock.h>
-
-#include <string>
+#include <corsika/CorsikaIOException.h>
 #include <sstream>
-#include <iostream>
-#include <exception>
-
-#include <cstddef>
-#include <cstdlib>
-#include <string.h>             // the C-language header
-
-using namespace corsika;
-using std::ostringstream;
-using std::endl;
-using std::string;
-using std::exit;
-using std::cerr;
-
-#define ERROR(mess) cerr << mess << endl;
-#define FATAL(mess) cerr << mess << endl;
-
-void
-BlockID::SetID(const char* const theID)
-{
-  if (strlen(theID) != kLength) {
-    ostringstream msg;
-    msg << "Length of string \"" << theID
-        << "\" is different from " << kLength;
-    FATAL(msg.str());
-    throw std::exception();
-  }
-
-  strncpy(fID, theID, kLength);
-}
-
-
-bool
-BlockID::Is(const char* const theID)
-  const
-{
-  return strncmp(fID, theID, kLength) == 0;
-}
-
 
 namespace corsika
 {
+    void BlockID::SetID(const char* const theID)
+    {
+        if (strlen(theID) != kLength) throw CorsikaIOException("Invalid length for BlockID string");
+        strncpy(fID, theID, kLength);
+    }
+    
+    bool BlockID::Is(const char* const theID) const
+    {
+        return strncmp(fID, theID, kLength) == 0;
+    }
+    std::string ParticleData<Thinned>::String() const
+    {
+        std::ostringstream out;
+        out << "Description: "  << fDescription << std::endl
+        << "Momentum:    (" << fPx << ", " << fPy << ", " << fPz << ")" << std::endl
+        << "Position:    (" << fX << ", " << fY << ")" << std::endl
+        << "T or Z:       " << fTorZ << std::endl;
+        return out.str();
+    }
+    std::string ParticleData<NotThinned>::String() const
+    {
+        std::ostringstream out;
+        out << "Description: "  << fDescription << std::endl
+        << "Momentum:    (" << fPx << ", " << fPy << ", " << fPz << ")" << std::endl
+        << "Position:    (" << fX << ", " << fY << ")" << std::endl
+        << "T or Z:       " << fTorZ << std::endl;
+        return out.str();
+    }
+    
     template class Block<Thinned>;
     template class Block<NotThinned>;
 }
-
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode: c++
-// compile-command: "make -C .. -k"
-// End:

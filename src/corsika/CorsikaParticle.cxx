@@ -13,6 +13,7 @@
 #include <corsika/CorsikaUnits.h>
 #include <corsika/particle/NucleusProperties.h>
 #include <iostream>
+#include <sstream>
 #include <corsika/particle/ParticleList.h>
 
 using namespace corsika;

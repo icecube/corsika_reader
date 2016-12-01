@@ -1,3 +1,4 @@
+#include <sstream>
 #include <corsika/particle/ParticleProperties.h>
 #include <corsika/particle/NucleusProperties.h>
 #include <corsika/CorsikaParticle.h>

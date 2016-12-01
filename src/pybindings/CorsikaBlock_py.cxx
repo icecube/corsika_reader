@@ -1,4 +1,5 @@
 #include <boost/python.hpp>
+#include <sstream>
 #include <corsika/CorsikaBlock.h>
 #include <vector>
 

@@ -1,3 +1,4 @@
+#include <sstream>
 #include <corsika/CorsikaParticle.h>
 #include <boost/python.hpp>
 
