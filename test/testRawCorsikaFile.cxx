@@ -57,37 +57,6 @@ namespace testRawCorsikaFileNS {
     }
     ENSURE_EQUAL(i, 4723);
   }
-
-  void test_basic_stream(string filename)
-  {
-    Compression c = eNone;
-    if (boost::algorithm::ends_with(filename, ".bz2")) {
-      c = eBZip2;
-    }
-    else if (boost::algorithm::ends_with(filename, ".gz")) {
-      c = eGZip;
-    }
-
-    ifstream f(filename.c_str());
-    corsika::RawFile rawUnthinnedStream(f, c);
-
-    Block<corsika::NotThinned> block;
-    rawUnthinnedStream.GetNextBlock(block);
-    ENSURE(block.IsRunHeader());
-
-    rawUnthinnedStream.GetNextBlock(block);
-    ENSURE(block.IsEventHeader());
-
-    //ENSURE(rawUnthinnedStream.DiskBlockBuffer().fPaddingBeginning[0] == corsika::NotThinned::kBytesPerBlock);
-    //ENSURE(rawUnthinnedStream.DiskBlockBuffer().fPaddingEnd[0] == corsika::NotThinned::kBytesPerBlock);
-
-    int i = 0;
-    while (rawUnthinnedStream.GetNextBlock(block) && i < 5000) {
-      i += 1;
-    }
-    ENSURE_EQUAL(i, 4723);
-  }
-
 }
 
 using namespace testRawCorsikaFileNS;
@@ -104,8 +73,6 @@ TEST(testRawCorsikaFile)
   for (unsigned int i = 0; i != filenames.size(); ++i) {
     std::cout << "testing raw file " << filenames[i] << std::endl;
     test_basic(dir + filenames[i]);
-    cout << "testing raw file " << filenames[i] << " from stream..." << endl;
-    test_basic_stream(dir + filenames[i]);
   }
   //ENSURE(Verify<CloseTo>(p.GetCoordinates(CTrans), Triple(-1,0,0)));
 }
