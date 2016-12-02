@@ -10,6 +10,7 @@
 #include <corsika/RawCorsikaFile.h>
 #include <corsika/CorsikaIOException.h>
 #include <sstream>
+#include <stdio.h>
 
 namespace corsika
 {
