@@ -227,6 +227,28 @@ namespace corsika
     private:
         RawStream(const RawStream& other);
         RawStream& operator=(const RawStream& other);
+        RawStream& Move(RawStream& other)
+        {
+            Close();
+            VRawStream::Move(other);
+            // take ownership of other's stuff and invalidate other
+            fFilterStream.swap(other.fFilterStream);
+            fFile.swap(other.fFile);
+            fDiskStream         = other.fDiskStream;
+            fCurrentBlockNumber = other.fCurrentBlockNumber;
+            fDiskBlockBuffer    = other.fDiskBlockBuffer;
+            fIndexInDiskBlock   = other.fIndexInDiskBlock;
+            fBlockBufferValid   = false;
+            fRandomAccess       = other.fRandomAccess;
+            // the following should have no effect, only the shared_ptr but just to be consistent
+            other.fDiskStream = NULL;
+            other.fCurrentBlockNumber = 0;
+            other.fIndexInDiskBlock = 0;
+            other.fBlockBufferValid = false;
+            other.fRandomAccess = false;
+            return *this;
+        }
+    
      
       /// Read the block at the current position from disk
       bool ReadDiskBlock();
