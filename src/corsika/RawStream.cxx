@@ -76,19 +76,6 @@ RawStream<Thinning, Padding>::Close()
 }
 
 template <class Thinning, int Padding>
-RawStream<Thinning, Padding>::RawStream(const RawStream& other):
-  fDiskStream(other.fDiskStream),
-  fFile(other.fFile),
-  fCurrentBlockNumber(other.fCurrentBlockNumber),
-  fDiskBlockBuffer(other.fDiskBlockBuffer),
-  fIndexInDiskBlock(other.fIndexInDiskBlock),
-  fBlockBufferValid(other.fBlockBufferValid),
-  fRandomAccess(other.fRandomAccess)
-{
-  //cout << "Copy-constructed. Stream at " << fDiskStream->tellg() << ", " << fCurrentBlockNumber << ", " << fIndexInDiskBlock << endl;
-}
-
-template <class Thinning, int Padding>
 bool
 RawStream<Thinning, Padding>::GetNextBlockImpl(Block<Thinning>& theBlock)
 {
@@ -284,8 +271,7 @@ boost::shared_ptr<VRawStream> raw_stream_init_from_stream(std::istream& in, bool
         if (spec.size_32) ret.reset( new RawStream<Thinned, 1>(*input, randomAccess));
         else ret.reset( new RawStream<Thinned, 2>(*input, randomAccess));
     }
-    else
-    {
+    else {
         if (spec.size_32) ret.reset( new RawStream<NotThinned, 1>(*input, randomAccess));
         else ret.reset( new RawStream<NotThinned, 2>(*input, randomAccess));
     }

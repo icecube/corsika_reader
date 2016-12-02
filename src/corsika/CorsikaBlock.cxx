@@ -9,6 +9,7 @@
 #include <corsika/CorsikaBlock.h>
 #include <corsika/CorsikaIOException.h>
 #include <sstream>
+#include <string.h>
 
 namespace corsika
 {
