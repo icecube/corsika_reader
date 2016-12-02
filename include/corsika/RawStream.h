@@ -73,11 +73,10 @@ namespace corsika
 
     class VRawStream: public boost::enable_shared_from_this<VRawStream> {
     public:
+        
+       VRawStream(std::string filename, boost::shared_ptr<std::ifstream> file): fName(filename), fFile(file){}
 
-      virtual ~VRawStream()
-      {
-        while (fStreams.size()) fStreams.pop_back();
-      }
+      
 
       /// Read one block and advance
       //bool GetNextBlock(Block<Thinning>& theBlock);
@@ -99,14 +98,18 @@ namespace corsika
       virtual FileIndex Scan(bool force) = 0;
       virtual void Close() = 0;
 
-      virtual void SetFile(std::string filename, boost::shared_ptr<std::ifstream> file) = 0;
+        void Hold(boost::shared_ptr<std::istream> ptr)
+        {
+            fStreams.push_back(ptr);
+        }
+        std::string   fName;
+        boost::shared_ptr<std::ifstream> fFile;
 
-      void Hold(boost::shared_ptr<std::istream> ptr)
-      { fStreams.push_back(ptr); }
-
-      std::string   fName;
     protected:
-      virtual void Move(VRawStream& other) { fStreams = other.fStreams; other.fStreams.clear(); }
+      void MoveStreams(VRawStream& other)
+        {
+            fStreams = other.fStreams; other.fStreams.clear();
+        }
     private:
       std::vector<boost::shared_ptr<std::istream> > fStreams;
 
@@ -174,8 +177,8 @@ namespace corsika
       };
 
 
-      RawStream(std::istream& in, bool randomAccess=true);
-      RawStream(std::istream& in, boost::shared_ptr<std::ifstream> file, bool randomAccess=true);
+      //RawStream(std::istream& in, bool randomAccess=true);
+      RawStream(std::istream& in, boost::shared_ptr<std::ifstream> file, std::string filename, bool randomAccess=true);
 
       ~RawStream()
       { Close(); }
@@ -221,18 +224,17 @@ namespace corsika
 
       void Close();
 
-      virtual void SetFile(std::string filename, boost::shared_ptr<std::ifstream> file)
-      { fName = filename; fFile = file; }
+      
 
+        
     private:
         RawStream(const RawStream& other);
         RawStream& operator=(const RawStream& other);
         RawStream& Move(RawStream& other)
         {
             Close();
-            VRawStream::Move(other);
+            MoveStreams(other);
             // take ownership of other's stuff and invalidate other
-            fFilterStream.swap(other.fFilterStream);
             fFile.swap(other.fFile);
             fDiskStream         = other.fDiskStream;
             fCurrentBlockNumber = other.fCurrentBlockNumber;
@@ -254,8 +256,6 @@ namespace corsika
       bool ReadDiskBlock();
 
       std::istream* fDiskStream;
-      boost::shared_ptr<boost::iostreams::filtering_istream> fFilterStream;
-      boost::shared_ptr<std::ifstream> fFile;
       size_t  fCurrentBlockNumber;
 
       DiskBlock fDiskBlockBuffer;

@@ -22,8 +22,9 @@ TEST_GROUP(CorsikaTest);
 namespace testRawStreamNS {
   void test_copy(string filename)
   {
-    ifstream f(filename.c_str());
-    corsika::RawStream<corsika::NotThinned> rawUnthinnedStream(f);
+      boost::shared_ptr<std::ifstream> f(new ifstream(filename.c_str()));
+
+    corsika::RawStream<corsika::NotThinned> rawUnthinnedStream(*f, f, filename);
 
     Block<corsika::NotThinned> block;
     rawUnthinnedStream.GetNextBlock(block);
@@ -34,7 +35,7 @@ namespace testRawStreamNS {
   {
     boost::iostreams::filtering_istream filter;
     boost::shared_ptr<std::ifstream> f(new ifstream(filename.c_str()));
-    boost::shared_ptr<corsika::RawStream<corsika::NotThinned> > rawUnthinnedStream(new corsika::RawStream<corsika::NotThinned>(*f, true));
+    boost::shared_ptr<corsika::RawStream<corsika::NotThinned> > rawUnthinnedStream(new corsika::RawStream<corsika::NotThinned>(*f, f, filename, true));
 
     Block<corsika::NotThinned> block;
     rawUnthinnedStream->GetNextBlock(block);

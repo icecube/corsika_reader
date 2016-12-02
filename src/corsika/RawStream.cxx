@@ -27,11 +27,9 @@ using namespace std;
 using std::string;
 using namespace corsika;
 
-#define ERROR(mess) cerr << mess << endl;
-
-
 template <class Thinning, int Padding>
-RawStream<Thinning, Padding>::RawStream(std::istream& in, bool randomAccess):
+RawStream<Thinning, Padding>::RawStream(std::istream& in, boost::shared_ptr<std::ifstream> file, std::string filename, bool randomAccess):
+VRawStream(filename, file),
   fDiskStream(&in),
   fCurrentBlockNumber(0),
   fDiskBlockBuffer(),
@@ -39,19 +37,7 @@ RawStream<Thinning, Padding>::RawStream(std::istream& in, bool randomAccess):
   fBlockBufferValid(false),
   fRandomAccess(randomAccess)
 {
-}
 
-
-template <class Thinning, int Padding>
-RawStream<Thinning, Padding>::RawStream(std::istream& in, boost::shared_ptr<std::ifstream> file, bool randomAccess):
-  fDiskStream(&in),
-  fFile(file),
-  fCurrentBlockNumber(0),
-  fDiskBlockBuffer(),
-  fIndexInDiskBlock(0),
-  fBlockBufferValid(false),
-  fRandomAccess(randomAccess)
-{
 }
 
 
@@ -251,56 +237,45 @@ FormatSpec::FormatSpec(std::istream& in):
     size_32 = true;
 }
 
-boost::shared_ptr<VRawStream> raw_stream_init_from_stream(std::istream& in, bool randomAccess, Compression c)
+boost::shared_ptr<VRawStream> RawStreamFactory::Create(const std::string& theName)
 {
-    std::istream* input = &in;
-    randomAccess *= c==eNone;
+    boost::shared_ptr<std::ifstream> file(new std::ifstream(theName.c_str()));
+    if (!(*file)) throw CorsikaIOException("Error opening Corsika file '" + theName + "'.\n");
     
-    FormatSpec spec(in);
-    boost::shared_ptr<std::istream> f = GetFilter(in, c);
+    Compression c = eNone;
+    if (boost::algorithm::ends_with(theName, ".bz2")) c = eBZip2;
+    else if (boost::algorithm::ends_with(theName, ".gz")) c = eGZip;
+    
+    
+    std::istream* input = file.get();
+    bool randomAccess = c==eNone;
+    FormatSpec spec(*input);
+    boost::shared_ptr<std::istream> f = GetFilter(*input, c);
     if (f)
     {
         spec = FormatSpec(*f);
         input = f.get();
         c = eNone;
     }
-    
     boost::shared_ptr<VRawStream> ret;
     if (spec.thinned)
     {
-        if (spec.size_32) ret.reset( new RawStream<Thinned, 1>(*input, randomAccess));
-        else ret.reset( new RawStream<Thinned, 2>(*input, randomAccess));
+        if (spec.size_32) ret.reset( new RawStream<Thinned, 1>(*input, file, theName, randomAccess));
+        else ret.reset( new RawStream<Thinned, 2>(*input, file, theName, randomAccess));
     }
     else {
-        if (spec.size_32) ret.reset( new RawStream<NotThinned, 1>(*input, randomAccess));
-        else ret.reset( new RawStream<NotThinned, 2>(*input, randomAccess));
+        if (spec.size_32) ret.reset( new RawStream<NotThinned, 1>(*input, file, theName, randomAccess));
+        else ret.reset( new RawStream<NotThinned, 2>(*input, file, theName, randomAccess));
     }
     if (f) ret->Hold(f);
+    
+    
+    if (!ret) {
+        ostringstream msg;
+        msg << "failed to initialize CORSIKA stream from " << theName;
+        throw CorsikaIOException(msg.str());
+    }
     return ret;
-}
-
-
-boost::shared_ptr<VRawStream> RawStreamFactory::Create(const std::string& theName)
-{
-  boost::shared_ptr<std::ifstream> file(new std::ifstream(theName.c_str()));
-  if (!(*file))
-      throw CorsikaIOException("Error opening Corsika file '" + theName + "'.\n");
-
-  Compression c = eNone;
-  if (boost::algorithm::ends_with(theName, ".bz2")) {
-    c = eBZip2;
-  }
-  else if (boost::algorithm::ends_with(theName, ".gz")) {
-    c = eGZip;
-  }
-  boost::shared_ptr<VRawStream> corsikaStream(raw_stream_init_from_stream(*file, true, c));
-  if (!corsikaStream) {
-    ostringstream msg;
-    msg << "failed to initialize CORSIKA stream from " << theName;
-    throw CorsikaIOException(msg.str());
-  }
-  corsikaStream->SetFile(theName, file);
-  return corsikaStream;
 }
 
 
@@ -371,37 +346,28 @@ namespace corsika {
           foundLongBlock = true;
           index.longBlocks.push_back(stream.GetNextPosition() - 1);
         }
-        if ( blockIndex >400 && !foundRunHeader){
-          string msg = "Error scanning Corsika ground file: "
-            "could not find run header";
-          ERROR(msg);
-          throw corsika::CorsikaIOException(msg);
-        }
-        if ( blockIndex >400 && !foundEventHeader){
-          break;
-        }
+        if (blockIndex >400 && !foundRunHeader)
+            throw corsika::CorsikaIOException("Error scanning Corsika ground file: could not find run header");
+        
+          if (blockIndex >400 && !foundEventHeader) break;
       }
 
       if (!blockUnth.IsRunTrailer()) {
         ostringstream msg;
         msg << "Error scanning Corsika ground file: could not find run end.";
-        if (foundEventHeader) {
+        if (foundEventHeader)
           msg << endl << "Found " << eventsSoFar << " event headers.";
-        }
-        ERROR(msg.str());
+    
         throw corsika::CorsikaIOException(msg.str());
       }
 
-      if (index.eventHeaders.size() != index.eventTrailers.size()) {
-        const string err = "Found different number of event-headers and -trailers";
-        ERROR(err);
-        throw corsika::CorsikaIOException(err);
-      }
+      if (index.eventHeaders.size() != index.eventTrailers.size())
+        throw corsika::CorsikaIOException("Found different number of event-headers and -trailers");
+    
       if (index.longBlocks.size() > 0 && index.eventHeaders.size() != index.longBlocks.size()) {
         ostringstream msg;
         msg << "Found different number of event-headers and longitudinal blocks ("
             << index.eventHeaders.size() << " != " << index.longBlocks.size() << ")";
-        ERROR(msg.str());
         throw corsika::CorsikaIOException(msg.str());
       }
 
