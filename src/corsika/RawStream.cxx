@@ -283,11 +283,8 @@ boost::shared_ptr<VRawStream> raw_stream_init_from_stream(std::istream& in, bool
 boost::shared_ptr<VRawStream> RawStreamFactory::Create(const std::string& theName)
 {
   boost::shared_ptr<std::ifstream> file(new std::ifstream(theName.c_str()));
-  if (!(*file)) {
-    string msg = "Error opening Corsika file '" + theName + "'.\n";
-    ERROR(msg);
-    throw std::exception();
-  }
+  if (!(*file))
+      throw CorsikaIOException("Error opening Corsika file '" + theName + "'.\n");
 
   Compression c = eNone;
   if (boost::algorithm::ends_with(theName, ".bz2")) {
