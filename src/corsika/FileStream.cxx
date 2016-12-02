@@ -1,4 +1,4 @@
-#include <Corsika/FileStream.h>
+#include <corsika/FileStream.h>
 #include <stdio.h>
 #include <string.h>
 #include <zlib.h>
