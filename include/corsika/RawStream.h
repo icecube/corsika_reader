@@ -22,6 +22,7 @@
 #include <corsika/CorsikaIOException.h>
 #include <boost/iostreams/filtering_stream.hpp>
 #include <corsika/RawParticleIterator.h>
+#include <corsika/FileStream.h>
 
 namespace corsika
 {
@@ -55,26 +56,11 @@ namespace corsika
     template <class Thinning, int Padding> FileIndex Scan(RawStream<Thinning, Padding>& stream, bool force=false);
     boost::shared_ptr<std::istream> GetFilter(std::istream& in, Compression c);
 
-    struct FormatSpec {
-      FormatSpec(std::istream& in);
-      bool thinned;
-      bool size_32;
-      bool invalid;
-
-      std::string String()
-      {
-        std::ostringstream str;
-        str << (thinned?"thinned, ":"not thinned, ")
-            << (int(!size_32)+1)*32 << " bit,"
-            << (invalid?"invalid, ":"valid, ");
-        return str.str();
-      }
-    };
+    
 
     class VRawStream: public boost::enable_shared_from_this<VRawStream> {
     public:
         
-       VRawStream(std::string filename, boost::shared_ptr<std::ifstream> file): fName(filename), fFile(file){}
 
       
 
@@ -98,20 +84,9 @@ namespace corsika
       virtual FileIndex Scan(bool force) = 0;
       virtual void Close() = 0;
 
-        void Hold(boost::shared_ptr<std::istream> ptr)
-        {
-            fStreams.push_back(ptr);
-        }
-        std::string   fName;
-        boost::shared_ptr<std::ifstream> fFile;
+       
 
-    protected:
-      void MoveStreams(VRawStream& other)
-        {
-            fStreams = other.fStreams; other.fStreams.clear();
-        }
-    private:
-      std::vector<boost::shared_ptr<std::istream> > fStreams;
+       
 
     };
 
@@ -178,7 +153,12 @@ namespace corsika
 
 
       //RawStream(std::istream& in, bool randomAccess=true);
-      RawStream(std::istream& in, boost::shared_ptr<std::ifstream> file, std::string filename, bool randomAccess=true);
+        RawStream(boost::shared_ptr<FileStream> file, std::string filename): file(file), filename(filename),
+        fCurrentBlockNumber(0),
+        fDiskBlockBuffer(),
+        fIndexInDiskBlock(0),
+        fBlockBufferValid(false)
+        {}
 
       ~RawStream()
       { Close(); }
@@ -194,8 +174,7 @@ namespace corsika
       size_t GetNextPosition() const
       { return fIndexInDiskBlock + kBlocksInDiskBlock * fCurrentBlockNumber; }
 
-      bool IsSeekable() const
-      { return fRandomAccess || fFile; }
+      bool IsSeekable() const { return true; }
 
       /// Seek to a given block, the next block will be \a thePosition
       void SeekTo(size_t thePosition);
@@ -233,36 +212,33 @@ namespace corsika
         RawStream& Move(RawStream& other)
         {
             Close();
-            MoveStreams(other);
             // take ownership of other's stuff and invalidate other
-            fFile.swap(other.fFile);
-            fDiskStream         = other.fDiskStream;
+            file.swap(other.file);
             fCurrentBlockNumber = other.fCurrentBlockNumber;
             fDiskBlockBuffer    = other.fDiskBlockBuffer;
             fIndexInDiskBlock   = other.fIndexInDiskBlock;
             fBlockBufferValid   = false;
-            fRandomAccess       = other.fRandomAccess;
             // the following should have no effect, only the shared_ptr but just to be consistent
-            other.fDiskStream = NULL;
             other.fCurrentBlockNumber = 0;
             other.fIndexInDiskBlock = 0;
             other.fBlockBufferValid = false;
-            other.fRandomAccess = false;
             return *this;
         }
     
      
       /// Read the block at the current position from disk
       bool ReadDiskBlock();
+        
+        boost::shared_ptr<FileStream> file;
+        std::string filename;
 
-      std::istream* fDiskStream;
-      size_t  fCurrentBlockNumber;
+        size_t  fCurrentBlockNumber;
+        size_t  fIndexInDiskBlock;
+        bool          fBlockBufferValid;
 
       DiskBlock fDiskBlockBuffer;
 
-      size_t  fIndexInDiskBlock;
-      bool          fBlockBufferValid;
-      bool          fRandomAccess;
+     
 
     };
 } // corsika

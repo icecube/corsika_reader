@@ -16,10 +16,11 @@ set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
 find_package (PythonLibs)
 find_package (ZLIB REQUIRED)
-find_package (BZip2 REQUIRED)
+find_package (BZIP2 REQUIRED)
 find_package (Boost REQUIRED COMPONENTS iostreams python unit_test_framework filesystem system)
 
 message (STATUS "zlib library: ${ZLIB_LIBRARIES}")
+message (STATUS "BZip2 library: ${BZIP2_LIBRARIES}")
 message (STATUS "Boost lib dir: ${Boost_LIBRARY_DIRS}")
 message (STATUS "Boost libraries: ${Boost_LIBRARIES}")
 message (STATUS "Python library: ${PYTHON_LIBRARIES}")
@@ -51,6 +52,7 @@ set (Corsika_HEADERS
   include/corsika/particle/VParticleProperties.h
   include/corsika/CorsikaLongProfile.h
   include/corsika/CorsikaLongFile.h
+  include/corsika/FileStream.h
   DESTINATION include
 )
 
@@ -69,6 +71,7 @@ set (Corsika_SOURCES
   src/corsika/particle/ParticleList.cxx
   src/corsika/RawParticleIterator.cxx
   src/corsika/CorsikaLongFile.cxx
+  src/corsika/FileStream.cxx
 )
 
 
@@ -96,7 +99,7 @@ add_library (CorsikaReader SHARED
 )
 target_link_libraries(CorsikaReader
   ${Boost_LIBRARIES}
-  ${BZip2_LIBRARIES}
+  ${BZIP2_LIBRARIES}
   ${ZLIB_LIBRARIES}
 )
 

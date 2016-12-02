@@ -27,38 +27,13 @@ using namespace std;
 using std::string;
 using namespace corsika;
 
-template <class Thinning, int Padding>
-RawStream<Thinning, Padding>::RawStream(std::istream& in, boost::shared_ptr<std::ifstream> file, std::string filename, bool randomAccess):
-VRawStream(filename, file),
-  fDiskStream(&in),
-  fCurrentBlockNumber(0),
-  fDiskBlockBuffer(),
-  fIndexInDiskBlock(0),
-  fBlockBufferValid(false),
-  fRandomAccess(randomAccess)
-{
-
-}
 
 
 template <class Thinning, int Padding>
 void
 RawStream<Thinning, Padding>::Close()
 {
-  if (!fDiskStream)
-    return;
-
-  boost::iostreams::filtering_istream* filter = dynamic_cast<boost::iostreams::filtering_istream*>(fDiskStream);
-  std::ifstream* file = dynamic_cast<std::ifstream*>(fDiskStream);
-  if (filter) {
-    //filter->reset(); // for some reason this fails with bzip2 in cobalt.
-    while (!filter->empty()) {
-      filter->pop();
-    }
-  }
-  // else if (file) {
-  //   file->close();
-  // }
+    file.reset();
 }
 
 template <class Thinning, int Padding>
@@ -91,7 +66,7 @@ RawStream<Thinning, Padding>::ReadDiskBlock()
 {
   //cout << "new disk block (currently at " << fDiskStream->tellg() << ": '" << fDiskBlockBuffer.fBlock[0].ID() << "')" << endl;
   const unsigned int size = sizeof(DiskBlock);
-  long rc = boost::iostreams::read(*fDiskStream, reinterpret_cast<char*>(&fDiskBlockBuffer), size);
+    long rc = file->read(size, &fDiskBlockBuffer);
   if (rc <= 0) {
     return false;
   }
@@ -119,7 +94,7 @@ void RawStream<Thinning, Padding>::SeekTo(size_t thePosition)
 
   //cout << "will SeekTo " << newBlockNumber << ", " << newIndexInBlock << ", " << thePosition << endl;
 
-  if (fRandomAccess) {
+  if (file->seekable) {
     if (fCurrentBlockNumber != newBlockNumber) {
       fCurrentBlockNumber = newBlockNumber;
     }
@@ -127,21 +102,22 @@ void RawStream<Thinning, Padding>::SeekTo(size_t thePosition)
     fIndexInDiskBlock   = newIndexInBlock;
 
     const size_t size = sizeof(DiskBlock);
-    if (fDiskStream->tellg() < 0){
-      fDiskStream->clear();
-    }
-    fDiskStream->seekg(fCurrentBlockNumber * size);
-    //cout << "seeked to " << fDiskStream->tellg() << endl;
+   
+      file->seek(fCurrentBlockNumber * size);
   }
-  else if (fFile) {
+  else
+    {
     size_t current = GetNextPosition();
     if (current > thePosition) {
       Close();
-      fFile->close();
-      boost::shared_ptr<RawStream<Thinning, Padding> > other = boost::dynamic_pointer_cast<RawStream<Thinning, Padding> >(RawStreamFactory::Create(fName));
-      if (!other)
-	throw CorsikaIOException("Failed in dumb seek");
-      Move(*other);
+        file.reset(FileStream::open(filename.c_str()));
+        if (!file) throw CorsikaIOException("Failed in dumb seek");
+        fCurrentBlockNumber = 0;
+        fIndexInDiskBlock = 0;
+        fBlockBufferValid = false;
+        
+        
+     
       current = GetNextPosition();
     }
     Block<Thinning> block;
@@ -151,9 +127,6 @@ void RawStream<Thinning, Padding>::SeekTo(size_t thePosition)
     }
     current = GetNextPosition();
   }
-  else {
-    throw CorsikaIOException("This stream is not seekable");
-  }
 }
 
 
@@ -162,7 +135,7 @@ bool
 RawStream<Thinning, Padding>::IsValid()
 {
   //cout << "IsValid" << endl;
-  if (!fRandomAccess) {
+  if (!file->seekable) {
     return true;
   }
 
@@ -212,62 +185,61 @@ RawStream<Thinning, Padding>::IsValid()
 }
 
 
-FormatSpec::FormatSpec(std::istream& in):
-  thinned(false),
-  size_32(false),
-  invalid(false)
-{
-  char buf[10];
-  in.read(buf, 8);
-  const long long len64 = *reinterpret_cast<long long*>(buf);
-  const int len32 = *reinterpret_cast<int*>(buf);
-  for (int i = 1; i <= 8; ++i) {
-    in.putback(buf[8-i]);
-  }
+struct FormatSpec {
+    bool thinned;
+    bool size_32;
+    bool invalid;
+    
+    FormatSpec(FileStream& in): thinned(false), size_32(false), invalid(false)
+    {
+        char buf[8];
+        in.read(8, buf);
+        const long long len64 = *reinterpret_cast<long long*>(buf);
+        const int len32 = *reinterpret_cast<int*>(buf);
+        
+        if ( len32 == corsika::Thinned::kBytesPerBlock || len64 == corsika::Thinned::kBytesPerBlock)
+            thinned = true;
+        else if ( len32 == corsika::NotThinned::kBytesPerBlock || len64 == corsika::NotThinned::kBytesPerBlock)
+            thinned = false;
+        else
+            invalid = true;
+        
+        if (len64 != corsika::Thinned::kBytesPerBlock && len64 != corsika::NotThinned::kBytesPerBlock)
+        size_32 = true;
+    }
 
-  invalid = false;
-  if ( len32 == corsika::Thinned::kBytesPerBlock || len64 == corsika::Thinned::kBytesPerBlock)
-    thinned = true;
-  else if ( len32 == corsika::NotThinned::kBytesPerBlock || len64 == corsika::NotThinned::kBytesPerBlock)
-    thinned = false;
-  else {
-    invalid = true;
-  }
-  if (len64 != corsika::Thinned::kBytesPerBlock && len64 != corsika::NotThinned::kBytesPerBlock)
-    size_32 = true;
-}
+    
+    std::string String()
+    {
+        std::ostringstream str;
+        str << (thinned?"thinned, ":"not thinned, ")
+        << (int(!size_32)+1)*32 << " bit,"
+        << (invalid?"invalid, ":"valid, ");
+        return str.str();
+    }
+};
 
 boost::shared_ptr<VRawStream> RawStreamFactory::Create(const std::string& theName)
 {
-    boost::shared_ptr<std::ifstream> file(new std::ifstream(theName.c_str()));
-    if (!(*file)) throw CorsikaIOException("Error opening Corsika file '" + theName + "'.\n");
     
-    Compression c = eNone;
-    if (boost::algorithm::ends_with(theName, ".bz2")) c = eBZip2;
-    else if (boost::algorithm::ends_with(theName, ".gz")) c = eGZip;
+    FileStream* file0 = FileStream::open(theName.c_str());
+    if (!file0) throw CorsikaIOException("Error opening Corsika file '" + theName + "'.\n");
+    FormatSpec spec(*file0);
+    delete file0;
     
     
-    std::istream* input = file.get();
-    bool randomAccess = c==eNone;
-    FormatSpec spec(*input);
-    boost::shared_ptr<std::istream> f = GetFilter(*input, c);
-    if (f)
-    {
-        spec = FormatSpec(*f);
-        input = f.get();
-        c = eNone;
-    }
+    boost::shared_ptr<FileStream> file(FileStream::open(theName.c_str()));
+    
     boost::shared_ptr<VRawStream> ret;
     if (spec.thinned)
     {
-        if (spec.size_32) ret.reset( new RawStream<Thinned, 1>(*input, file, theName, randomAccess));
-        else ret.reset( new RawStream<Thinned, 2>(*input, file, theName, randomAccess));
+        if (spec.size_32) ret.reset( new RawStream<Thinned, 1>(file, theName));
+        else ret.reset( new RawStream<Thinned, 2>(file, theName));
     }
     else {
-        if (spec.size_32) ret.reset( new RawStream<NotThinned, 1>(*input, file, theName, randomAccess));
-        else ret.reset( new RawStream<NotThinned, 2>(*input, file, theName, randomAccess));
+        if (spec.size_32) ret.reset( new RawStream<NotThinned, 1>(file, theName));
+        else ret.reset( new RawStream<NotThinned, 2>(file, theName));
     }
-    if (f) ret->Hold(f);
     
     
     if (!ret) {
