@@ -7,31 +7,19 @@
    \date 08 Dec 2003
 */
 
-#ifndef _corsika_Corsika_RawStream_h_
-#define _corsika_Corsika_RawStream_h_
+#pragma once
 
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/shared_ptr.hpp>
-
 #include <corsika/CorsikaBlock.h>
-#include <fstream>
-#include <iostream>
-#include <sstream>
 #include <vector>
 #include <map>
 #include <corsika/CorsikaIOException.h>
-#include <boost/iostreams/filtering_stream.hpp>
 #include <corsika/RawParticleIterator.h>
 #include <corsika/FileStream.h>
 
 namespace corsika
 {
-    enum Compression {
-      eNone,
-      eGZip,
-      eBZip2
-    };
-
     template <class Thinning, int Padding> class RawStream;
 
     struct FileIndex {
@@ -40,23 +28,9 @@ namespace corsika
       std::vector<unsigned long int> eventTrailers;
       std::vector<unsigned long int> longBlocks;
       std::map<unsigned int, unsigned int> IDToPosition;
-      std::string String()
-      {
-        std::ostringstream str;
-        str << "file index" << std::endl;
-        for (unsigned int i = 0; i != eventHeaders.size(); ++i) {
-          str << i << ", header " << eventHeaders[i] << ", trailer " << eventTrailers[i];
-          if (longBlocks.size())
-            str << ", long " << longBlocks[i];
-          str<< std::endl;
-        }
-        return str.str();
-      }
+        std::string String();
     };
     template <class Thinning, int Padding> FileIndex Scan(RawStream<Thinning, Padding>& stream, bool force=false);
-    boost::shared_ptr<std::istream> GetFilter(std::istream& in, Compression c);
-
-    
 
     class VRawStream: public boost::enable_shared_from_this<VRawStream> {
     public:
@@ -209,22 +183,6 @@ namespace corsika
     private:
         RawStream(const RawStream& other);
         RawStream& operator=(const RawStream& other);
-        RawStream& Move(RawStream& other)
-        {
-            Close();
-            // take ownership of other's stuff and invalidate other
-            file.swap(other.file);
-            fCurrentBlockNumber = other.fCurrentBlockNumber;
-            fDiskBlockBuffer    = other.fDiskBlockBuffer;
-            fIndexInDiskBlock   = other.fIndexInDiskBlock;
-            fBlockBufferValid   = false;
-            // the following should have no effect, only the shared_ptr but just to be consistent
-            other.fCurrentBlockNumber = 0;
-            other.fIndexInDiskBlock = 0;
-            other.fBlockBufferValid = false;
-            return *this;
-        }
-    
      
       /// Read the block at the current position from disk
       bool ReadDiskBlock();
@@ -241,13 +199,4 @@ namespace corsika
      
 
     };
-} // corsika
-
-
-#endif // _corsika_Corsika_RawStream_h_
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode:c++
-// compile-command: "make -C .. -k"
-// End:
+}

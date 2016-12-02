@@ -9,6 +9,7 @@
 #include <corsika/RawParticleIterator.h>
 #include <corsika/RawCorsikaFile.h>
 #include <corsika/CorsikaIOException.h>
+#include <sstream>
 
 namespace corsika
 {
@@ -76,7 +77,7 @@ namespace corsika
         {
             if (!dynamic_cast<RawStream<Thinning>& >(*fRawStream).GetNextBlock(fCurrentBlock))
             {
-                ostringstream msg;
+                std::ostringstream msg;
                 msg << "Error reading block " << fCurrentBlockIndex << " in CORSIKA file.";
                 throw CorsikaIOException(msg.str());
             }

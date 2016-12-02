@@ -10,8 +10,6 @@ const static char CVSId[] =
 #include <vector>
 #include <iostream>
 #include <boost/algorithm/string.hpp>
-#include <boost/iostreams/filter/gzip.hpp>
-#include <boost/iostreams/filter/bzip2.hpp>
 
 using namespace std;
 using namespace corsika;
@@ -33,7 +31,6 @@ namespace testRawStreamNS {
 
   void test_basic(string filename)
   {
-    boost::iostreams::filtering_istream filter;
       boost::shared_ptr<FileStream> f(FileStream::open(filename.c_str()));
     boost::shared_ptr<corsika::RawStream<corsika::NotThinned> > rawUnthinnedStream(new corsika::RawStream<corsika::NotThinned>(f, filename));
 

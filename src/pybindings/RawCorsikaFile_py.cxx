@@ -1,3 +1,4 @@
+#include <sstream>
 #include <corsika/RawCorsikaFile.h>
 #include <vector>
 #include <boost/python.hpp>

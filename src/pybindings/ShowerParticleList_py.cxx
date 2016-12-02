@@ -1,3 +1,4 @@
+#include <sstream>
 #include <corsika/CorsikaShowerFileParticleIterator.h>
 #include <corsika/ShowerParticleList.h>
 #include <boost/python.hpp>
