@@ -16,7 +16,7 @@ set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
 find_package (PythonLibs)
 find_package (ZLIB REQUIRED)
-find_package (BZIP2 REQUIRED)
+find_package (BZip2 REQUIRED)
 find_package (Boost REQUIRED COMPONENTS iostreams python unit_test_framework filesystem system)
 
 message (STATUS "zlib library: ${ZLIB_LIBRARIES}")
