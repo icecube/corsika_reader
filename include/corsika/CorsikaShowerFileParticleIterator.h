@@ -11,13 +11,10 @@
 #ifndef _io_CorsikaShowerFileParticleIterator_h_
 #define _io_CorsikaShowerFileParticleIterator_h_
 
-static const char CVSId__CorsikaShowerFileParticleIterator[] =
-"$Id$";
 
 #include <corsika/CorsikaBlock.h>
-#include <corsika/RawCorsikaFile.h>
+#include <corsika/RawParticleIterator.h>
 #include <corsika/CorsikaParticle.h>
-#include <boost/shared_ptr.hpp>
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/optional.hpp>
 

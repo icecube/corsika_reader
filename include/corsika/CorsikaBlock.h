@@ -392,7 +392,7 @@ namespace corsika
     };
     
     /**
-     \struct Block CorsikaBlock.h "Corsika/CorsikaBlock.h"
+     \template Block CorsikaBlock.h
      
      \brief This class represents a corsika block. It deals with all
      the different sub-types of blocks. Grouping of Blocks into a

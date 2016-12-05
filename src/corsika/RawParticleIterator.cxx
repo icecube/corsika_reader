@@ -7,10 +7,9 @@
  */
 
 #include <corsika/RawParticleIterator.h>
-#include <corsika/RawCorsikaFile.h>
+#include <corsika/RawStream.h>
 #include <corsika/CorsikaIOException.h>
 #include <sstream>
-#include <stdio.h>
 
 namespace corsika
 {
@@ -69,8 +68,6 @@ namespace corsika
     
     template <class Thinning> const typename Block<Thinning>::ParticleData* RawParticleIterator<Thinning>::GetOneParticle()
     {
-        using std::ostringstream;
-        
         if (!fIteratorValid)
             throw CorsikaIOException("RawParticleIterator not valid.");
         
@@ -99,7 +96,6 @@ namespace corsika
             fParticleInBlock = 0;
             fBlockBufferValid = false;
         }
-        if (!currentRecord) printf("no record\n");
         return currentRecord;
     }
     

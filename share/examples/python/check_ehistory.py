@@ -14,7 +14,7 @@ else:
 
 for f in files:
     print '\n', f
-    raw = corsika.RawFile(f)
+    raw = corsika.RawStream(f)
     block = corsika.Block()
     raw.get_next_block(block)
     raw.get_next_block(block)

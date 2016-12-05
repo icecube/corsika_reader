@@ -37,7 +37,6 @@ set (Corsika_HEADERS
   include/corsika/CorsikaUnits.h
   include/corsika/CorsikaBlock.h
   include/corsika/RawStream.h
-  include/corsika/RawCorsikaFile.h
   include/corsika/RawParticleIterator.h
   include/corsika/CorsikaIOException.h
   include/corsika/CorsikaParticle.h
@@ -64,7 +63,6 @@ set (Corsika_SOURCES
   src/corsika/CorsikaShowerFileParticleIterator.cxx
   src/corsika/GaisserHillasParameter.cxx
   src/corsika/RawStream.cxx
-  src/corsika/RawCorsikaFile.cxx
   src/corsika/Index.cxx
   src/corsika/particle/NucleusProperties.cxx
   src/corsika/particle/ParticleProperties.cxx
@@ -86,11 +84,11 @@ set (Corsika_BoostPython_SOURCES
   src/pybindings/ParticleList_py.cxx
   src/pybindings/ParticleProperties_py.cxx
   src/pybindings/PhysicalConstants_py.cxx
-  src/pybindings/RawCorsikaFile_py.cxx
   src/pybindings/RawParticleIterator_py.cxx
   src/pybindings/ShowerParticleList_py.cxx
   src/pybindings/CorsikaLongProfile_py.cxx
   src/pybindings/CorsikaLongFile_py.cxx
+  src/pybindings/RawStream_py.cxx
   src/pybindings/module.cxx
 )
 
@@ -142,7 +140,6 @@ install(FILES
   include/corsika/CorsikaUnits.h
   include/corsika/CorsikaBlock.h
   include/corsika/RawStream.h
-  include/corsika/RawCorsikaFile.h
   include/corsika/RawParticleIterator.h
   include/corsika/CorsikaIOException.h
   include/corsika/CorsikaParticle.h
@@ -165,7 +162,6 @@ install(FILES
 add_executable(test_corsika
   test/main.cxx
   test/testRawStream.cxx
-  test/testRawCorsikaFile.cxx
   test/testCorsikaFile.cxx
 )
 

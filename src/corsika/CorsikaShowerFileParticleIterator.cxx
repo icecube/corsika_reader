@@ -7,24 +7,16 @@
 */
 
 #include <corsika/CorsikaShowerFileParticleIterator.h>
-
-#include <corsika/RawCorsikaFile.h>
 #include <corsika/CorsikaIOException.h>
 #include <corsika/particle/ParticleList.h>
 #include <corsika/CorsikaParticle.h>
 #include <corsika/CorsikaUnits.h>
 #include <corsika/Constants.h>
-
-#include <iostream>
+#include <corsika/RawStream.h>
 #include <sstream>
 #include <cmath>
-
 using namespace corsika;
 
-#define ERROR(mess) std::cerr << mess << std::endl;
-#define INFO(mess) std::cout << mess << std::endl;
-
-using namespace std;
 
 CorsikaShowerFileParticleIterator::
 CorsikaShowerFileParticleIterator() :
@@ -117,17 +109,3 @@ CorsikaShowerFileParticleIterator::increment()
     return;
   }
 }
-
-
-
-
-
-
-
-
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode: c++
-// compile-command: "make -C .. -k"
-// End:

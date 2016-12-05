@@ -54,7 +54,7 @@ shower = f.current_shower
 particle_it = shower.particles
 
 
-raw = corsika.RawFile(filename)
+raw = corsika.RawStream(filename)
 block = corsika.Block()
 raw.get_next_block(block) # RUNH
 raw.get_next_block(block) # EVTH

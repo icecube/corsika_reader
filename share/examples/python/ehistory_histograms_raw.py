@@ -12,7 +12,7 @@ if len(sys.argv)>1:
 else:
     filename = corsika.example_data_dir + '/DAT000011-proton-EHISTORY-MUPROD'
 
-raw = corsika.RawFile(filename)
+raw = corsika.RawStream(filename)
 block = corsika.Block()
 raw.get_next_block(block) # RUNH
 raw.get_next_block(block) # EVTH

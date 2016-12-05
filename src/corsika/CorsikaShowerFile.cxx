@@ -7,14 +7,10 @@
    \date 29 Jan 2004
 */
 
-static const char CVSId[] =
-  "$Id$";
-
 #include <corsika/Constants.h>
 #include <corsika/CorsikaShowerFile.h>
 #include <corsika/CorsikaShowerFileParticleIterator.h>
 #include <corsika/CorsikaIOException.h>
-#include <corsika/RawCorsikaFile.h>
 #include <corsika/CorsikaBlock.h>
 #include <corsika/CorsikaShower.h>
 #include <corsika/CorsikaLongFile.h>

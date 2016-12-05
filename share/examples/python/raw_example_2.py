@@ -11,7 +11,7 @@ if len(sys.argv)>1:
     filename = sys.argv[1]
 else:
     filename = corsika.example_data_dir + '/DAT000002-32'
-raw = corsika.RawFile(filename)
+raw = corsika.RawStream(filename)
 
 block = corsika.Block()
 

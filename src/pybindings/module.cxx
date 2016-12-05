@@ -35,7 +35,7 @@ namespace bp = boost::python;
 //  that does the boost.python registration for class Nick.
 //
 #define REGISTER_THESE_THINGS                                           \
-  (CorsikaBlock)(RawParticleIterator)(RawCorsikaFile)                   \
+  (CorsikaBlock)(RawParticleIterator)(RawStream)                        \
   (CorsikaUnits)(MathConstants)(PhysicalConstants)                      \
   (CorsikaParticle)(CorsikaShower)(CorsikaShowerFile)                   \
   (CorsikaShowerFileParticleIterator)(ParticleList)(ParticleProperties) \
