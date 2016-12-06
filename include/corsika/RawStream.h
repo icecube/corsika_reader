@@ -20,26 +20,9 @@
 
 namespace corsika
 {
-    template <class Thinning, int Padding> class RawStream;
-
-    struct FileIndex {
-      int runNumber;
-      std::vector<unsigned long int> eventHeaders;
-      std::vector<unsigned long int> eventTrailers;
-      std::vector<unsigned long int> longBlocks;
-      std::map<unsigned int, unsigned int> IDToPosition;
-        std::string String();
-    };
-    template <class Thinning, int Padding> FileIndex Scan(RawStream<Thinning, Padding>& stream, bool force=false);
-
-    class VRawStream: public boost::enable_shared_from_this<VRawStream> {
-    public:
-        
-
-      
-
+    struct VRawStream: public boost::enable_shared_from_this<VRawStream>
+    {
       /// Read one block and advance
-      //bool GetNextBlock(Block<Thinning>& theBlock);
       virtual bool GetNextBlock(Block<Thinned>& theBlock) = 0;
       virtual bool GetNextBlock(Block<NotThinned>& theBlock) = 0;
 
@@ -54,14 +37,7 @@ namespace corsika
       virtual bool IsThinned() const = 0;
 
       virtual boost::shared_ptr<VRawParticleIterator> GetVParticleIt(size_t start=0) const = 0;
-
-      virtual FileIndex Scan(bool force) = 0;
       virtual void Close() = 0;
-
-       
-
-       
-
     };
 
     struct RawStreamFactory
@@ -173,7 +149,6 @@ namespace corsika
       const DiskBlock& DiskBlockBuffer() const
       { return fDiskBlockBuffer; }
 
-      FileIndex Scan(bool force) { return corsika::Scan(*this, force); }
 
       void Close();
 

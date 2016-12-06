@@ -17,6 +17,7 @@ static const char CVSId_corsika_CorsikaShowerFile[] =
 #include <corsika/CorsikaIOException.h>
 #include <corsika/CorsikaShower.h>
 #include <corsika/CorsikaLongFile.h>
+#include <corsika/FileIndex.h>
 
 #include <string>
 #include <map>

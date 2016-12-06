@@ -70,6 +70,7 @@ set (Corsika_SOURCES
   src/corsika/RawParticleIterator.cxx
   src/corsika/CorsikaLongFile.cxx
   src/corsika/FileStream.cxx
+  src/corsika/FileIndex.cxx
 )
 
 

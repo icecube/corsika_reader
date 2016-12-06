@@ -97,7 +97,7 @@ CorsikaShowerFile::Open(const std::string& theFileName, bool scan)
   fRawStream = RawStreamFactory::Create(theFileName);
   fIsThinned = fRawStream->IsThinned();
   if (scan && fRawStream->IsSeekable()) {
-    fIndex = fRawStream->Scan(false);
+      fIndex.Scan(*fRawStream, false);
     fFileScanned = true;
   }
   else if (!fRawStream->IsSeekable()){
@@ -288,7 +288,7 @@ size_t CorsikaShowerFile::GetNEvents()
     throw CorsikaIOException(msg);
   }
   if (!fFileScanned) {
-    fIndex = fRawStream->Scan(false);
+      fIndex.Scan(*fRawStream, false);
     fFileScanned = true;
   }
   return fIndex.IDToPosition.size();
