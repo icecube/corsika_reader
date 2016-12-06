@@ -57,7 +57,7 @@ namespace corsika {
     }
 
     CorsikaShowerFileParticleIterator();
-    CorsikaShowerFileParticleIterator(const VRawStream& rawStream,
+    CorsikaShowerFileParticleIterator(RawStreamPtr rawStream,
 				      EventHeader event_header, // passed by value
                                       unsigned long int start,
                                       const double timeOffset,

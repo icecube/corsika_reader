@@ -1,12 +1,13 @@
 #include <sstream>
 #include <corsika/RawStream.h>
+#include <corsika/RawParticleIterator.h>
 #include <boost/python.hpp>
 
 using namespace boost::python;
 
 struct RawStream
 {
-    boost::shared_ptr<corsika::VRawStream> stream;
+    corsika::RawStreamPtr stream;
     RawStream(const std::string& filename)
     {
         stream = corsika::VRawStream::Create(filename);
@@ -41,11 +42,11 @@ struct RawStream
     }
     boost::shared_ptr<corsika::VRawParticleIterator> particles()
     {
-        return stream->GetVParticleIt();
+        return corsika::VRawParticleIterator::Create(stream);
     }
     boost::shared_ptr<corsika::VRawParticleIterator> particles1(size_t start)
     {
-        return stream->GetVParticleIt(start);
+        return corsika::VRawParticleIterator::Create(stream, start);
     }
 };
 

@@ -12,11 +12,11 @@
 
 #include <corsika/CorsikaBlock.h>
 #include <corsika/CorsikaParticle.h>
+#include <corsika/RawStream.h>
 #include <boost/optional.hpp>
 
 namespace corsika
 {
-    class VRawStream;
     class CorsikaParticle;
     
     struct VRawParticleIterator
@@ -24,6 +24,7 @@ namespace corsika
         virtual boost::optional<CorsikaParticle> GetCorsikaParticle() const = 0;
         virtual void Rewind() = 0;
         virtual bool IsValid() const = 0;
+        static boost::shared_ptr<VRawParticleIterator> Create(RawStreamPtr stream, size_t start=0);
     };
     
     /**

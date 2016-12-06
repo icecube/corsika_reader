@@ -101,4 +101,10 @@ namespace corsika
     
     template class RawParticleIterator<Thinned>;
     template class RawParticleIterator<NotThinned>;
+    
+    boost::shared_ptr<VRawParticleIterator> VRawParticleIterator::Create(RawStreamPtr stream, size_t start)
+    {
+        if (stream->IsThinned()) return boost::shared_ptr<VRawParticleIterator>(new RawParticleIterator<Thinned>(stream, start));
+        return boost::shared_ptr<VRawParticleIterator>(new RawParticleIterator<NotThinned>(stream, start));
+    }
 }

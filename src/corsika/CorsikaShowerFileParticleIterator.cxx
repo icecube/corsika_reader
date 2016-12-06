@@ -27,7 +27,7 @@ CorsikaShowerFileParticleIterator() :
 { }
 
 CorsikaShowerFileParticleIterator::
-CorsikaShowerFileParticleIterator(const VRawStream& rawStream,
+CorsikaShowerFileParticleIterator(RawStreamPtr rawStream,
 				  EventHeader event_header,
                                    unsigned long int start,
                                   const double timeOffset,
@@ -35,7 +35,7 @@ CorsikaShowerFileParticleIterator(const VRawStream& rawStream,
                                   const bool isThinned,
                                   const bool keepMuProd) :
   event_header_(event_header),
-  iterator_(rawStream.GetVParticleIt(start)),
+    iterator_(VRawParticleIterator::Create(rawStream, start)),
   fTimeOffset(timeOffset),
   fObservationLevel(observationLevel),
   fIsThinned(isThinned),

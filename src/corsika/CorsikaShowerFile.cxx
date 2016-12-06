@@ -236,7 +236,7 @@ CorsikaShowerFile::Read()
 
 
   CorsikaShowerFileParticleIterator* particleIterator =
-    new CorsikaShowerFileParticleIterator(*fRawStream,
+    new CorsikaShowerFileParticleIterator(fRawStream,
                                           headerBlock.CopyBlock().AsEventHeader(),
                                           fIndex.eventHeaders[fCurrentPosition] + 1,
                                           timeShift,

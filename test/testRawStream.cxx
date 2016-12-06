@@ -40,7 +40,7 @@ namespace testRawStreamNS
 
     i = 0;
     int all = 0;
-    boost::shared_ptr<VRawParticleIterator> it = stream->GetVParticleIt(2);
+      boost::shared_ptr<VRawParticleIterator> it = VRawParticleIterator::Create(stream, 2);
     boost::optional<CorsikaParticle> p = it->GetCorsikaParticle();
     while (p) {
       ++all;

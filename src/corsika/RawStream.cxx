@@ -52,23 +52,13 @@ namespace corsika
     struct RawStream: public VRawStream
     {
         typedef Thinning ThinningType;
-        
         static const unsigned int kBlocksInDiskBlock = Thinning::kSubBlocksPerBlock;
         
-        /// Padding bytes at the beginning of a raw block
-        static const unsigned int kPaddingBeginning  = Padding;
-        /// Padding bytes at the end of a raw block
-        static const unsigned int kPaddingEnd        = Padding;
-        
-        
-        class DiskBlock {
-        public:
-            /// initial padding - works also for size 0
-            int fPaddingBeginning[kPaddingBeginning];
+        struct DiskBlock
+        {
+            int fPaddingBeginning[Padding];
             Block<Thinning>  fBlock[kBlocksInDiskBlock];
-            /// final padding - works also for size 0
-            int fPaddingEnd[kPaddingEnd];
-            
+            int fPaddingEnd[Padding];
         };
         
         
@@ -149,20 +139,10 @@ namespace corsika
         bool IsValid();
         
         bool IsThinned() const
-        { return Thinning::kBytesPerBlock == Thinned::kBytesPerBlock; }
-        
-        boost::shared_ptr<VRawParticleIterator> GetVParticleIt(size_t start=0) const
-        { return boost::dynamic_pointer_cast<VRawParticleIterator>(GetParticleIt(start)); }
-        
-        boost::shared_ptr<RawParticleIterator<Thinning> > GetParticleIt(size_t start=0) const
         {
-            if (start == 0) // if there is something we KNOW, it is that particles are not in block zero.
-                start = GetNextPosition();
-            
-            VRawStream* stream = const_cast<RawStream<Thinning, Padding>*>(this);
-            return boost::shared_ptr<RawParticleIterator<Thinning> >(new RawParticleIterator<Thinning>(stream->shared_from_this(), start));
+            return Thinning::kBytesPerBlock == Thinned::kBytesPerBlock;
         }
-    
+        
         
         bool ReadDiskBlock()
         {
@@ -247,53 +227,26 @@ namespace corsika
         return !fail;
     }
     
-    
-    struct FormatSpec {
-        bool thinned;
-        bool size_32;
-        bool invalid;
-        
-        FormatSpec(FileStream& in): thinned(false), size_32(false), invalid(false)
-        {
-            char buf[8];
-            in.read(8, buf);
-            const long long len64 = *reinterpret_cast<long long*>(buf);
-            const int len32 = *reinterpret_cast<int*>(buf);
-            
-            if ( len32 == corsika::Thinned::kBytesPerBlock || len64 == corsika::Thinned::kBytesPerBlock)
-            thinned = true;
-            else if ( len32 == corsika::NotThinned::kBytesPerBlock || len64 == corsika::NotThinned::kBytesPerBlock)
-            thinned = false;
-            else
-            invalid = true;
-            
-            if (len64 != corsika::Thinned::kBytesPerBlock && len64 != corsika::NotThinned::kBytesPerBlock)
-            size_32 = true;
-        }
-    };
-    
-    boost::shared_ptr<VRawStream> VRawStream::Create(const std::string& theName)
+    RawStreamPtr VRawStream::Create(const std::string& theName)
     {
         
         FileStream* file0 = FileStream::open(theName.c_str());
         if (!file0) throw CorsikaIOException("Error opening Corsika file '" + theName + "'.\n");
-        FormatSpec spec(*file0);
+        int64_t len64;
+        file0->read(8, &len64);
         delete file0;
-        
-        
+        int32_t len32 = *reinterpret_cast<int32_t*>(&len64);
+
         boost::shared_ptr<FileStream> file(FileStream::open(theName.c_str()));
+        if (len64 == corsika::Thinned::kBytesPerBlock)
+            return RawStreamPtr(new RawStream<Thinned, 2>(file, theName)); // 64bit thinned
+        else if (len64 == corsika::NotThinned::kBytesPerBlock)
+            return RawStreamPtr( new RawStream<NotThinned, 2>(file, theName)); // 64bit not-thinned
+        else if (len32 == corsika::Thinned::kBytesPerBlock)
+            return RawStreamPtr(new RawStream<Thinned, 1>(file, theName)); // 32bit thinned
+        else if (len32 == corsika::NotThinned::kBytesPerBlock)
+            return RawStreamPtr(new RawStream<NotThinned, 1>(file, theName)); // 32bit not-thinned
         
-        boost::shared_ptr<VRawStream> ret;
-        if (spec.thinned)
-        {
-            if (spec.size_32) ret.reset( new RawStream<Thinned, 1>(file, theName));
-            else ret.reset( new RawStream<Thinned, 2>(file, theName));
-        }
-        else {
-            if (spec.size_32) ret.reset( new RawStream<NotThinned, 1>(file, theName));
-            else ret.reset( new RawStream<NotThinned, 2>(file, theName));
-        }
-        
-        return ret;
+        throw CorsikaIOException("Can't determine type of corsika file\n");
     }
 }
