@@ -3,11 +3,12 @@
 #include <string.h>
 #include <zlib.h>
 #include <bzlib.h>
+#include <sys/stat.h>
 
 struct RawFileStream: FileStream
 {
     FILE* file;
-    RawFileStream(FILE* file): FileStream(true), file(file) {}
+    RawFileStream(FILE* file, bool seekable): FileStream(seekable), file(file) {}
     ~RawFileStream()
     {
         fclose(file);
@@ -24,7 +25,7 @@ struct RawFileStream: FileStream
 struct GzFileStream: FileStream
 {
     gzFile file;
-    GzFileStream(gzFile file): FileStream(true), file(file) {}
+    GzFileStream(gzFile file, bool seekable): FileStream(seekable), file(file) {}
     ~GzFileStream()
     {
         gzclose(file);
@@ -66,10 +67,13 @@ static bool ends_with(const char* string, const char* postfix)
 
 FileStream* FileStream::open(const char* filename)
 {
+    struct stat s;
+    if (stat(filename, &s)) return 0; // failed to stat file
+    bool seekable = !S_ISFIFO(s.st_mode) && !S_ISSOCK(s.st_mode);
     if (ends_with(filename, ".gz"))
     {
         if (gzFile f = gzopen(filename, "r"))
-            return new GzFileStream(f);
+            return new GzFileStream(f, seekable);
     }
     else if (ends_with(filename, ".bz2"))
     {
@@ -79,7 +83,7 @@ FileStream* FileStream::open(const char* filename)
     else
     {
         if (FILE* f = fopen(filename, "rb"))
-            return new RawFileStream(f);
+            return new RawFileStream(f, seekable);
     }
     return 0;
 }
