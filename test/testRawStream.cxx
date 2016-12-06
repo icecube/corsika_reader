@@ -17,42 +17,30 @@ using namespace corsika;
 
 TEST_GROUP(CorsikaTest);
 
-namespace testRawStreamNS {
-  void test_copy(string filename)
-  {
-      boost::shared_ptr<FileStream> f(FileStream::open(filename.c_str()));
-
-    corsika::RawStream<corsika::NotThinned> rawUnthinnedStream(f, filename);
-
-    Block<corsika::NotThinned> block;
-    rawUnthinnedStream.GetNextBlock(block);
-    rawUnthinnedStream.GetNextBlock(block);
-  }
-
+namespace testRawStreamNS
+{
+  
   void test_basic(string filename)
   {
-      boost::shared_ptr<FileStream> f(FileStream::open(filename.c_str()));
-    boost::shared_ptr<corsika::RawStream<corsika::NotThinned> > rawUnthinnedStream(new corsika::RawStream<corsika::NotThinned>(f, filename));
+      RawStreamPtr stream = VRawStream::Create(filename);
+      Block<corsika::NotThinned> block;
+      stream->GetNextBlock(block);
+      ENSURE(block.IsRunHeader());
 
-    Block<corsika::NotThinned> block;
-    rawUnthinnedStream->GetNextBlock(block);
-    ENSURE(block.IsRunHeader());
+      stream->GetNextBlock(block);
+      ENSURE(block.IsEventHeader());
+      ENSURE(!stream->IsThinned());
 
-    rawUnthinnedStream->GetNextBlock(block);
-    ENSURE(block.IsEventHeader());
 
-    ENSURE(rawUnthinnedStream->DiskBlockBuffer().fPaddingBeginning[0] == corsika::NotThinned::kBytesPerBlock);
-    ENSURE(rawUnthinnedStream->DiskBlockBuffer().fPaddingEnd[0] == corsika::NotThinned::kBytesPerBlock);
-
-    int i = 0;
-    while (rawUnthinnedStream->GetNextBlock(block) && i < 5000) {
-      i += 1;
-    }
-    ENSURE_EQUAL(i, 4723);
+      int i = 0;
+      while (stream->GetNextBlock(block) && i < 5000) {
+          i += 1;
+      }
+      ENSURE_EQUAL(i, 4723);
 
     i = 0;
     int all = 0;
-    boost::shared_ptr<VRawParticleIterator> it = rawUnthinnedStream->GetVParticleIt(2);
+    boost::shared_ptr<VRawParticleIterator> it = stream->GetVParticleIt(2);
     boost::optional<CorsikaParticle> p = it->GetCorsikaParticle();
     while (p) {
       ++all;
@@ -75,7 +63,6 @@ using namespace testRawStreamNS;
 TEST(testRawStream)
 {
   string dir(CORSIKA_TEST_DIR);
-  test_copy(dir + string("/DAT000002-32"));
   vector<string> filenames;
   filenames.push_back("/DAT000002-32");
 

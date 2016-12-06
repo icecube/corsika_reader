@@ -9,7 +9,7 @@ struct RawStream
     boost::shared_ptr<corsika::VRawStream> stream;
     RawStream(const std::string& filename)
     {
-        stream = corsika::RawStreamFactory::Create(filename);
+        stream = corsika::VRawStream::Create(filename);
     }
     void close()
     {

@@ -73,7 +73,7 @@ namespace corsika
         
         if (!fBlockBufferValid)
         {
-            if (!dynamic_cast<RawStream<Thinning>& >(*fRawStream).GetNextBlock(fCurrentBlock))
+            if (!fRawStream->GetNextBlock(fCurrentBlock))
             {
                 std::ostringstream msg;
                 msg << "Error reading block " << fCurrentBlockIndex << " in CORSIKA file.";

@@ -1,4 +1,6 @@
 #include <corsika/RawStream.h>
+#include <vector>
+#include <map>
 namespace corsika
 {
     struct FileIndex
