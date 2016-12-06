@@ -6,8 +6,6 @@
  \version $Id$
  \date 08 Dec 2003
  */
-
-
 #include <string>
 #include <sstream>
 #include <corsika/RawStream.h>
@@ -60,19 +58,28 @@ namespace corsika
             Block<Thinning>  fBlock[kBlocksInDiskBlock];
             int padding_end[Padding];
             
-            void check_padding()
+            bool padding_ok()
             {
                 for (int i = 0; i < Padding; i++)
                     if (padding_start[i] != padding_end[i])
-                        throw CorsikaIOException("Padding mismatch\n");
+                        return false;
+                return true;
             }
         };
         
-        RawStream(boost::shared_ptr<FileStream> file, std::string filename, int64_t len64): file(file), filename(filename), current_block(0), current_disk_block(0), buffer_valid(false)
+        boost::shared_ptr<FileStream> file;
+        std::string filename;
+        size_t current_block;
+        size_t current_disk_block;
+        bool buffer_valid;
+        bool valid;
+        DiskBlock buffer;
+        
+        RawStream(boost::shared_ptr<FileStream> file, std::string filename, int64_t len64): file(file), filename(filename), current_block(0), current_disk_block(0)
         {
             *reinterpret_cast<int64_t*>(&buffer) = len64; // Copy value over
             buffer_valid = file->read(sizeof(DiskBlock) - 8, (char*)&buffer + 8) > 0;
-            if (buffer_valid) buffer.check_padding();
+            valid = buffer_valid && buffer.fBlock[0].IsRunHeader() && buffer.padding_ok();
         }
         
         /// Read one block and advance
@@ -145,89 +152,25 @@ namespace corsika
                 current = GetNextPosition();
             }
         }
-        
-        bool IsValid();
-        
+        bool IsValid()
+        {
+            return valid;
+        }
         bool IsThinned() const
         {
             return Thinning::kBytesPerBlock == Thinned::kBytesPerBlock;
         }
-        
-        
         bool ReadDiskBlock()
         {
             if (file->read(sizeof(DiskBlock), &buffer) <= 0) return false;
-            buffer.check_padding();
+            if (!buffer.padding_ok()) throw CorsikaIOException("Padding mismatch\n");
             buffer_valid = true;
             return true;
         }
-        
-        boost::shared_ptr<FileStream> file;
-        std::string filename;
-        
-        size_t current_block;
-        size_t current_disk_block;
-        bool buffer_valid;
-        DiskBlock buffer;
     };
-    
-    template <class Thinning, int Padding>
-    bool
-    RawStream<Thinning, Padding>::IsValid()
-    {
-        //cout << "IsValid" << endl;
-        if (!file->seekable) {
-            return true;
-        }
-        
-        const size_t currentBlockNumber = GetNextPosition();
-        const bool blockBufferValid = buffer_valid;
-        
-        bool fail = false;
-        Block<Thinning> block;
-        SeekTo(0);
-        std::ostringstream msg;
-        if (!GetNextBlock(block)) {
-            msg << "Failed getting next block" << std::endl;
-            fail = true;
-        }
-        if (!block.IsRunHeader()) {
-            msg << "First block is not run header" << std::endl;
-            fail = true;
-        }
-        
-        if (buffer.padding_start[0] !=
-            Thinning::kSubBlocksPerBlock*Thinning::kParticlesInBlock*sizeof(typename Block<Thinning>::ParticleData)) {
-            msg << "Unexpected block size. "
-            << buffer.padding_start[0] << " != "
-            << Thinning::kSubBlocksPerBlock*Thinning::kParticlesInBlock*sizeof(typename Block<Thinning>::ParticleData) << std::endl;
-            fail = true;
-        }
-        else {
-            msg << "So far so good. "
-            << buffer.padding_start[0] << " != "
-            << Thinning::kSubBlocksPerBlock*Thinning::kParticlesInBlock*sizeof(typename Block<Thinning>::ParticleData) << std::endl;
-        }
-        if (buffer.padding_start[0] != buffer.padding_end[0]) {
-            msg << "Block begin and end do not match. "
-            << buffer.padding_start[0] << " != " << buffer.padding_end[0] << std::endl;
-            fail = true;
-        }
-        else {
-            msg << "So far so good. "
-            << buffer.padding_start[0] << " != " << buffer.padding_end[0] << std::endl;
-        }
-        
-        // leave things as they were
-        buffer_valid = blockBufferValid;
-        SeekTo(currentBlockNumber);
-        
-        return !fail;
-    }
     
     RawStreamPtr VRawStream::Create(const std::string& theName)
     {
-        
         boost::shared_ptr<FileStream> file(FileStream::open(theName.c_str()));
         if (!file) throw CorsikaIOException("Error opening Corsika file '" + theName + "'.\n");
         
