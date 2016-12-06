@@ -36,6 +36,8 @@ namespace corsika
     fIteratorValid(false),
     fBlockBufferValid(false)
     {
+        // if there is something we KNOW, it is that particles are not in block zero.
+        if (fStartPosition == 0) fStartPosition = rawStream->GetNextPosition();
         Rewind();
     }
     
