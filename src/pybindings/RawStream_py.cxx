@@ -10,7 +10,7 @@ struct RawStream
     corsika::RawStreamPtr stream;
     RawStream(const std::string& filename)
     {
-        stream = corsika::VRawStream::Create(filename);
+        stream = corsika::RawStream::Create(filename);
     }
     void close()
     {

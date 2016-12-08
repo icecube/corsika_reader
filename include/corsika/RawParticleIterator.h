@@ -40,7 +40,7 @@ namespace corsika
     template <class Thinning> struct RawParticleIterator: VRawParticleIterator
     {
         RawParticleIterator();
-        RawParticleIterator(boost::shared_ptr<VRawStream> rawStream, size_t startPosition);
+        RawParticleIterator(RawStreamPtr rawStream, size_t startPosition);
         
         ~RawParticleIterator() { }
         
@@ -68,7 +68,7 @@ namespace corsika
         
     private:
         
-        boost::shared_ptr<VRawStream> fRawStream;
+        RawStreamPtr fRawStream;
         
         size_t fStartPosition;
         size_t fCurrentBlockIndex;

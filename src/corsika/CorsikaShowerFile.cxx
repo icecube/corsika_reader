@@ -94,7 +94,7 @@ CorsikaShowerFile::Open(const std::string& theFileName, bool scan)
     fLongFile = "";
   }
 
-  fRawStream = VRawStream::Create(theFileName);
+  fRawStream = RawStream::Create(theFileName);
   fIsThinned = fRawStream->IsThinned();
   if (scan && fRawStream->IsSeekable()) {
       fIndex.Scan(*fRawStream, false);

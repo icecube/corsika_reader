@@ -1,8 +1,4 @@
-const static char CVSId[] =
-  "$Id$";
-
 #include "corsika_test.h"
-
 #include <corsika/RawStream.h>
 #include <corsika/RawParticleIterator.h>
 #include <string>
@@ -22,7 +18,7 @@ namespace testRawStreamNS
   
   void test_basic(string filename)
   {
-      RawStreamPtr stream = VRawStream::Create(filename);
+      RawStreamPtr stream = RawStream::Create(filename);
       Block<corsika::NotThinned> block;
       stream->GetNextBlock(block);
       ENSURE(block.IsRunHeader());

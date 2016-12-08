@@ -13,59 +13,16 @@
 
 namespace corsika
 {
-    template<class Stream, class BlockThinning>
-    struct NextBlockDispatch {
-        static bool GetNextBlock(Stream& stream, Block<BlockThinning>& theBlock)
-        {
-            return false;
-        }
-    };
-    template<class Stream>
-    struct NextBlockDispatch<Stream, typename Stream::ThinningType> {
-        static bool GetNextBlock(Stream& stream, Block<typename Stream::ThinningType>& theBlock)
-        {
-            return stream.GetNextBlockImpl(theBlock);
-        }
-    };
-    
-    /**
-     \template RawStream
-     
-     \brief Raw disk file.
-     
-     This class provides block-wise read access to a Corsika ground
-     particles file on disk. Simple random access is supported.
-     
-     This class handles the grouping of individual blocks into a disk
-     block with padding. It doesn't provide tools for unpacking the
-     individual particles from a block.
-     
-     \author Lukas Nellen
-     \author Javier Gonzalez
-     \date 08 Dec 2003
-     \ingroup corsika
-     */
-    
-    template <class Thinning, int Padding=1>
-    struct RawStream: public VRawStream
+    template <class Thinning, typename Padding> struct RawStreamT: RawStream
     {
-        typedef Thinning ThinningType;
         static const unsigned int kBlocksInDiskBlock = Thinning::kSubBlocksPerBlock;
         
         struct DiskBlock
         {
-            int padding_start[Padding];
+            Padding padding_start;
             Block<Thinning>  fBlock[kBlocksInDiskBlock];
-            int padding_end[Padding];
-            
-            bool padding_ok()
-            {
-                for (int i = 0; i < Padding; i++)
-                    if (padding_start[i] != padding_end[i])
-                        return false;
-                return true;
-            }
-        };
+            Padding padding_end;
+        } __attribute__((packed));
         
         boost::shared_ptr<FileStream> file;
         std::string filename;
@@ -75,24 +32,18 @@ namespace corsika
         bool valid;
         DiskBlock buffer;
         
-        RawStream(boost::shared_ptr<FileStream> file, std::string filename, int64_t len64): file(file), filename(filename), current_block(0), current_disk_block(0)
+        RawStreamT(boost::shared_ptr<FileStream> file, std::string filename, int64_t len64): file(file), filename(filename), current_block(0), current_disk_block(0)
         {
             *reinterpret_cast<int64_t*>(&buffer) = len64; // Copy value over
             buffer_valid = file->read(sizeof(DiskBlock) - 8, (char*)&buffer + 8) > 0;
-            valid = buffer_valid && buffer.fBlock[0].IsRunHeader() && buffer.padding_ok();
+            valid = buffer_valid && buffer.fBlock[0].IsRunHeader() && (buffer.padding_start == buffer.padding_end);
         }
         
-        /// Read one block and advance
-        bool GetNextBlock(Block<Thinned>& theBlock)
+        template<typename T> bool read_block(T& block)
         {
-            return NextBlockDispatch<RawStream<Thinning, Padding>, Thinned>::GetNextBlock(*this, theBlock);
+            return false;
         }
-        bool GetNextBlock(Block<NotThinned>& theBlock)
-        {
-            return NextBlockDispatch<RawStream<Thinning, Padding>, NotThinned>::GetNextBlock(*this, theBlock);
-        }
-        
-        bool GetNextBlockImpl(Block<Thinning>& theBlock)
+        bool read_block(Block<Thinning>& block)
         {
             if (!buffer_valid)
             {
@@ -100,7 +51,7 @@ namespace corsika
                     return false;
             }
             
-            theBlock = buffer.fBlock[current_disk_block];
+            block = buffer.fBlock[current_disk_block];
             if (++current_disk_block >= kBlocksInDiskBlock)
             {
                 current_block++;
@@ -108,6 +59,14 @@ namespace corsika
                 buffer_valid = false;
             }
             return true;
+        }
+        bool GetNextBlock(Block<Thinned>& theBlock)
+        {
+            return read_block(theBlock);
+        }
+        bool GetNextBlock(Block<NotThinned>& theBlock)
+        {
+            return read_block(theBlock);
         }
         
         /// Number of the block read by the next call to GetNextBlock
@@ -133,23 +92,17 @@ namespace corsika
             }
             else
             {
-                size_t current = GetNextPosition();
-                if (current > thePosition) {
+                if (GetNextPosition() > thePosition)
+                {
                     file.reset(FileStream::open(filename.c_str()));
                     if (!file) throw CorsikaIOException("Failed in dumb seek");
                     current_block = 0;
                     current_disk_block = 0;
                     buffer_valid = false;
-                    
-                    current = GetNextPosition();
                 }
                 Block<Thinning> block;
-                while (thePosition > 0 && thePosition > current)
-                {
+                while (thePosition > 0 && thePosition > GetNextPosition())
                     GetNextBlock(block);
-                    current = GetNextPosition();
-                }
-                current = GetNextPosition();
             }
         }
         bool IsValid()
@@ -163,13 +116,13 @@ namespace corsika
         bool ReadDiskBlock()
         {
             if (file->read(sizeof(DiskBlock), &buffer) <= 0) return false;
-            if (!buffer.padding_ok()) throw CorsikaIOException("Padding mismatch\n");
+            if (buffer.padding_start != buffer.padding_end) throw CorsikaIOException("Padding mismatch\n");
             buffer_valid = true;
             return true;
         }
     };
     
-    RawStreamPtr VRawStream::Create(const std::string& theName)
+    RawStreamPtr RawStream::Create(const std::string& theName)
     {
         boost::shared_ptr<FileStream> file(FileStream::open(theName.c_str()));
         if (!file) throw CorsikaIOException("Error opening Corsika file '" + theName + "'.\n");
@@ -179,13 +132,13 @@ namespace corsika
         int32_t len32 = *reinterpret_cast<int32_t*>(&len64);
 
         if (len64 == corsika::Thinned::kBytesPerBlock)
-            return RawStreamPtr(new RawStream<Thinned, 2>(file, theName, len64)); // 64bit thinned
+            return RawStreamPtr(new RawStreamT<Thinned, int64_t>(file, theName, len64)); // 64bit thinned
         else if (len64 == corsika::NotThinned::kBytesPerBlock)
-            return RawStreamPtr( new RawStream<NotThinned, 2>(file, theName, len64)); // 64bit not-thinned
+            return RawStreamPtr( new RawStreamT<NotThinned, int64_t>(file, theName, len64)); // 64bit not-thinned
         else if (len32 == corsika::Thinned::kBytesPerBlock)
-            return RawStreamPtr(new RawStream<Thinned, 1>(file, theName, len64)); // 32bit thinned
+            return RawStreamPtr(new RawStreamT<Thinned, int32_t>(file, theName, len64)); // 32bit thinned
         else if (len32 == corsika::NotThinned::kBytesPerBlock)
-            return RawStreamPtr(new RawStream<NotThinned, 1>(file, theName, len64)); // 32bit not-thinned
+            return RawStreamPtr(new RawStreamT<NotThinned, int32_t>(file, theName, len64)); // 32bit not-thinned
         
         throw CorsikaIOException("Can't determine type of corsika file\n");
     }

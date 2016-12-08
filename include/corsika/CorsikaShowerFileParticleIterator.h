@@ -20,7 +20,6 @@
 
 namespace corsika {
 
-    class VRawStream;
     class CorsikaParticle;
 
 

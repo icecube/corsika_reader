@@ -1,3 +1,4 @@
+#pragma once
 #include <corsika/RawStream.h>
 #include <vector>
 #include <map>
@@ -12,6 +13,6 @@ namespace corsika
         std::map<unsigned int, unsigned int> IDToPosition;
         std::string String();
         
-        void Scan(VRawStream& stream, bool force);
+        void Scan(RawStream& stream, bool force);
     };
 }

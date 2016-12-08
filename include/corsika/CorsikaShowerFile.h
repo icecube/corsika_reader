@@ -10,9 +10,6 @@
 #ifndef _corsika_CorsikaShowerFile_h_
 #define _corsika_CorsikaShowerFile_h_
 
-static const char CVSId_corsika_CorsikaShowerFile[] =
-"$Id$";
-
 #include <corsika/RawStream.h>
 #include <corsika/CorsikaIOException.h>
 #include <corsika/CorsikaShower.h>
@@ -81,7 +78,7 @@ namespace corsika {
 
     CorsikaShower fCurrentShower;
 
-    boost::shared_ptr<VRawStream> fRawStream;
+    RawStreamPtr fRawStream;
     std::string fLongFile;
     FileIndex fIndex;
     unsigned int fCurrentPosition;

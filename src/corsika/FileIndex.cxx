@@ -18,7 +18,7 @@ std::string FileIndex::String()
 
 
 
-template <class Thinning> void Scan(FileIndex& index, corsika::VRawStream& stream, bool force)
+template <class Thinning> void Scan(FileIndex& index, RawStream& stream, bool force)
 {
     if (!force && !stream.IsSeekable()) return;
     
@@ -84,7 +84,7 @@ template <class Thinning> void Scan(FileIndex& index, corsika::VRawStream& strea
         stream.SeekTo(startingBlockNumber);
 }
 
-void FileIndex::Scan(VRawStream& stream, bool force)
+void FileIndex::Scan(RawStream& stream, bool force)
 {
     if (stream.IsThinned()) ::Scan<Thinned>(*this, stream, force);
     else ::Scan<NotThinned>(*this, stream, force);

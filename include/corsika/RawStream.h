@@ -8,16 +8,32 @@
 */
 
 #pragma once
-
 #include <boost/shared_ptr.hpp>
 #include <corsika/CorsikaBlock.h>
 #include <corsika/CorsikaIOException.h>
 
 namespace corsika
 {
-    typedef boost::shared_ptr<struct VRawStream> RawStreamPtr;
+    typedef boost::shared_ptr<struct RawStream> RawStreamPtr;
     
-    struct VRawStream
+    /**
+     \struct VRawStream
+     
+     \brief Raw disk file.
+     
+     This class provides block-wise read access to a Corsika ground
+     particles file on disk. Simple random access is supported.
+     
+     This class handles the grouping of individual blocks into a disk
+     block with padding. It doesn't provide tools for unpacking the
+     individual particles from a block.
+     
+     \author Lukas Nellen
+     \author Javier Gonzalez
+     \date 08 Dec 2003
+     \ingroup corsika
+     */
+    struct RawStream
     {
         /// Read one block and advance
         virtual bool GetNextBlock(Block<Thinned>& theBlock) = 0;
