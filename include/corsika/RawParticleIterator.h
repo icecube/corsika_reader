@@ -46,7 +46,7 @@ namespace corsika
         
         virtual boost::optional<CorsikaParticle> GetCorsikaParticle() const
         {
-            const typename Block<Thinning>::ParticleData* d = GetOneParticle();
+            const ParticleData<Thinning>* d = GetOneParticle();
             if(d) {
                 CorsikaParticle p(d);
                 return boost::optional<CorsikaParticle>(p);
@@ -54,9 +54,9 @@ namespace corsika
             return boost::optional<CorsikaParticle>();
         }
         
-        const typename Block<Thinning>::ParticleData* GetOneParticle();
+        const ParticleData<Thinning>* GetOneParticle();
         
-        const typename Block<Thinning>::ParticleData* GetOneParticle() const
+        const ParticleData<Thinning>* GetOneParticle() const
         { return const_cast<RawParticleIterator<Thinning>*>(this)->GetOneParticle(); }
         
         void Rewind();

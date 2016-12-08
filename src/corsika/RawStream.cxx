@@ -15,12 +15,10 @@ namespace corsika
 {
     template <class Thinning, typename Padding> struct RawStreamT: RawStream
     {
-        static const unsigned int kBlocksInDiskBlock = Thinning::kSubBlocksPerBlock;
-        
         struct DiskBlock
         {
             Padding padding_start;
-            Block<Thinning>  fBlock[kBlocksInDiskBlock];
+            Block<Thinning>  fBlock[kSubBlocksPerBlock];
             Padding padding_end;
         } __attribute__((packed));
         
@@ -52,7 +50,7 @@ namespace corsika
             }
             
             block = buffer.fBlock[current_disk_block];
-            if (++current_disk_block >= kBlocksInDiskBlock)
+            if (++current_disk_block >= kSubBlocksPerBlock)
             {
                 current_block++;
                 current_disk_block = 0;
@@ -72,7 +70,7 @@ namespace corsika
         /// Number of the block read by the next call to GetNextBlock
         size_t GetNextPosition() const
         {
-            return current_disk_block + kBlocksInDiskBlock * current_block;
+            return current_disk_block + kSubBlocksPerBlock * current_block;
         }
         
         bool IsSeekable() const { return true; }
@@ -80,8 +78,8 @@ namespace corsika
         /// Seek to a given block, the next block will be \a thePosition
         void SeekTo(size_t thePosition)
         {
-            size_t newBlockNumber = thePosition / kBlocksInDiskBlock;
-            size_t newIndexInBlock = thePosition % kBlocksInDiskBlock;
+            size_t newBlockNumber = thePosition / kSubBlocksPerBlock;
+            size_t newIndexInBlock = thePosition % kSubBlocksPerBlock;
             //if (newBlockNumber == fCurrentBlockNumber && newIndexInBlock == fIndexInDiskBlock) return
             if (file->seekable)
             {
@@ -111,7 +109,7 @@ namespace corsika
         }
         bool IsThinned() const
         {
-            return Thinning::kBytesPerBlock == Thinned::kBytesPerBlock;
+            return Thinning::kWordsPerSubBlock == Thinned::kWordsPerSubBlock;
         }
         bool ReadDiskBlock()
         {
@@ -130,14 +128,17 @@ namespace corsika
         int64_t len64;
         file->read(8, &len64);
         int32_t len32 = *reinterpret_cast<int32_t*>(&len64);
+        
+        const int thinned_size = sizeof(GenericBlock<Thinned>) * kSubBlocksPerBlock;
+        const int not_thinned_size = sizeof(GenericBlock<NotThinned>) * kSubBlocksPerBlock;
 
-        if (len64 == corsika::Thinned::kBytesPerBlock)
+        if (len64 == thinned_size)
             return RawStreamPtr(new RawStreamT<Thinned, int64_t>(file, theName, len64)); // 64bit thinned
-        else if (len64 == corsika::NotThinned::kBytesPerBlock)
+        else if (len64 == not_thinned_size)
             return RawStreamPtr( new RawStreamT<NotThinned, int64_t>(file, theName, len64)); // 64bit not-thinned
-        else if (len32 == corsika::Thinned::kBytesPerBlock)
+        else if (len32 == thinned_size)
             return RawStreamPtr(new RawStreamT<Thinned, int32_t>(file, theName, len64)); // 32bit thinned
-        else if (len32 == corsika::NotThinned::kBytesPerBlock)
+        else if (len32 == not_thinned_size)
             return RawStreamPtr(new RawStreamT<NotThinned, int32_t>(file, theName, len64)); // 32bit not-thinned
         
         throw CorsikaIOException("Can't determine type of corsika file\n");

@@ -19,21 +19,16 @@ namespace corsika
     // These are here so the code is explicit. These define the file structure.
     static const int kParticlesInBlock  = 39;
     static const int kLongEntriesPerBlock = 26;
+    static const int kSubBlocksPerBlock = 21;
     
     struct Thinned
     {
         static const int kWordsPerSubBlock = 312;
-        static const int kSubBlocksPerBlock = 21;
-        static const int kParticlesInBlock  = corsika::kParticlesInBlock;
-        static const int kBytesPerBlock = 26208;
     };
     
     struct NotThinned
     {
         static const int kWordsPerSubBlock = 273;
-        static const int kSubBlocksPerBlock = 21;
-        static const int kParticlesInBlock  = corsika::kParticlesInBlock;
-        static const int kBytesPerBlock = 22932;
     };
     
     
@@ -43,18 +38,8 @@ namespace corsika
      */
     struct BlockID
     {
-        /// Length of sub-block identifier
-        static const size_t kLength = 4;
-        
-        /// set from c-string (for testing)
-        void SetID(const char* const theID);
-        
-        /// Compare ID's
-        bool Is(const char* const theID) const;
-        
-        //private:
-        char fID[kLength];      // hold strings like RUNH etc to
-        // identify the block type
+        char fID[4];
+        bool operator==(const char* str) const;
     };
     
     /*!
@@ -63,8 +48,7 @@ namespace corsika
      */
     template <class Thinning> struct GenericBlock
     {
-        static const int kWordsPerSubBlock = Thinning::kWordsPerSubBlock;
-        float fPad[kWordsPerSubBlock];
+        float fPad[Thinning::kWordsPerSubBlock];
     };
     
     /*!
@@ -150,11 +134,6 @@ namespace corsika
         float fT;                       // ns
         float fProductionHeight;        // cm
     }; // CherenkovData
-    
-    /*!
-     \struct CherenkovBlock
-     \brief block of Cherenkov data
-     */
     
     /*!
      \struct RunHeader
@@ -391,113 +370,32 @@ namespace corsika
         LongitudinalEntry fEntries[kLongEntriesPerBlock];
     };
     
-    /**
-     \template Block CorsikaBlock.h
-     
-     \brief This class represents a corsika block. It deals with all
-     the different sub-types of blocks. Grouping of Blocks into a
-     block on disk is done by the corsika::Corsika::RawFile class.
-     
-     \note This type deals with the machine-dependent representation
-     on-disk. This class has to be reviewed when porting to different
-     architectures or compilers.
-     
-     \todo Implement support to test padding requirements when
-     configuring the software. Alternatively, think of a way to
-     determine the size of a corsika block with padding at run-time
-     and use C++'s placement new to deal with padding offsets.
-     
-     \todo Deal with byte-ordering issues to makes showers
-     transferable between MSB and LSB architectures.
-     
-     \author Lukas Nellen
-     \date 19 Nov 2003
-     \ingroup corsika
-     */
-    template <class Thinning=Thinned> struct Block
+    template <typename Thinning> union Block
     {
-        static const int kParticlesInBlock  = corsika::kParticlesInBlock;
-        static const int kLongEntriesPerBlock = corsika::kLongEntriesPerBlock;
-        
-        typedef corsika::BlockID BlockID;
-        
-        typedef corsika::GenericBlock<Thinning> GenericBlock;
-        typedef corsika::RunHeader RunHeader;
-        typedef corsika::RunTrailer RunTrailer;
-        typedef corsika::EventHeader EventHeader;
-        typedef corsika::EventTrailer EventTrailer;
-        typedef corsika::LongitudinalEntry LongitudinalEntry;
-        typedef corsika::LongitudinalBlock LongitudinalBlock;
-        
-        typedef corsika::ParticleData<Thinning> ParticleData;
-        
         struct ParticleBlock
         {
-            ParticleData fParticle[kParticlesInBlock];
+            ParticleData<Thinning> fParticle[kParticlesInBlock];
         };
-        
-        typedef corsika::CherenkovData<Thinning> CherenkovData;
-        
         struct CherenkovBlock
         {
-            CherenkovData fParticle[kParticlesInBlock];
+            CherenkovData<Thinning> fParticle[kParticlesInBlock];
         };
+        bool IsRunHeader() const { return AsRunHeader.fID == "RUNH"; }
+        bool IsRunTrailer() const { return AsRunTrailer.fID == "RUNE"; }
+        bool IsEventHeader() const { return AsEventHeader.fID == "EVTH"; }
+        bool IsEventTrailer() const { return AsEventTrailer.fID == "EVTE"; }
+        bool IsLongitudinal() const { return AsEventTrailer.fID == "LONG"; }
+        bool IsControl() const { return IsRunHeader() || IsRunTrailer() || IsEventHeader() || IsEventTrailer(); }
+        float* Data() { return AsGenericBlock.fPad; }
+        std::string ID(){ return std::string(AsRunHeader.fID.fID); }
         
-        /*!
-         \union SubBlock
-         \brief union of blocks
-         */
-        union SubBlock
-        {
-            GenericBlock fGenericBlock;
-            RunHeader fRunHeader;
-            RunTrailer fRunTrailer;
-            EventHeader fEventHeader;
-            EventTrailer fEventTrailer;
-            ParticleBlock fParticleBlock;
-            CherenkovBlock fCherenkovBlock;
-            LongitudinalBlock fLongitudinalBlock;
-        }; // SubBlock
-        
-        bool IsRunHeader() const { return fSubBlock.fRunHeader.fID.Is("RUNH"); }
-        bool IsRunTrailer() const { return fSubBlock.fRunTrailer.fID.Is("RUNE"); }
-        bool IsEventHeader() const { return fSubBlock.fEventHeader.fID.Is("EVTH"); }
-        bool IsEventTrailer() const { return fSubBlock.fEventTrailer.fID.Is("EVTE"); }
-        bool IsLongitudinal() const { return fSubBlock.fEventTrailer.fID.Is("LONG"); }
-        bool IsControl() const
-        { return IsRunHeader() || IsRunTrailer() || IsEventHeader() || IsEventTrailer(); }
-        
-        const RunHeader& AsRunHeader() const
-        { return fSubBlock.fRunHeader; }
-        const RunTrailer& AsRunTrailer() const
-        { return fSubBlock.fRunTrailer; }
-        const EventHeader& AsEventHeader() const
-        { return fSubBlock.fEventHeader; }
-        const EventTrailer& AsEventTrailer() const
-        { return fSubBlock.fEventTrailer; }
-        const ParticleBlock& AsParticleBlock() const
-        { return fSubBlock.fParticleBlock; }
-        const CherenkovBlock& AsCherenkovBlock() const
-        { return fSubBlock.fCherenkovBlock; }
-        const LongitudinalBlock& AsLongitudinalBlock() const
-        { return fSubBlock.fLongitudinalBlock; }
-        
-        std::string ID() const
-        { return std::string(fSubBlock.fRunHeader.fID.fID); }
-        
-        float* Data()
-        { return &fSubBlock.fGenericBlock.fPad[0]; }
-        
-        Block<Thinning> CopyBlock() const
-        {
-            Block<Thinning> out;
-            for (int i = 0; i != GenericBlock::kWordsPerSubBlock; ++i) {
-                out.fSubBlock.fGenericBlock.fPad[i] = fSubBlock.fGenericBlock.fPad[i];
-            }
-            return out;
-        }
-    private:
-        SubBlock fSubBlock;
-        
-    }; // Block
+        GenericBlock<Thinning> AsGenericBlock;
+        RunHeader AsRunHeader;
+        RunTrailer AsRunTrailer;
+        EventHeader AsEventHeader;
+        EventTrailer AsEventTrailer;
+        ParticleBlock AsParticleBlock;
+        CherenkovBlock AsCherenkovBlock;
+        LongitudinalBlock AsLongitudinalBlock;
+    };
 }

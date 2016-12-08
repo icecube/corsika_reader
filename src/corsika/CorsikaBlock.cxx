@@ -7,21 +7,13 @@
    \date 19 Nov 2003
 */
 #include <corsika/CorsikaBlock.h>
-#include <corsika/CorsikaIOException.h>
 #include <sstream>
-#include <string.h>
 
 namespace corsika
 {
-    void BlockID::SetID(const char* const theID)
+    bool BlockID::operator==(const char* str) const
     {
-        if (strlen(theID) != kLength) throw CorsikaIOException("Invalid length for BlockID string");
-        strncpy(fID, theID, kLength);
-    }
-    
-    bool BlockID::Is(const char* const theID) const
-    {
-        return strncmp(fID, theID, kLength) == 0;
+        return strncmp(fID, str, 4) == 0;
     }
     std::string ParticleData<Thinned>::String() const
     {
@@ -41,7 +33,4 @@ namespace corsika
         << "T or Z:       " << fTorZ << std::endl;
         return out.str();
     }
-    
-    template class Block<Thinned>;
-    template class Block<NotThinned>;
 }

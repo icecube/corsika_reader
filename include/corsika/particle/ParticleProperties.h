@@ -30,9 +30,8 @@ namespace corsika {
   class ParticleProperties : public VParticleProperties {
 
   public:
-    ParticleProperties(const int theType,
-                       const std::string& theName,
-                       const double theMass);
+      ParticleProperties(const int theType, const std::string& theName, const double theMass):
+      fType(theType), fName(theName), fMass(theMass) {}
 
     /// Get particle type (using PDG particle codes)
     virtual int GetType() const { return fType; }

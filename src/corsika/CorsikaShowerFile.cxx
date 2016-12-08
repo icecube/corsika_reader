@@ -160,7 +160,7 @@ CorsikaShowerFile::Read()
     FATAL(err);
     return eFail;
   }
-  const EventHeader& header = headerBlock.AsEventHeader();
+  const EventHeader& header = headerBlock.AsEventHeader;
 
   fRawStream->SeekTo(fIndex.eventTrailers[fCurrentPosition]);
 
@@ -180,7 +180,7 @@ CorsikaShowerFile::Read()
     return eFail;
   }
 
-  const EventTrailer& trailer = trailerBlock.AsEventTrailer();
+  const EventTrailer& trailer = trailerBlock.AsEventTrailer;
 
   if (fObservationLevel > header.fObservationLevels) {
     ostringstream info;
@@ -237,7 +237,7 @@ CorsikaShowerFile::Read()
 
   CorsikaShowerFileParticleIterator* particleIterator =
     new CorsikaShowerFileParticleIterator(fRawStream,
-                                          headerBlock.CopyBlock().AsEventHeader(),
+                                          headerBlock.AsEventHeader,
                                           fIndex.eventHeaders[fCurrentPosition] + 1,
                                           timeShift,
                                           fObservationLevel,
@@ -355,7 +355,7 @@ CorsikaShowerFile::ReadLongBlocks()
     FATAL(err);
     return eFail;
   }
-  const typename Block<Thinning>::LongitudinalBlock& longBlock = block.AsLongitudinalBlock();
+  const LongitudinalBlock& longBlock = block.AsLongitudinalBlock;
 
 
   vector<double> auxDeltaEn;
@@ -370,7 +370,7 @@ CorsikaShowerFile::ReadLongBlocks()
   //cout << int(longBlock.fStepsAndBlocks/100)<< " steps in " << nBlocks << " blocks" << endl;
   int i = 0;
 
-  for (; i != Block<Thinning>::kLongEntriesPerBlock; ++i) {
+  for (; i != kLongEntriesPerBlock; ++i) {
     if (i && !longBlock.fEntries[i].fDepth)
       break;
     auxDeltaEn.push_back(0);
@@ -390,8 +390,8 @@ CorsikaShowerFile::ReadLongBlocks()
       FATAL(err);
       return eFail;
     }
-    const typename Block<Thinning>::LongitudinalBlock& longBlock = block.AsLongitudinalBlock();
-    for (int j = 0; j != Block<Thinning>::kLongEntriesPerBlock; ++j,++i) {
+    const LongitudinalBlock& longBlock = block.AsLongitudinalBlock;
+    for (int j = 0; j != kLongEntriesPerBlock; ++j,++i) {
       if (i && !longBlock.fEntries[j].fDepth)
         break;
       auxDeltaEn.push_back(0);
@@ -418,12 +418,3 @@ CorsikaShowerFile::ReadLongBlocks()
 
   return eSuccess;
 }
-
-
-
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode: c++
-// compile-command: "make -C .. -k"
-// End:

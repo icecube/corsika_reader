@@ -42,14 +42,14 @@ template <class Thinning> void Scan(FileIndex& index, RawStream& stream, bool fo
             foundLongBlock = false;
             size_t rawPosition = stream.GetNextPosition();
             index.eventHeaders.push_back(rawPosition - 1);
-            index.IDToPosition[int(blockUnth.AsEventHeader().fEventNumber)] = eventsSoFar;
+            index.IDToPosition[int(blockUnth.AsEventHeader.fEventNumber)] = eventsSoFar;
             ++eventsSoFar;
         }
         else if (blockUnth.IsEventTrailer())
             index.eventTrailers.push_back(stream.GetNextPosition() - 1);
         else if (blockUnth.IsRunHeader()){
             foundRunHeader = true;
-            index.runNumber = int(blockUnth.AsRunHeader().fRunNumber);
+            index.runNumber = int(blockUnth.AsRunHeader.fRunNumber);
         }
         else if (!foundLongBlock && blockUnth.IsLongitudinal()) {
             foundLongBlock = true;

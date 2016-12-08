@@ -68,7 +68,7 @@ namespace corsika
     }
     
     
-    template <class Thinning> const typename Block<Thinning>::ParticleData* RawParticleIterator<Thinning>::GetOneParticle()
+    template <class Thinning> const ParticleData<Thinning>* RawParticleIterator<Thinning>::GetOneParticle()
     {
         if (!fIteratorValid)
             throw CorsikaIOException("RawParticleIterator not valid.");
@@ -88,11 +88,11 @@ namespace corsika
             fBlockBufferValid = true;
         }
         
-        const typename Block<Thinning>::ParticleData * currentRecord =
-        fCurrentBlock.AsParticleBlock().fParticle + fParticleInBlock;
+        const ParticleData<Thinning>* currentRecord =
+        fCurrentBlock.AsParticleBlock.fParticle + fParticleInBlock;
         ++fParticleInBlock;
         
-        if (fParticleInBlock >= Block<Thinning>::kParticlesInBlock)
+        if (fParticleInBlock >= kParticlesInBlock)
         {
             ++fCurrentBlockIndex;
             fParticleInBlock = 0;

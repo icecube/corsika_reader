@@ -65,7 +65,6 @@ set (Corsika_SOURCES
   src/corsika/RawStream.cxx
   src/corsika/Index.cxx
   src/corsika/particle/NucleusProperties.cxx
-  src/corsika/particle/ParticleProperties.cxx
   src/corsika/particle/ParticleList.cxx
   src/corsika/RawParticleIterator.cxx
   src/corsika/CorsikaLongFile.cxx

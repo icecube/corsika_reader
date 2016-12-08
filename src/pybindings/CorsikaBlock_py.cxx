@@ -74,17 +74,16 @@ struct register_block {
       // .def("AsCherenkovBlock", &Block::AsCherenkovBlock)
       .def("ID", &Block::ID)
       ;
-    typedef typename Block::ParticleData ParticleData;
-    class_<ParticleData >("ParticleData")
-      .def("__str__",&ParticleData::String)
-      .def_readonly("description", &ParticleData::fDescription)
-      .def_readonly("px", &ParticleData::fPx)
-      .def_readonly("py", &ParticleData::fPy)
-      .def_readonly("pz", &ParticleData::fPz)
-      .def_readonly("x", &ParticleData::fX)
-      .def_readonly("y", &ParticleData::fY)
-      .def_readonly("t_or_z", &ParticleData::fTorZ)
-      .def_readonly("weight", &ParticleData::fWeight)
+    class_<ParticleData<Thinning> >("ParticleData")
+      .def("__str__",&ParticleData<Thinning>::String)
+      .def_readonly("description", &ParticleData<Thinning>::fDescription)
+      .def_readonly("px", &ParticleData<Thinning>::fPx)
+      .def_readonly("py", &ParticleData<Thinning>::fPy)
+      .def_readonly("pz", &ParticleData<Thinning>::fPz)
+      .def_readonly("x", &ParticleData<Thinning>::fX)
+      .def_readonly("y", &ParticleData<Thinning>::fY)
+      .def_readonly("t_or_z", &ParticleData<Thinning>::fTorZ)
+      .def_readonly("weight", &ParticleData<Thinning>::fWeight)
       ;
   }
 };
@@ -114,19 +113,18 @@ struct register_block<corsika::NotThinned> {
       // .def("AsCherenkovBlock", &Block::AsCherenkovBlock)
       .add_property("ID", &Block::ID)
       ;
-    typedef Block::ParticleData ParticleData;
-    class_<ParticleData >("ParticleData")
-      .def("__str__",&ParticleData::String)
-      .add_property("is_particle", &ParticleData::IsParticle)
-      .add_property("is_nucleus", &ParticleData::IsNucleus)
-      .add_property("is_cherenkov", &ParticleData::IsCherenkov)
-      .def_readonly("description", &ParticleData::fDescription)
-      .def_readonly("px", &ParticleData::fPx)
-      .def_readonly("py", &ParticleData::fPy)
-      .def_readonly("pz", &ParticleData::fPz)
-      .def_readonly("x", &ParticleData::fX)
-      .def_readonly("y", &ParticleData::fY)
-      .def_readonly("t_or_z", &ParticleData::fTorZ)
+    class_<ParticleData<NotThinned> >("ParticleData")
+      .def("__str__",&ParticleData<NotThinned>::String)
+      .add_property("is_particle", &ParticleData<NotThinned>::IsParticle)
+      .add_property("is_nucleus", &ParticleData<NotThinned>::IsNucleus)
+      .add_property("is_cherenkov", &ParticleData<NotThinned>::IsCherenkov)
+      .def_readonly("description", &ParticleData<NotThinned>::fDescription)
+      .def_readonly("px", &ParticleData<NotThinned>::fPx)
+      .def_readonly("py", &ParticleData<NotThinned>::fPy)
+      .def_readonly("pz", &ParticleData<NotThinned>::fPz)
+      .def_readonly("x", &ParticleData<NotThinned>::fX)
+      .def_readonly("y", &ParticleData<NotThinned>::fY)
+      .def_readonly("t_or_z", &ParticleData<NotThinned>::fTorZ)
       ;
   }
 };
