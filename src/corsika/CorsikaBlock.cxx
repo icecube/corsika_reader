@@ -8,6 +8,7 @@
 */
 #include <corsika/CorsikaBlock.h>
 #include <sstream>
+#include <string.h>
 
 namespace corsika
 {
