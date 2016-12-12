@@ -29,6 +29,8 @@ add_definitions(
   -DCORSIKA_TEST_DIR="${CMAKE_SOURCE_DIR}/share/data"
   -DCORSIKA_EXAMPLE_DATA_DIR="${CMAKE_INSTALL_PREFIX}/share/${Corsika_PACKAGE_NAME}/data"
 )
+add_definitions(-std=c++0x)
+
 
 include_directories(${CMAKE_SOURCE_DIR}/include ${Boost_INCLUDE_DIR})
 
