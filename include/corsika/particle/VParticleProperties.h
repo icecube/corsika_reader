@@ -9,7 +9,7 @@
 
 #pragma once
 #include <string>
-#include <memory.h>
+#include <memory>
 
 namespace corsika
 {
