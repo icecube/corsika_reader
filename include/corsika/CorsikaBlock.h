@@ -370,7 +370,7 @@ namespace corsika
         LongitudinalEntry fEntries[kLongEntriesPerBlock];
     };
     
-    template <typename Thinning> union Block
+    template <typename Thinning> struct Block
     {
         struct ParticleBlock
         {
@@ -389,13 +389,17 @@ namespace corsika
         float* Data() { return AsGenericBlock.fPad; }
         std::string ID(){ return std::string(AsRunHeader.fID.fID); }
         
-        GenericBlock<Thinning> AsGenericBlock;
-        RunHeader AsRunHeader;
-        RunTrailer AsRunTrailer;
-        EventHeader AsEventHeader;
-        EventTrailer AsEventTrailer;
-        ParticleBlock AsParticleBlock;
-        CherenkovBlock AsCherenkovBlock;
-        LongitudinalBlock AsLongitudinalBlock;
+        union
+        {
+            GenericBlock<Thinning> AsGenericBlock;
+            RunHeader AsRunHeader;
+            RunTrailer AsRunTrailer;
+            EventHeader AsEventHeader;
+            EventTrailer AsEventTrailer;
+            ParticleBlock AsParticleBlock;
+            CherenkovBlock AsCherenkovBlock;
+            LongitudinalBlock AsLongitudinalBlock;
+        };
+        
     };
 }
