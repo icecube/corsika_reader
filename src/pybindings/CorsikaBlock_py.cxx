@@ -54,17 +54,16 @@ struct register_block {
   static void
   go(std::string name)
   {
-    typedef Block<Thinning> Block;
     scope block_scope =
-      class_<Block >(name.c_str())
+      class_<Block<Thinning> >(name.c_str())
       .add_property("__array_interface__", &register_block_helper<corsika::Thinned>::BlockBuffer_array_interface)
       .add_property("data", &register_block_data<corsika::Thinned>::BlockBuffer_data, "The underlying buffer")
-      .add_property("is_run_header", &Block::IsRunHeader      , "True if the block is RUNH")
-      .add_property("is_run_trailer", &Block::IsRunTrailer    , "True if the block is RUNE")
-      .add_property("is_event_header", &Block::IsEventHeader  , "True if the block is EVTH")
-      .add_property("is_event_trailer", &Block::IsEventTrailer, "True if the block is EVTE")
-      .add_property("is_longitudinal", &Block::IsLongitudinal , "True if the block is LONG")
-      .add_property("is_control", &Block::IsControl, "True if the block is not a particle block")
+      .add_property("is_run_header", &Block<Thinning>::IsRunHeader      , "True if the block is RUNH")
+      .add_property("is_run_trailer", &Block<Thinning>::IsRunTrailer    , "True if the block is RUNE")
+      .add_property("is_event_header", &Block<Thinning>::IsEventHeader  , "True if the block is EVTH")
+      .add_property("is_event_trailer", &Block<Thinning>::IsEventTrailer, "True if the block is EVTE")
+      .add_property("is_longitudinal", &Block<Thinning>::IsLongitudinal , "True if the block is LONG")
+      .add_property("is_control", &Block<Thinning>::IsControl, "True if the block is not a particle block")
       // .def("AsRunHeader", &Block::AsRunHeader)
       // .def("AsRunTrailer", &Block::AsRunTrailer)
       // .def("AsEventHeader", &Block::AsEventHeader)
@@ -72,7 +71,7 @@ struct register_block {
       // .def("AsLongitudinal", &Block::AsLongitudinal)
       // .def("AsParticleBlock", &Block::AsParticleBlock)
       // .def("AsCherenkovBlock", &Block::AsCherenkovBlock)
-      .def("ID", &Block::ID)
+      .def("ID", &Block<Thinning>::ID)
       ;
     class_<ParticleData<Thinning> >("ParticleData")
       .def("__str__",&ParticleData<Thinning>::String)
