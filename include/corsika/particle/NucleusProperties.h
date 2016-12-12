@@ -7,16 +7,11 @@
    \date 01 Jun 2005
 */
 
-#ifndef _corsika_NucleusProperties_h_
-#define _corsika_NucleusProperties_h_
-
-static const char CVSId_corsika_NucleusProperties[] =
-  "$Id$";
-
+#pragma once
 #include <corsika/particle/VParticleProperties.h>
-#include <string>
 
-namespace corsika {
+namespace corsika
+{
 
   /**
      \class NucleusProperties NucleusProperties.h "corsika/NucleusProperties.h"
@@ -67,13 +62,4 @@ namespace corsika {
 
   };
 
-} // corsika
-
-
-#endif // _corsika_NucleusProperties_h_
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode: c++
-// compile-command: "make -C .. -k"
-// End:
+}

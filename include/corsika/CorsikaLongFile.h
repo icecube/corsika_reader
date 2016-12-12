@@ -7,13 +7,9 @@
    \date 14 Jul 2016
 */
 
-#ifndef _corsika_CorsikaLongFile_h_
-#define _corsika_CorsikaLongFile_h_
-
-static const char CVSId_corsika_CorsikaLongFile[] =
-"$Id$";
-
+#pragma once
 #include <string>
+#include <memory>
 #include <map>
 #include <vector>
 #include <fstream>
@@ -75,6 +71,3 @@ namespace corsika {
   };
 
 }
-
-#endif
-

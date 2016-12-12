@@ -7,20 +7,14 @@
    \date 04 Jan 2015
 */
 
-#ifndef _corsika_ParticleList_h_
-#define _corsika_ParticleList_h_
-
-static const char CVSId_corsika_ParticleList[] =
-  "$Id$";
-
+#pragma once
 #include <corsika/particle/VParticleProperties.h>
 #include <corsika/particle/ParticleProperties.h>
 #include <corsika/particle/NucleusProperties.h>
 #include <map>
-#include <boost/shared_ptr.hpp>
 
-
-namespace corsika {
+namespace corsika
+{
 
   /**
      \class ParticleList ParticleList.h
@@ -57,13 +51,4 @@ namespace corsika {
     static std::map<int, corsika::NucleusProperties> nuclei_;
   };
 
-} // corsika
-
-
-#endif // _corsika_ParticleList_h_
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode: c++
-// compile-command: "make -C .. -k"
-// End:
+}

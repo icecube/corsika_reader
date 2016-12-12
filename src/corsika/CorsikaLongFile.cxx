@@ -7,9 +7,6 @@
    \date 29 Jan 2004
 */
 
-static const char CVSId[] =
-  "$Id$";
-
 #include <corsika/Constants.h>
 #include <corsika/CorsikaLongFile.h>
 #include <corsika/CorsikaIOException.h>
@@ -22,12 +19,10 @@ static const char CVSId[] =
 #include <iostream>
 
 #include <boost/tokenizer.hpp>
-#include <boost/filesystem.hpp>
 
 using namespace std;
 using namespace corsika;
 
-namespace fs = boost::filesystem;
 
 typedef boost::tokenizer<boost::char_separator<char> > mytok;
 

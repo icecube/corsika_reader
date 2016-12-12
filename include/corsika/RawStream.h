@@ -8,6 +8,7 @@
 */
 
 #pragma once
+#include <memory>
 #include <corsika/CorsikaBlock.h>
 #include <corsika/CorsikaIOException.h>
 

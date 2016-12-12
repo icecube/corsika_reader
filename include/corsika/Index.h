@@ -6,18 +6,15 @@
    \date Feb 24 2015
 */
 
-#ifndef _corsika_Index_h_
-#define _corsika_Index_h_
-
-static const char CVSId_Index[] =
-"$Id$";
-
+#pragma once
 #include <corsika/CorsikaUnits.h>
 #include <vector>
 #include <algorithm>
 #include <iterator>
 #include <cmath>
 #include <iostream>
+#include <memory>
+
 
 namespace corsika {
   namespace detail {
@@ -187,11 +184,3 @@ namespace corsika {
   };
 
 }
-
-#endif
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode:c++
-// compile-command: "cd ..; make -k"
-// End:

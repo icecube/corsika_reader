@@ -7,15 +7,11 @@
    \date 03 Apr 2004
 */
 
-#ifndef _corsika_VParticleProperties_h_
-#define _corsika_VParticleProperties_h_
-
-static const char CVSId_corsika_VParticleProperties[] =
-  "$Id$";
-
+#pragma once
 #include <string>
 
-namespace corsika {
+namespace corsika
+{
 
   /**
      \class VParticleProperties VParticleProperties.h "corsika/VParticleProperties.h"
@@ -50,13 +46,4 @@ namespace corsika {
   typedef std::shared_ptr<const VParticleProperties> ParticlePropertiesPtr;
 
 
-} // corsika
-
-
-#endif // _corsika_VParticleProperties_h_
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode: c++
-// compile-command: "make -C .. -k"
-// End:
+}

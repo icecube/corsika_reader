@@ -7,21 +7,18 @@
    \date 07 Jul 2003, 29 Jan 2004
 */
 
-#ifndef _corsika_CorsikaShowerFile_h_
-#define _corsika_CorsikaShowerFile_h_
-
+#pragma once
 #include <corsika/RawStream.h>
 #include <corsika/CorsikaIOException.h>
 #include <corsika/CorsikaShower.h>
 #include <corsika/CorsikaLongFile.h>
 #include <corsika/FileIndex.h>
-
 #include <string>
 #include <map>
 #include <vector>
 
-
-namespace corsika {
+namespace corsika
+{
 
   enum Status {
     eSuccess,
@@ -90,12 +87,3 @@ namespace corsika {
   };
 
 }
-
-
-#endif
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode: c++
-// compile-command: "make -C .. -k"
-// End:

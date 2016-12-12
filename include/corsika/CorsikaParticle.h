@@ -11,6 +11,8 @@
 
 #include <corsika/CorsikaBlock.h>
 #include <cmath>
+#include <memory>
+
 
 namespace corsika {
 

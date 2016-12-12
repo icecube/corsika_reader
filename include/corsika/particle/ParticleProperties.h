@@ -6,17 +6,11 @@
    \version $Id$
    \date 03 Apr 2004
 */
-
-#ifndef _corsika_ParticleProperties_h_
-#define _corsika_ParticleProperties_h_
-
-static const char CVSId_corsika_ParticleProperties[] =
-  "$Id$";
-
+#pragma once
 #include <corsika/particle/VParticleProperties.h>
-#include <string>
 
-namespace corsika {
+namespace corsika
+{
 
   /**
      \class ParticleProperties ParticleProperties.h "corsika/ParticleProperties.h"
@@ -52,13 +46,4 @@ namespace corsika {
 
   };
 
-} // corsika
-
-
-#endif // _corsika_ParticleProperties_h_
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode: c++
-// compile-command: "make -C .. -k"
-// End:
+}
