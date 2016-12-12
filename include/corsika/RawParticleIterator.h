@@ -1,15 +1,4 @@
-/**
- \file
- Implementation of the VShowerFileParticleIterator for an Corsika generated
- shower file
- \author Troy Porter
- \author Lukas Nellen
- \version $Id$
- \date 22 May 2003
- */
-
 #pragma once
-
 #include <corsika/CorsikaBlock.h>
 #include <corsika/CorsikaParticle.h>
 #include <corsika/RawStream.h>
@@ -17,66 +6,26 @@
 
 namespace corsika
 {
-    class CorsikaParticle;
-    
     struct VRawParticleIterator
     {
-        virtual boost::optional<CorsikaParticle> GetCorsikaParticle() const = 0;
+        virtual boost::optional<CorsikaParticle> GetCorsikaParticle() = 0;
         virtual void Rewind() = 0;
         virtual bool IsValid() const = 0;
         static boost::shared_ptr<VRawParticleIterator> Create(RawStreamPtr stream, size_t start=0);
     };
-    
-    /**
-     \template RawParticleIterator
-     \brief Iterator for particles in a corsika generated shower file
-     \author Troy Porter
-     \author Lukas Nellen
-     \author Javier Gonzalez
-     \version $Id$
-     \date 22 May 2003
-     */
-    
     template <class Thinning> struct RawParticleIterator: VRawParticleIterator
     {
-        RawParticleIterator();
-        RawParticleIterator(RawStreamPtr rawStream, size_t startPosition);
-        
-        ~RawParticleIterator() { }
-        
-        virtual boost::optional<CorsikaParticle> GetCorsikaParticle() const
-        {
-            const ParticleData<Thinning>* d = GetOneParticle();
-            if(d) {
-                CorsikaParticle p(d);
-                return boost::optional<CorsikaParticle>(p);
-            }
-            return boost::optional<CorsikaParticle>();
-        }
-        
+        RawParticleIterator(RawStreamPtr stream, size_t start);
+        boost::optional<CorsikaParticle> GetCorsikaParticle();
         const ParticleData<Thinning>* GetOneParticle();
-        
-        const ParticleData<Thinning>* GetOneParticle() const
-        { return const_cast<RawParticleIterator<Thinning>*>(this)->GetOneParticle(); }
-        
         void Rewind();
-        
-        bool operator==(const RawParticleIterator& other) const;
-        
-        bool IsValid() const
-        { return fIteratorValid; }
-        
+        bool IsValid() const { return valid; }
+
     private:
-        
-        RawStreamPtr fRawStream;
-        
-        size_t fStartPosition;
-        size_t fCurrentBlockIndex;
-        int fParticleInBlock;
-        
-        Block<Thinning> fCurrentBlock;
-        
-        bool fIteratorValid;
-        bool fBlockBufferValid;
+        RawStreamPtr stream;
+        size_t start;
+        size_t current_particle;
+        Block<Thinning> block;
+        bool valid;
     };
 }

@@ -64,8 +64,8 @@ namespace corsika {
       };
 
       CorsikaParticle();
-      CorsikaParticle(const ParticleData<Thinned>* particle);
-      CorsikaParticle(const ParticleData<NotThinned>* particle);
+      CorsikaParticle(const ParticleData<Thinned>& particle);
+      CorsikaParticle(const ParticleData<NotThinned>& particle);
       ~CorsikaParticle();
 
 

@@ -12,7 +12,7 @@ public:
   VRawParticleIterator(){}
   VRawParticleIterator(const corsika::VRawParticleIterator& it):corsika::VRawParticleIterator(it){}
 
-  boost::optional<corsika::CorsikaParticle> GetCorsikaParticle() const
+  boost::optional<corsika::CorsikaParticle> GetCorsikaParticle()
   {
     return this->get_override("GetCorsikaParticle")();
   }
@@ -71,7 +71,7 @@ template <class Thinning>
 void register_RawIterator(std::string name)
 {
   typedef  corsika::RawParticleIterator<Thinning> RawParticleIterator;
-  class_<RawParticleIterator>(name.c_str())
+    class_<RawParticleIterator>(name.c_str(), init<corsika::RawStreamPtr, size_t>())
     // .def("next", next_particle<Thinning>,
     //      return_internal_reference<>())
     .def("next", next_particle_2<Thinning>,

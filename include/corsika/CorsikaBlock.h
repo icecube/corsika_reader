@@ -17,18 +17,18 @@ namespace corsika
 {
     
     // These are here so the code is explicit. These define the file structure.
-    static const int kParticlesInBlock  = 39;
-    static const int kLongEntriesPerBlock = 26;
-    static const int kSubBlocksPerBlock = 21;
+    static const size_t kParticlesInBlock  = 39;
+    static const size_t kLongEntriesPerBlock = 26;
+    static const size_t kSubBlocksPerBlock = 21;
     
     struct Thinned
     {
-        static const int kWordsPerSubBlock = 312;
+        static const size_t kWordsPerSubBlock = 312;
     };
     
     struct NotThinned
     {
-        static const int kWordsPerSubBlock = 273;
+        static const size_t kWordsPerSubBlock = 273;
     };
     
     

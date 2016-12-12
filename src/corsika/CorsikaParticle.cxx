@@ -32,27 +32,27 @@ CorsikaParticle::CorsikaParticle():
 }
 
 
-CorsikaParticle::CorsikaParticle(const ParticleData<Thinned>* particle):
-  fDescription(particle->fDescription),
-  fPx(particle->fPx),
-  fPy(particle->fPy),
-  fPz(particle->fPz),
-  fX(particle->fX),
-  fY(particle->fY),
-  fTorZ(particle->fTorZ),
-  fWeight(particle->fWeight)
+CorsikaParticle::CorsikaParticle(const ParticleData<Thinned>& particle):
+  fDescription(particle.fDescription),
+  fPx(particle.fPx),
+  fPy(particle.fPy),
+  fPz(particle.fPz),
+  fX(particle.fX),
+  fY(particle.fY),
+  fTorZ(particle.fTorZ),
+  fWeight(particle.fWeight)
 {
 }
 
 
-CorsikaParticle::CorsikaParticle(const ParticleData<NotThinned>* particle):
-  fDescription(particle->fDescription),
-  fPx(particle->fPx),
-  fPy(particle->fPy),
-  fPz(particle->fPz),
-  fX(particle->fX),
-  fY(particle->fY),
-  fTorZ(particle->fTorZ),
+CorsikaParticle::CorsikaParticle(const ParticleData<NotThinned>& particle):
+  fDescription(particle.fDescription),
+  fPx(particle.fPx),
+  fPy(particle.fPy),
+  fPz(particle.fPz),
+  fX(particle.fX),
+  fY(particle.fY),
+  fTorZ(particle.fTorZ),
   fWeight(1)
 {
 }

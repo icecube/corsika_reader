@@ -13,100 +13,49 @@
 
 namespace corsika
 {
-    
-    template <class Thinning>
-    RawParticleIterator<Thinning>::
-    RawParticleIterator() :
-    fStartPosition(0),
-    fCurrentBlockIndex(0),
-    fParticleInBlock(0),
-    fCurrentBlock(),
-    fIteratorValid(false),
-    fBlockBufferValid(false)
-    { }
-    
-    template <class Thinning>
-    RawParticleIterator<Thinning>::
-    RawParticleIterator(RawStreamPtr rawStream, size_t startPosition) :
-    fRawStream(rawStream),
-    fStartPosition(startPosition),
-    fCurrentBlockIndex(0),
-    fParticleInBlock(0),
-    fCurrentBlock(),
-    fIteratorValid(false),
-    fBlockBufferValid(false)
+    template <class Thinning> RawParticleIterator<Thinning>::RawParticleIterator(RawStreamPtr stream, size_t start):
+    stream(stream), start(start)
     {
         // if there is something we KNOW, it is that particles are not in block zero.
-        if (fStartPosition == 0) fStartPosition = rawStream->GetNextPosition();
+        if (start == 0) start = stream->GetNextPosition();
         Rewind();
     }
-    
-    template <class Thinning> bool RawParticleIterator<Thinning>::operator==(const RawParticleIterator& other) const
+    template <class Thinning> boost::optional<CorsikaParticle> RawParticleIterator<Thinning>::GetCorsikaParticle()
     {
-        if (!fRawStream || !other.fRawStream || !fIteratorValid || !other.fIteratorValid) {
-            return fIteratorValid == other.fIteratorValid;
-        }
-        
-        bool ret =
-        fStartPosition    == other.fStartPosition &&
-        fCurrentBlockIndex  == other.fCurrentBlockIndex &&
-        fParticleInBlock  == other.fParticleInBlock &&
-        fBlockBufferValid == other.fBlockBufferValid;
-        
-        return ret;
+        if (const ParticleData<Thinning>* d = GetOneParticle())
+            return boost::optional<CorsikaParticle>(CorsikaParticle(*d));
+        return boost::optional<CorsikaParticle>();
     }
-    
     template <class Thinning> void RawParticleIterator<Thinning>::Rewind()
     {
-        fCurrentBlockIndex = fStartPosition;
-        fParticleInBlock = 0;
-        fBlockBufferValid = false;
-        fIteratorValid = true;
-        if (!fRawStream->IsSeekable())
-            throw CorsikaIOException("Can not rewind RawParticleIterator because stream is not seekable");
-        fRawStream->SeekTo(fCurrentBlockIndex);
+        current_particle = kParticlesInBlock;
+        valid = true;
+        stream->SeekTo(start);
     }
-    
-    
     template <class Thinning> const ParticleData<Thinning>* RawParticleIterator<Thinning>::GetOneParticle()
     {
-        if (!fIteratorValid)
-            throw CorsikaIOException("RawParticleIterator not valid.");
+        if (!valid) throw CorsikaIOException("RawParticleIterator not valid.");
         
-        if (!fBlockBufferValid)
+        if (current_particle == kParticlesInBlock)
         {
-            if (!fRawStream->GetNextBlock(fCurrentBlock))
+            if (!stream->GetNextBlock(block))
+                throw CorsikaIOException("Error reading block in CORSIKA file.");
+            
+            if (block.IsControl() || block.IsLongitudinal()) // end of particle records
             {
-                std::ostringstream msg;
-                msg << "Error reading block " << fCurrentBlockIndex << " in CORSIKA file.";
-                throw CorsikaIOException(msg.str());
-            }
-            if (fCurrentBlock.IsControl() || fCurrentBlock.IsLongitudinal()) { // end of particle records
-                fIteratorValid = false;
+                valid = false;
                 return 0;
             }
-            fBlockBufferValid = true;
+            current_particle = 0;
         }
-        
-        const ParticleData<Thinning>* currentRecord =
-        fCurrentBlock.AsParticleBlock.fParticle + fParticleInBlock;
-        ++fParticleInBlock;
-        
-        if (fParticleInBlock >= kParticlesInBlock)
-        {
-            ++fCurrentBlockIndex;
-            fParticleInBlock = 0;
-            fBlockBufferValid = false;
-        }
-        return currentRecord;
+        return block.AsParticleBlock.fParticle + current_particle++;
     }
-    
-    template class RawParticleIterator<Thinned>;
-    template class RawParticleIterator<NotThinned>;
     
     boost::shared_ptr<VRawParticleIterator> VRawParticleIterator::Create(RawStreamPtr stream, size_t start)
     {
         if (stream->IsThinned()) return boost::shared_ptr<VRawParticleIterator>(new RawParticleIterator<Thinned>(stream, start));
         return boost::shared_ptr<VRawParticleIterator>(new RawParticleIterator<NotThinned>(stream, start));
     }
+    template struct RawParticleIterator<Thinned>;
+    template struct RawParticleIterator<NotThinned>;
 }
