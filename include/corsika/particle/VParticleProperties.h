@@ -13,7 +13,6 @@
 static const char CVSId_corsika_VParticleProperties[] =
   "$Id$";
 
-#include <boost/shared_ptr.hpp>
 #include <string>
 
 namespace corsika {
@@ -48,7 +47,7 @@ namespace corsika {
   };
 
 
-  typedef boost::shared_ptr<const VParticleProperties> ParticlePropertiesPtr;
+  typedef std::shared_ptr<const VParticleProperties> ParticlePropertiesPtr;
 
 
 } // corsika

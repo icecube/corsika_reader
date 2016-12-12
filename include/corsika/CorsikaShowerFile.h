@@ -86,7 +86,7 @@ namespace corsika {
     bool fIsThinned;
     bool fFileScanned;
 
-    boost::shared_ptr<corsika::CorsikaLongFile> fCorsikaLongFile;
+    std::shared_ptr<corsika::CorsikaLongFile> fCorsikaLongFile;
   };
 
 }

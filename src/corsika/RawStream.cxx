@@ -22,7 +22,7 @@ namespace corsika
             Padding padding_end;
         } __attribute__((packed));
         
-        boost::shared_ptr<FileStream> file;
+        std::shared_ptr<FileStream> file;
         std::string filename;
         size_t current_block;
         size_t current_disk_block;
@@ -30,7 +30,7 @@ namespace corsika
         bool valid;
         DiskBlock buffer;
         
-        RawStreamT(boost::shared_ptr<FileStream> file, std::string filename, int64_t len64): file(file), filename(filename), current_block(0), current_disk_block(0)
+        RawStreamT(std::shared_ptr<FileStream> file, std::string filename, int64_t len64): file(file), filename(filename), current_block(0), current_disk_block(0)
         {
             *reinterpret_cast<int64_t*>(&buffer) = len64; // Copy value over
             buffer_valid = file->read(sizeof(DiskBlock) - 8, (char*)&buffer + 8) > 0;
@@ -122,7 +122,7 @@ namespace corsika
     
     RawStreamPtr RawStream::Create(const std::string& theName)
     {
-        boost::shared_ptr<FileStream> file(FileStream::open(theName.c_str()));
+        std::shared_ptr<FileStream> file(FileStream::open(theName.c_str()));
         if (!file) throw CorsikaIOException("Error opening Corsika file '" + theName + "'.\n");
         
         int64_t len64;

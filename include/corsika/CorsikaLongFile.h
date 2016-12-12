@@ -17,10 +17,7 @@ static const char CVSId_corsika_CorsikaLongFile[] =
 #include <map>
 #include <vector>
 #include <fstream>
-
 #include <corsika/CorsikaLongProfile.h>
-
-#include <boost/shared_ptr.hpp>
 
 namespace corsika {
 
@@ -71,7 +68,7 @@ namespace corsika {
     int fNBinsParticles;
     int fNBinsEnergyDeposit;
 
-    boost::shared_ptr<std::ifstream> fLongDataFile;
+    std::shared_ptr<std::ifstream> fLongDataFile;
     std::vector<std::streampos> fPartProfiles;
     std::vector<std::streampos> fdEdXProfiles;
 

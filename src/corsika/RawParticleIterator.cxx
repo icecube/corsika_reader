@@ -51,10 +51,10 @@ namespace corsika
         return block.AsParticleBlock.fParticle + current_particle++;
     }
     
-    boost::shared_ptr<VRawParticleIterator> VRawParticleIterator::Create(RawStreamPtr stream, size_t start)
+    std::shared_ptr<VRawParticleIterator> VRawParticleIterator::Create(RawStreamPtr stream, size_t start)
     {
-        if (stream->IsThinned()) return boost::shared_ptr<VRawParticleIterator>(new RawParticleIterator<Thinned>(stream, start));
-        return boost::shared_ptr<VRawParticleIterator>(new RawParticleIterator<NotThinned>(stream, start));
+        if (stream->IsThinned()) return std::shared_ptr<VRawParticleIterator>(new RawParticleIterator<Thinned>(stream, start));
+        return std::shared_ptr<VRawParticleIterator>(new RawParticleIterator<NotThinned>(stream, start));
     }
     template struct RawParticleIterator<Thinned>;
     template struct RawParticleIterator<NotThinned>;

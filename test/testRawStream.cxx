@@ -5,7 +5,6 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
-#include <boost/algorithm/string.hpp>
 
 using namespace std;
 using namespace corsika;
@@ -36,7 +35,7 @@ namespace testRawStreamNS
 
     i = 0;
     int all = 0;
-      boost::shared_ptr<VRawParticleIterator> it = VRawParticleIterator::Create(stream, 2);
+      std::shared_ptr<VRawParticleIterator> it = VRawParticleIterator::Create(stream, 2);
     boost::optional<CorsikaParticle> p = it->GetCorsikaParticle();
     while (p) {
       ++all;

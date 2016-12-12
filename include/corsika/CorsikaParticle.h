@@ -7,16 +7,10 @@
    \date 04 May 2011
 */
 
-#ifndef _corsika_CorsikaParticle_h_
-#define _corsika_CorsikaParticle_h_
-
-static const char CVSId_corsika_CorsikaParticle[] =
-"$Id$";
-
+#pragma once
 
 #include <corsika/CorsikaBlock.h>
 #include <cmath>
-#include <boost/shared_ptr.hpp>
 
 namespace corsika {
 
@@ -126,19 +120,10 @@ namespace corsika {
       std::string String() const;
 
     private:
-      boost::shared_ptr<CorsikaParticle> fParent;
-      boost::shared_ptr<CorsikaParticle> fMuonInfo;
-      boost::shared_ptr<CorsikaParticle> fGrandParent;
+      std::shared_ptr<CorsikaParticle> fParent;
+      std::shared_ptr<CorsikaParticle> fMuonInfo;
+      std::shared_ptr<CorsikaParticle> fGrandParent;
 
    }; // CorsikaParticle
 
-} // corsika
-
-
-#endif // _corsika_CorsikaParticle_h_
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode:c++
-// compile-command: "make -C .. -k"
-// End:
+}
