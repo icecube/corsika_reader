@@ -17,7 +17,7 @@ namespace corsika
     stream(stream), start(start)
     {
         // if there is something we KNOW, it is that particles are not in block zero.
-        if (start == 0) start = stream->GetNextPosition();
+        if (this->start == 0) this->start = stream->GetNextPosition();
         Rewind();
     }
     template <class Thinning> boost::optional<CorsikaParticle> RawParticleIterator<Thinning>::GetCorsikaParticle()
@@ -34,10 +34,10 @@ namespace corsika
     }
     template <class Thinning> const ParticleData<Thinning>* RawParticleIterator<Thinning>::GetOneParticle()
     {
-        if (!valid) throw CorsikaIOException("RawParticleIterator not valid.");
-        
         if (current_particle == kParticlesInBlock)
         {
+            if (!valid) throw CorsikaIOException("RawParticleIterator not valid.");
+
             if (!stream->GetNextBlock(block))
                 throw CorsikaIOException("Error reading block in CORSIKA file.");
             
