@@ -8,18 +8,19 @@
 */
 
 #pragma once
-
+#include <boost/shared_ptr.hpp>
 #include <corsika/CorsikaBlock.h>
 #include <cmath>
 #include <memory>
 
 
-namespace corsika {
+namespace corsika
+{
+    typedef boost::shared_ptr<struct CorsikaParticle> CorsikaParticlePtr;
 
+    struct CorsikaParticle
+    {
 
-
-    class CorsikaParticle {
-    public:
 
       enum Type {
 	eUndefined = 0,
@@ -122,10 +123,7 @@ namespace corsika {
       std::string String() const;
 
     private:
-      std::shared_ptr<CorsikaParticle> fParent;
-      std::shared_ptr<CorsikaParticle> fMuonInfo;
-      std::shared_ptr<CorsikaParticle> fGrandParent;
+        CorsikaParticlePtr fParent, fMuonInfo, fGrandParent;
 
-   }; // CorsikaParticle
-
+   };
 }

@@ -40,11 +40,11 @@ struct RawStream
     {
         return stream->GetNextPosition();
     }
-    std::shared_ptr<corsika::VRawParticleIterator> particles()
+    corsika::RawParticleIteratorPtr particles()
     {
         return corsika::VRawParticleIterator::Create(stream);
     }
-    std::shared_ptr<corsika::VRawParticleIterator> particles1(size_t start)
+    corsika::RawParticleIteratorPtr particles1(size_t start)
     {
         return corsika::VRawParticleIterator::Create(stream, start);
     }

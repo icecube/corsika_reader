@@ -81,7 +81,7 @@ void register_RawIterator(std::string name)
     .def("rewind", Rewind<Thinning>)
     ;
 
-  register_ptr_to_python<std::shared_ptr<RawParticleIterator> >();
+  register_ptr_to_python<boost::shared_ptr<RawParticleIterator> >();
 }
 
 
@@ -92,7 +92,7 @@ void register_RawParticleIterator()
     .def("rewind", &VRawParticleIterator::Rewind)
     ;
 
-  register_ptr_to_python<std::shared_ptr<corsika::VRawParticleIterator> >();
+  register_ptr_to_python<corsika::RawParticleIteratorPtr>();
 
   register_RawIterator<corsika::NotThinned>("RawParticleIterator");
   register_RawIterator<corsika::Thinned>("RawParticleIterator_thin");

@@ -7,6 +7,7 @@
 */
 
 #pragma once
+#include <boost/shared_ptr.hpp>
 #include <corsika/CorsikaUnits.h>
 #include <vector>
 #include <algorithm>
@@ -90,8 +91,8 @@ namespace corsika {
   public:
 
     typedef Pointee value_type;
-    typedef std::shared_ptr<Pointee> pointer_type;
-    typedef std::vector<std::shared_ptr<Pointee> > pointer_list_type;
+    typedef boost::shared_ptr<Pointee> pointer_type;
+    typedef std::vector<boost::shared_ptr<Pointee> > pointer_list_type;
 
     /**
        Constructor takes grid size and bin size as arguments. Bin size can be modified to guarantee an integer number of bins.
@@ -121,14 +122,14 @@ namespace corsika {
     int GetBins() const
     { return fBinEdges.size() - 1; }
 
-    void Add(std::shared_ptr<Pointee> p)
+    void Add(boost::shared_ptr<Pointee> p)
     {
       if (std::find(fAll.begin(), fAll.end(), p) != fAll.end())
 	return;
       std::vector<std::pair<unsigned int,unsigned int> > indices = fCollisionPolicy(fBinEdges, fBinEdges, *p);
       fAll.push_back(p);
       for (std::vector<std::pair<unsigned int,unsigned int> >::iterator it = indices.begin(); it != indices.end(); ++it) {
-	std::vector<std::shared_ptr<Pointee> >& v = fGrid[it->first][it->second];
+	std::vector<boost::shared_ptr<Pointee> >& v = fGrid[it->first][it->second];
 	if (std::find(v.begin(), v.end(), p) == v.end()) {
 	  v.push_back(p);
 	}
@@ -136,27 +137,27 @@ namespace corsika {
     }
     void Add(const Pointee& v)
     {
-      Add(std::shared_ptr<Pointee>(new Pointee(v)));
+      Add(boost::shared_ptr<Pointee>(new Pointee(v)));
     }
-    void Add(std::vector<std::shared_ptr<Pointee> > v)
+    void Add(std::vector<boost::shared_ptr<Pointee> > v)
     {
-      for (typename std::vector<std::shared_ptr<Pointee> >::const_iterator it = v.begin(); it != v.end(); ++it) {
+      for (typename std::vector<boost::shared_ptr<Pointee> >::const_iterator it = v.begin(); it != v.end(); ++it) {
 	Add(*it);
       }
     }
     void Add(std::vector<Pointee> v)
     {
-      for (typename std::vector<std::shared_ptr<Pointee> >::const_iterator it = v.begin(); it != v.end(); ++it) {
+      for (typename std::vector<boost::shared_ptr<Pointee> >::const_iterator it = v.begin(); it != v.end(); ++it) {
 	Add(*it);
       }
     }
 
-    const std::vector<std::shared_ptr<Pointee> >& Get(double x, double y) const
+    const std::vector<boost::shared_ptr<Pointee> >& Get(double x, double y) const
     { return fGrid[GetIndex(x)][GetIndex(y)]; }
-    std::vector<std::shared_ptr<Pointee> >& Get(double x, double y)
+    std::vector<boost::shared_ptr<Pointee> >& Get(double x, double y)
     { return fGrid[GetIndex(x)][GetIndex(y)]; }
 
-    const std::vector<std::shared_ptr<Pointee> >& GetAll() const
+    const std::vector<boost::shared_ptr<Pointee> >& GetAll() const
     { return fAll; }
 
     void Clear()
@@ -179,8 +180,8 @@ namespace corsika {
     double fSpacing;
 
     std::vector<double> fBinEdges;
-    std::vector<std::vector<std::vector<std::shared_ptr<Pointee> > > > fGrid;
-    std::vector<std::shared_ptr<Pointee> > fAll;
+    std::vector<std::vector<std::vector<boost::shared_ptr<Pointee> > > > fGrid;
+    std::vector<boost::shared_ptr<Pointee> > fAll;
   };
 
 }

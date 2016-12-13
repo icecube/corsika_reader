@@ -9,7 +9,7 @@
 
 #pragma once
 #include <string>
-#include <memory>
+#include <boost/shared_ptr.hpp>
 
 namespace corsika
 {
@@ -44,7 +44,7 @@ namespace corsika
   };
 
 
-  typedef std::shared_ptr<const VParticleProperties> ParticlePropertiesPtr;
+  typedef boost::shared_ptr<const VParticleProperties> ParticlePropertiesPtr;
 
 
 }

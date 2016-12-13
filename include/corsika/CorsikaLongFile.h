@@ -13,6 +13,7 @@
 #include <map>
 #include <vector>
 #include <fstream>
+#include <boost/shared_ptr.hpp>
 #include <corsika/CorsikaLongProfile.h>
 
 namespace corsika {
@@ -64,7 +65,7 @@ namespace corsika {
     int fNBinsParticles;
     int fNBinsEnergyDeposit;
 
-    std::shared_ptr<std::ifstream> fLongDataFile;
+    boost::shared_ptr<std::ifstream> fLongDataFile;
     std::vector<std::streampos> fPartProfiles;
     std::vector<std::streampos> fdEdXProfiles;
 

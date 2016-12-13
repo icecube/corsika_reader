@@ -8,13 +8,13 @@
 */
 
 #pragma once
-#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <corsika/CorsikaBlock.h>
 #include <corsika/CorsikaIOException.h>
 
 namespace corsika
 {
-    typedef std::shared_ptr<struct RawStream> RawStreamPtr;
+    typedef boost::shared_ptr<struct RawStream> RawStreamPtr;
     
     /**
      \struct VRawStream

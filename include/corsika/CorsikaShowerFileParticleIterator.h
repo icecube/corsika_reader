@@ -79,7 +79,7 @@ namespace corsika {
 
     mutable boost::optional<CorsikaParticle> value_;
     EventHeader event_header_;
-    std::shared_ptr<VRawParticleIterator> iterator_;
+    RawParticleIteratorPtr iterator_;
 
     double fTimeOffset;
     unsigned int fObservationLevel;
