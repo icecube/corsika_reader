@@ -78,7 +78,7 @@ namespace corsika {
     { return fEventHeader.fArrayRotation; }
 
 
-    const EventHeader& EventHeader() const
+    const EventHeader& GetEventHeader() const
     { return fEventHeader; }
 
     // EventTrailer& EventTrailer()

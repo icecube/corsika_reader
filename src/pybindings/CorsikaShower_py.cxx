@@ -95,7 +95,7 @@ void register_CorsikaShower()
     .add_property("calorimetric_energy", &CorsikaShower::GetCalorimetricEnergy, &CorsikaShower::SetCalorimetricEnergy)
     //.def("particles", &CorsikaShower::GetParticleIt, return_internal_reference<>())
     .add_property("particles", get_particle_iterator) // memory management?
-    .add_property("header", make_function(&CorsikaShower::EventHeader, return_internal_reference<>()))
+    .add_property("header", make_function(&CorsikaShower::GetEventHeader, return_internal_reference<>()))
     .add_property("gaisser_hillas", &CorsikaShower::GetGaisserHillasParams)
     //evt::GaisserHillas6Parameter GetGaisserHillasParams const
     .add_property("charge_profile", charge_profile)
