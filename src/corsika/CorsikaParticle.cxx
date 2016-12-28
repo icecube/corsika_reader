@@ -66,7 +66,7 @@ CorsikaParticle::~CorsikaParticle()
 int
 CorsikaParticle::NucleusCode(const int theCharge, const int theAtomicNumber)
 {
-  return corsika::NucleusProperties::TypeCode(theCharge, theAtomicNumber);
+  return NucleusProperties::TypeCode(theCharge, theAtomicNumber);
 }
 
 std::string

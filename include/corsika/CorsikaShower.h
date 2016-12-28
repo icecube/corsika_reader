@@ -57,9 +57,9 @@ namespace corsika {
       return *fParticleIterator;
     }
 
-    corsika::GaisserHillasParameter GetGaisserHillasParams() const
+    GaisserHillasParameter GetGaisserHillasParams() const
     {return fGH; }
-    void  SetGaisserHillasParams(const corsika::GaisserHillasParameter& gh)
+    void  SetGaisserHillasParams(const GaisserHillasParameter& gh)
     { fGH = gh; }
 
     float GetCalorimetricEnergy() const
@@ -78,7 +78,7 @@ namespace corsika {
     { return fEventHeader.fArrayRotation; }
 
 
-    const corsika::EventHeader& EventHeader() const
+    const EventHeader& EventHeader() const
     { return fEventHeader; }
 
     // EventTrailer& EventTrailer()
@@ -107,7 +107,7 @@ namespace corsika {
     float fEMEnergyCutoff;
     float fMuonEnergyCutoff;
     float fCalorimetricEnergy;
-    corsika::GaisserHillasParameter fGH;
+    GaisserHillasParameter fGH;
 
     CorsikaShowerFileParticleIterator* fParticleIterator;
     ShowerParticleList fParticles;

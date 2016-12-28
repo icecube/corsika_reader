@@ -32,7 +32,7 @@ namespace corsika {
     std::vector<double> fDepth_dE;
 
     double fCalorimetricEnergy;
-    corsika::GaisserHillasParameter fGaisserHillas;
+    GaisserHillasParameter fGaisserHillas;
 
   };
 

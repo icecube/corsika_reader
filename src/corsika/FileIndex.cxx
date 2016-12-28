@@ -56,7 +56,7 @@ template <class Thinning> void Scan(FileIndex& index, RawStream& stream, bool fo
             index.longBlocks.push_back(stream.GetNextPosition() - 1);
         }
         if (blockIndex >400 && !foundRunHeader)
-            throw corsika::CorsikaIOException("Error scanning Corsika ground file: could not find run header");
+            throw CorsikaIOException("Error scanning Corsika ground file: could not find run header");
         
         if (blockIndex >400 && !foundEventHeader) break;
     }
@@ -67,17 +67,17 @@ template <class Thinning> void Scan(FileIndex& index, RawStream& stream, bool fo
         if (foundEventHeader)
             msg << std::endl << "Found " << eventsSoFar << " event headers.";
         
-        throw corsika::CorsikaIOException(msg.str());
+        throw CorsikaIOException(msg.str());
     }
     
     if (index.eventHeaders.size() != index.eventTrailers.size())
-        throw corsika::CorsikaIOException("Found different number of event-headers and -trailers");
+        throw CorsikaIOException("Found different number of event-headers and -trailers");
     
     if (index.longBlocks.size() > 0 && index.eventHeaders.size() != index.longBlocks.size()) {
         std::ostringstream msg;
         msg << "Found different number of event-headers and longitudinal blocks ("
         << index.eventHeaders.size() << " != " << index.longBlocks.size() << ")";
-        throw corsika::CorsikaIOException(msg.str());
+        throw CorsikaIOException(msg.str());
     }
     
     if (stream.IsSeekable())

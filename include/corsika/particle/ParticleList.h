@@ -47,8 +47,8 @@ namespace corsika
     static void SetList();
 
     static std::map<int, int> corsikaToPDGMap_;
-    static std::map<int, corsika::ParticleProperties> particles_;
-    static std::map<int, corsika::NucleusProperties> nuclei_;
+    static std::map<int, ParticleProperties> particles_;
+    static std::map<int, NucleusProperties> nuclei_;
   };
 
 }

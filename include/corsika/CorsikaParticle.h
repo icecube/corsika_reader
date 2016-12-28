@@ -55,7 +55,7 @@ namespace corsika
         eDecayedMuon = 9900013, eDecayedAntiMuon = -9900013,
 	// Selected nuclei.
 	// Note: This is an inconsistency left in for hysterical raisins only.
-	//       Cf. corsika::NucleusProperties instead!
+	//       Cf. NucleusProperties instead!
 	//       Usage example thereof can be found in CONEXFile.cc.
 	eIron = 1000026056
       };

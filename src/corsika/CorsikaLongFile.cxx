@@ -178,7 +178,7 @@ CorsikaLongFile::FetchProfile(int findShower)
   vector<double> auxDepth_dE (fNBinsEnergyDeposit);
   vector<double> auxDeltaEn (fNBinsEnergyDeposit);
 
-  corsika::GaisserHillasParameter gh;
+  GaisserHillasParameter gh;
   double energyDepositSum = 0.;
 
   // Read CORSIKA profile if available
@@ -313,7 +313,7 @@ CorsikaLongFile::FetchProfile(int findShower)
         axmax /= fCosZenith;
       }
 
-      // corsika::GaisserHillas6Parameter gh;
+      // GaisserHillas6Parameter gh;
       gh.SetXMax(axmax*(g/cm2), 0);
       gh.SetNMax(anmax, 0);
       gh.SetXZero(ax0*(g/cm2), 0);

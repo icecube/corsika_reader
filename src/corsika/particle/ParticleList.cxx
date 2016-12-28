@@ -74,8 +74,8 @@ namespace particle_constants {
 using namespace particle_constants;
 
 std::map<int, int> ParticleList::corsikaToPDGMap_;
-std::map<int, corsika::ParticleProperties> ParticleList::particles_;
-std::map<int, corsika::NucleusProperties> ParticleList::nuclei_;
+std::map<int, ParticleProperties> ParticleList::particles_;
+std::map<int, NucleusProperties> ParticleList::nuclei_;
 
 const VParticleProperties& ParticleList::Get(int code)
 {
@@ -91,7 +91,7 @@ const VParticleProperties& ParticleList::Get(int code)
         << code
         << ".";
     std::cerr << msg.str() << std::endl;
-    throw corsika::CorsikaIOException(msg.str());
+    throw CorsikaIOException(msg.str());
   }
 
   nuclei_.insert(std::pair<int, NucleusProperties>(code, NucleusProperties(code)));
@@ -107,61 +107,61 @@ ParticleList::SetList()
     return;
 
   std::vector<ParticleProperties> prop;
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eUndefined,       "Undefined",       0.));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eElectron,        "e-",              kElectronMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::ePositron,        "e+",              kElectronMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eNuElectron,      "nu_e",            0.));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiNuElectron,  "anti_nu_e",       0.));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eMuon,            "mu-",             kMuonMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiMuon,        "mu+",             kMuonMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eNuMuon,          "nu_mu",           0.));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiNuMuon,      "anti_nu_mu",      0.));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eTau,             "tau-",            kTauMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiTau,         "tau+",            kTauMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eNuTau,           "nu_tau",          0.));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiNuTau,       "anti_nu_tau",     0.));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::ePhoton,          "gamma",           0.));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::ePiZero,          "pi0",             kPiZeroMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::ePiPlus,          "pi+",             kPiChargedMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::ePiMinus,         "pi-",             kPiChargedMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eEta,             "eta",             kEtaMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eKaon0L,          "kaon0L",          kKaonZeroMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eKaon0S,          "kaon0S",          kKaonZeroMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eKaonPlus,        "kaon+",           kKaonChargedMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eKaonMinus,       "kaon-",           kKaonChargedMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eLambda,          "lambda",          kLambdaMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eLambdac,         "lambda_c+",       kLambdacMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiLambda,      "anti_lambda",     kLambdaMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eSigmaPlus,       "sigma+",          kSigmaPlusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eSigmaZero,       "sigma0",          kSigmaZeroMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eSigmaMinus,      "sigma-",          kSigmaMinusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiSigmaPlus,   "anti_sigma+",     kSigmaPlusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiSigmaZero,   "anti_sigma0",     kSigmaZeroMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiSigmaMinus,  "anti_sigma-",     kSigmaMinusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eXiZero,          "xi0",             kXiZeroMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eXiMinus,         "xi-",             kXiMinusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiXiZero,      "anti_xi0",        kXiZeroMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiXiMinus,     "anti_xi-",        kXiMinusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eOmegaMinus,      "omega-",          kOmegaMinusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiOmegaMinus,  "anti_omega-",     kOmegaMinusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eNeutron,         "neutron",         kNeutronMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiNeutron,     "anti_neutron",    kNeutronMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eProton,          "proton",          kProtonMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eAntiProton,      "anti_proton",     kProtonMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eRhoZero,         "rho_zero",        kRhoZeroMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eRhoPlus,         "rho_plus",        kRhoPlusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eRhoMinus,        "rho_minus",       kRhoMinusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eOmegaMeson,      "omega_meson",     kOmegaMesonMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eDeltaMinus,      "delta_minus",     kDeltaMinusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eDeltaZero,       "delta_zero",      kDeltaZeroMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eDeltaPlus,       "delta_plus",      kDeltaPlusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eDeltaPlusPlus,   "delta_plus_plus", kDeltaPlusPlusMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eDecayedMuon,     "decayed mu-",     kMuonMass));
-  prop.push_back(ParticleProperties(corsika::CorsikaParticle::eDecayedAntiMuon, "decayed mu+",     kMuonMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eUndefined,       "Undefined",       0.));
+  prop.push_back(ParticleProperties(CorsikaParticle::eElectron,        "e-",              kElectronMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::ePositron,        "e+",              kElectronMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eNuElectron,      "nu_e",            0.));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiNuElectron,  "anti_nu_e",       0.));
+  prop.push_back(ParticleProperties(CorsikaParticle::eMuon,            "mu-",             kMuonMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiMuon,        "mu+",             kMuonMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eNuMuon,          "nu_mu",           0.));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiNuMuon,      "anti_nu_mu",      0.));
+  prop.push_back(ParticleProperties(CorsikaParticle::eTau,             "tau-",            kTauMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiTau,         "tau+",            kTauMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eNuTau,           "nu_tau",          0.));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiNuTau,       "anti_nu_tau",     0.));
+  prop.push_back(ParticleProperties(CorsikaParticle::ePhoton,          "gamma",           0.));
+  prop.push_back(ParticleProperties(CorsikaParticle::ePiZero,          "pi0",             kPiZeroMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::ePiPlus,          "pi+",             kPiChargedMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::ePiMinus,         "pi-",             kPiChargedMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eEta,             "eta",             kEtaMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eKaon0L,          "kaon0L",          kKaonZeroMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eKaon0S,          "kaon0S",          kKaonZeroMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eKaonPlus,        "kaon+",           kKaonChargedMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eKaonMinus,       "kaon-",           kKaonChargedMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eLambda,          "lambda",          kLambdaMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eLambdac,         "lambda_c+",       kLambdacMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiLambda,      "anti_lambda",     kLambdaMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eSigmaPlus,       "sigma+",          kSigmaPlusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eSigmaZero,       "sigma0",          kSigmaZeroMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eSigmaMinus,      "sigma-",          kSigmaMinusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiSigmaPlus,   "anti_sigma+",     kSigmaPlusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiSigmaZero,   "anti_sigma0",     kSigmaZeroMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiSigmaMinus,  "anti_sigma-",     kSigmaMinusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eXiZero,          "xi0",             kXiZeroMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eXiMinus,         "xi-",             kXiMinusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiXiZero,      "anti_xi0",        kXiZeroMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiXiMinus,     "anti_xi-",        kXiMinusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eOmegaMinus,      "omega-",          kOmegaMinusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiOmegaMinus,  "anti_omega-",     kOmegaMinusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eNeutron,         "neutron",         kNeutronMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiNeutron,     "anti_neutron",    kNeutronMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eProton,          "proton",          kProtonMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eAntiProton,      "anti_proton",     kProtonMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eRhoZero,         "rho_zero",        kRhoZeroMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eRhoPlus,         "rho_plus",        kRhoPlusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eRhoMinus,        "rho_minus",       kRhoMinusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eOmegaMeson,      "omega_meson",     kOmegaMesonMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eDeltaMinus,      "delta_minus",     kDeltaMinusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eDeltaZero,       "delta_zero",      kDeltaZeroMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eDeltaPlus,       "delta_plus",      kDeltaPlusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eDeltaPlusPlus,   "delta_plus_plus", kDeltaPlusPlusMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eDecayedMuon,     "decayed mu-",     kMuonMass));
+  prop.push_back(ParticleProperties(CorsikaParticle::eDecayedAntiMuon, "decayed mu+",     kMuonMass));
 
   for (unsigned int i = 0; i != prop.size(); ++i) {
     if(particles_.find(prop[i].GetType()) == particles_.end())
-      particles_.insert(std::pair<int, corsika::ParticleProperties>(prop[i].GetType(), prop[i]));
+      particles_.insert(std::pair<int, ParticleProperties>(prop[i].GetType(), prop[i]));
   }
 }
 
@@ -175,81 +175,81 @@ ParticleList::InsertCorsikaToPDG(int theCorsikaCode, int thePDGCode)
     msg << "Cannot insert pair ("
         << theCorsikaCode << ", " << thePDGCode
         << ") into CorsikaToPDG map.";
-    throw corsika::CorsikaIOException(msg.str());
+    throw CorsikaIOException(msg.str());
   }
 }
 
 void
 ParticleList::InitCorsikaToPDGMap()
 {
-  InsertCorsikaToPDG(1, corsika::CorsikaParticle::ePhoton);
-  InsertCorsikaToPDG(2, corsika::CorsikaParticle::ePositron);
-  InsertCorsikaToPDG(3, corsika::CorsikaParticle::eElectron);
+  InsertCorsikaToPDG(1, CorsikaParticle::ePhoton);
+  InsertCorsikaToPDG(2, CorsikaParticle::ePositron);
+  InsertCorsikaToPDG(3, CorsikaParticle::eElectron);
 
-  InsertCorsikaToPDG(5, corsika::CorsikaParticle::eAntiMuon);
-  InsertCorsikaToPDG(6, corsika::CorsikaParticle::eMuon);
-  InsertCorsikaToPDG(7, corsika::CorsikaParticle::ePiZero);
-  InsertCorsikaToPDG(8, corsika::CorsikaParticle::ePiPlus);
-  InsertCorsikaToPDG(9, corsika::CorsikaParticle::ePiMinus);
+  InsertCorsikaToPDG(5, CorsikaParticle::eAntiMuon);
+  InsertCorsikaToPDG(6, CorsikaParticle::eMuon);
+  InsertCorsikaToPDG(7, CorsikaParticle::ePiZero);
+  InsertCorsikaToPDG(8, CorsikaParticle::ePiPlus);
+  InsertCorsikaToPDG(9, CorsikaParticle::ePiMinus);
 
-  InsertCorsikaToPDG(10, corsika::CorsikaParticle::eKaon0L);
-  InsertCorsikaToPDG(11, corsika::CorsikaParticle::eKaonPlus);
-  InsertCorsikaToPDG(12, corsika::CorsikaParticle::eKaonMinus);
-  InsertCorsikaToPDG(13, corsika::CorsikaParticle::eNeutron);
-  InsertCorsikaToPDG(14, corsika::CorsikaParticle::eProton);
-  InsertCorsikaToPDG(15, corsika::CorsikaParticle::eAntiProton);
-  InsertCorsikaToPDG(16, corsika::CorsikaParticle::eKaon0S);
-  InsertCorsikaToPDG(17, corsika::CorsikaParticle::eEta);
-  InsertCorsikaToPDG(18, corsika::CorsikaParticle::eLambda);
+  InsertCorsikaToPDG(10, CorsikaParticle::eKaon0L);
+  InsertCorsikaToPDG(11, CorsikaParticle::eKaonPlus);
+  InsertCorsikaToPDG(12, CorsikaParticle::eKaonMinus);
+  InsertCorsikaToPDG(13, CorsikaParticle::eNeutron);
+  InsertCorsikaToPDG(14, CorsikaParticle::eProton);
+  InsertCorsikaToPDG(15, CorsikaParticle::eAntiProton);
+  InsertCorsikaToPDG(16, CorsikaParticle::eKaon0S);
+  InsertCorsikaToPDG(17, CorsikaParticle::eEta);
+  InsertCorsikaToPDG(18, CorsikaParticle::eLambda);
 
-  InsertCorsikaToPDG(19, corsika::CorsikaParticle::eSigmaPlus);
-  InsertCorsikaToPDG(20, corsika::CorsikaParticle::eSigmaZero);
-  InsertCorsikaToPDG(21, corsika::CorsikaParticle::eSigmaMinus);
-  InsertCorsikaToPDG(22, corsika::CorsikaParticle::eXiZero);
-  InsertCorsikaToPDG(23, corsika::CorsikaParticle::eXiMinus);
-  InsertCorsikaToPDG(24, corsika::CorsikaParticle::eOmegaMinus);
+  InsertCorsikaToPDG(19, CorsikaParticle::eSigmaPlus);
+  InsertCorsikaToPDG(20, CorsikaParticle::eSigmaZero);
+  InsertCorsikaToPDG(21, CorsikaParticle::eSigmaMinus);
+  InsertCorsikaToPDG(22, CorsikaParticle::eXiZero);
+  InsertCorsikaToPDG(23, CorsikaParticle::eXiMinus);
+  InsertCorsikaToPDG(24, CorsikaParticle::eOmegaMinus);
 
-  InsertCorsikaToPDG(25, corsika::CorsikaParticle::eAntiNeutron);
-  InsertCorsikaToPDG(26, corsika::CorsikaParticle::eAntiLambda);
+  InsertCorsikaToPDG(25, CorsikaParticle::eAntiNeutron);
+  InsertCorsikaToPDG(26, CorsikaParticle::eAntiLambda);
 
-  InsertCorsikaToPDG(27, corsika::CorsikaParticle::eAntiSigmaPlus);
-  InsertCorsikaToPDG(28, corsika::CorsikaParticle::eAntiSigmaZero);
-  InsertCorsikaToPDG(29, corsika::CorsikaParticle::eAntiSigmaMinus);
-  InsertCorsikaToPDG(30, corsika::CorsikaParticle::eAntiXiZero);
-  InsertCorsikaToPDG(31, corsika::CorsikaParticle::eAntiXiMinus); // actually plus?
-  InsertCorsikaToPDG(32, corsika::CorsikaParticle::eAntiOmegaMinus); // actually plus?
+  InsertCorsikaToPDG(27, CorsikaParticle::eAntiSigmaPlus);
+  InsertCorsikaToPDG(28, CorsikaParticle::eAntiSigmaZero);
+  InsertCorsikaToPDG(29, CorsikaParticle::eAntiSigmaMinus);
+  InsertCorsikaToPDG(30, CorsikaParticle::eAntiXiZero);
+  InsertCorsikaToPDG(31, CorsikaParticle::eAntiXiMinus); // actually plus?
+  InsertCorsikaToPDG(32, CorsikaParticle::eAntiOmegaMinus); // actually plus?
 
-  InsertCorsikaToPDG(50, corsika::CorsikaParticle::eOmegaMeson);
-  InsertCorsikaToPDG(51, corsika::CorsikaParticle::eRhoZero);
-  InsertCorsikaToPDG(52, corsika::CorsikaParticle::eRhoPlus);
-  InsertCorsikaToPDG(53, corsika::CorsikaParticle::eRhoMinus);
-  InsertCorsikaToPDG(54, corsika::CorsikaParticle::eDeltaPlusPlus);
-  InsertCorsikaToPDG(55, corsika::CorsikaParticle::eDeltaPlus);
-  InsertCorsikaToPDG(56, corsika::CorsikaParticle::eDeltaZero);
-  InsertCorsikaToPDG(57, corsika::CorsikaParticle::eDeltaMinus);
+  InsertCorsikaToPDG(50, CorsikaParticle::eOmegaMeson);
+  InsertCorsikaToPDG(51, CorsikaParticle::eRhoZero);
+  InsertCorsikaToPDG(52, CorsikaParticle::eRhoPlus);
+  InsertCorsikaToPDG(53, CorsikaParticle::eRhoMinus);
+  InsertCorsikaToPDG(54, CorsikaParticle::eDeltaPlusPlus);
+  InsertCorsikaToPDG(55, CorsikaParticle::eDeltaPlus);
+  InsertCorsikaToPDG(56, CorsikaParticle::eDeltaZero);
+  InsertCorsikaToPDG(57, CorsikaParticle::eDeltaMinus);
 
   // not in the enumeration type
-  // InsertCorsikaToPDG(58, corsika::CorsikaParticle::eAntiDeltaPlusPlus);
-  // InsertCorsikaToPDG(59, corsika::CorsikaParticle::eAntiDeltaPlus);
-  // InsertCorsikaToPDG(60, corsika::CorsikaParticle::eAntiDeltaZero);
-  // InsertCorsikaToPDG(61, corsika::CorsikaParticle::eAntiDeltaMinus);
-  // InsertCorsikaToPDG(62, corsika::CorsikaParticle::eKZeroResonance);
-  // InsertCorsikaToPDG(63, corsika::CorsikaParticle::eKPlusResonance);
-  // InsertCorsikaToPDG(64, corsika::CorsikaParticle::eKMinusResonance);
-  // InsertCorsikaToPDG(65, corsika::CorsikaParticle::eAntiKZeroResonance);
+  // InsertCorsikaToPDG(58, CorsikaParticle::eAntiDeltaPlusPlus);
+  // InsertCorsikaToPDG(59, CorsikaParticle::eAntiDeltaPlus);
+  // InsertCorsikaToPDG(60, CorsikaParticle::eAntiDeltaZero);
+  // InsertCorsikaToPDG(61, CorsikaParticle::eAntiDeltaMinus);
+  // InsertCorsikaToPDG(62, CorsikaParticle::eKZeroResonance);
+  // InsertCorsikaToPDG(63, CorsikaParticle::eKPlusResonance);
+  // InsertCorsikaToPDG(64, CorsikaParticle::eKMinusResonance);
+  // InsertCorsikaToPDG(65, CorsikaParticle::eAntiKZeroResonance);
 
-  InsertCorsikaToPDG(66, corsika::CorsikaParticle::eNuElectron);
-  InsertCorsikaToPDG(67, corsika::CorsikaParticle::eAntiNuElectron);
-  InsertCorsikaToPDG(68, corsika::CorsikaParticle::eNuMuon);
-  InsertCorsikaToPDG(69, corsika::CorsikaParticle::eAntiNuMuon);
+  InsertCorsikaToPDG(66, CorsikaParticle::eNuElectron);
+  InsertCorsikaToPDG(67, CorsikaParticle::eAntiNuElectron);
+  InsertCorsikaToPDG(68, CorsikaParticle::eNuMuon);
+  InsertCorsikaToPDG(69, CorsikaParticle::eAntiNuMuon);
 
-  InsertCorsikaToPDG(71, corsika::CorsikaParticle::eEta);
-  InsertCorsikaToPDG(72, corsika::CorsikaParticle::eEta);
-  InsertCorsikaToPDG(73, corsika::CorsikaParticle::eEta);
-  InsertCorsikaToPDG(74, corsika::CorsikaParticle::eEta);
+  InsertCorsikaToPDG(71, CorsikaParticle::eEta);
+  InsertCorsikaToPDG(72, CorsikaParticle::eEta);
+  InsertCorsikaToPDG(73, CorsikaParticle::eEta);
+  InsertCorsikaToPDG(74, CorsikaParticle::eEta);
 
-  InsertCorsikaToPDG(95, corsika::CorsikaParticle::eDecayedAntiMuon);
-  InsertCorsikaToPDG(96, corsika::CorsikaParticle::eDecayedMuon);
+  InsertCorsikaToPDG(95, CorsikaParticle::eDecayedAntiMuon);
+  InsertCorsikaToPDG(96, CorsikaParticle::eDecayedMuon);
 }
 
 
@@ -285,13 +285,13 @@ ParticleList::CorsikaToPDG(int theCorsikaCode)
 std::string
 ParticleList::NameFromPDG(int pdgCode)
 {
-  return corsika::ParticleList::Get(pdgCode).GetName();
+  return ParticleList::Get(pdgCode).GetName();
 }
 
 std::string
 ParticleList::NameFromCorsika(int corsikaCode)
 {
-  return corsika::ParticleList::Get(CorsikaToPDG(corsikaCode)).GetName();
+  return ParticleList::Get(CorsikaToPDG(corsikaCode)).GetName();
 }
 
 // Configure (x)emacs for this file ...
