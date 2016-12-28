@@ -46,7 +46,6 @@ namespace corsika
         virtual void SeekTo(size_t thePosition) = 0;
         virtual bool IsSeekable() const = 0;
         
-        virtual bool IsValid() = 0;
         virtual bool IsThinned() const = 0;
         
         static RawStreamPtr Create(const std::string& theName);

@@ -107,22 +107,6 @@ CorsikaShowerFile::Open(const std::string& theFileName, bool scan)
   }
 }
 
-
-bool
-CorsikaShowerFile::IsValid(const std::string& theFileName)
-{
-  CorsikaShowerFile file;
-  file.Open(theFileName, false);
-  return file.IsValid();
-}
-
-bool
-CorsikaShowerFile::IsValid()
-{
-  return fRawStream->IsValid();
-}
-
-
 void
 CorsikaShowerFile::Close()
 {

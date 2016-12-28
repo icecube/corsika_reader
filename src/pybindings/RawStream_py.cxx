@@ -32,10 +32,6 @@ struct RawStream
     {
         return (bool)stream;
     }
-    bool is_valid()
-    {
-        return stream->IsValid();
-    }
     size_t get_next_position()
     {
         return stream->GetNextPosition();
@@ -60,7 +56,6 @@ void register_RawStream()
     .def("get_next_block", &RawStream::get_next_block_th)
     .def("seek_to", &RawStream::seek_to)
     .add_property("is_open", &RawStream::is_open)
-    .add_property("is_valid", &RawStream::is_valid)
     .def("get_next_position", &RawStream::get_next_position)
     .def("particles", &RawStream::particles)
     .def("particles", &RawStream::particles1)

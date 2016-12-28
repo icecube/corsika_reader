@@ -13,7 +13,7 @@
 
 namespace corsika
 {
-    template <class Thinning, typename Padding> struct RawStreamT: RawStream
+    template <typename Thinning, typename Padding> struct RawStreamT: RawStream
     {
         struct DiskBlock
         {
@@ -27,14 +27,16 @@ namespace corsika
         size_t current_block;
         size_t current_disk_block;
         bool buffer_valid;
-        bool valid;
         DiskBlock buffer;
         
         RawStreamT(boost::shared_ptr<FileStream> file, std::string filename, int64_t len64): file(file), filename(filename), current_block(0), current_disk_block(0)
         {
             *reinterpret_cast<int64_t*>(&buffer) = len64; // Copy value over
             buffer_valid = file->read(sizeof(DiskBlock) - 8, (char*)&buffer + 8) > 0;
-            valid = buffer_valid && buffer.fBlock[0].IsRunHeader() && (buffer.padding_start == buffer.padding_end);
+        }
+        bool valid()
+        {
+            return buffer_valid && buffer.fBlock[0].IsRunHeader() && (buffer.padding_start == buffer.padding_end);
         }
         
         template<typename T> bool read_block(T& block)
@@ -103,10 +105,6 @@ namespace corsika
                     GetNextBlock(block);
             }
         }
-        bool IsValid()
-        {
-            return valid;
-        }
         bool IsThinned() const
         {
             return Thinning::kWordsPerSubBlock == Thinned::kWordsPerSubBlock;
@@ -119,11 +117,19 @@ namespace corsika
             return true;
         }
     };
-    
-    RawStreamPtr RawStream::Create(const std::string& theName)
+    template <typename Thinning, typename Padding>
+    RawStreamPtr create_stream(boost::shared_ptr<FileStream> file, std::string filename, int64_t len64)
     {
-        boost::shared_ptr<FileStream> file(FileStream::open(theName.c_str()));
-        if (!file) throw CorsikaIOException("Error opening Corsika file '" + theName + "'.\n");
+        auto ptr = new RawStreamT<Thinning, Padding>(file, filename, len64);
+        if (ptr->valid()) return RawStreamPtr(ptr);
+        delete ptr;
+        throw CorsikaIOException("Not a valid corsika file\n");
+    }
+    
+    RawStreamPtr RawStream::Create(const std::string& filename)
+    {
+        boost::shared_ptr<FileStream> file(FileStream::open(filename.c_str()));
+        if (!file) throw CorsikaIOException("Error opening Corsika file '" + filename + "'.\n");
         
         int64_t len64;
         file->read(8, &len64);
@@ -133,13 +139,13 @@ namespace corsika
         const int not_thinned_size = sizeof(GenericBlock<NotThinned>) * kSubBlocksPerBlock;
 
         if (len64 == thinned_size)
-            return RawStreamPtr(new RawStreamT<Thinned, int64_t>(file, theName, len64)); // 64bit thinned
+            return create_stream<Thinned, int64_t>(file, filename, len64); // 64bit thinned
         else if (len64 == not_thinned_size)
-            return RawStreamPtr( new RawStreamT<NotThinned, int64_t>(file, theName, len64)); // 64bit not-thinned
+            return create_stream<NotThinned, int64_t>(file, filename, len64); // 64bit not-thinned
         else if (len32 == thinned_size)
-            return RawStreamPtr(new RawStreamT<Thinned, int32_t>(file, theName, len64)); // 32bit thinned
+            return create_stream<Thinned, int32_t>(file, filename, len64); // 32bit thinned
         else if (len32 == not_thinned_size)
-            return RawStreamPtr(new RawStreamT<NotThinned, int32_t>(file, theName, len64)); // 32bit not-thinned
+            return create_stream<NotThinned, int32_t>(file, filename, len64); // 32bit not-thinned
         
         throw CorsikaIOException("Can't determine type of corsika file\n");
     }

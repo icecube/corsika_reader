@@ -61,7 +61,6 @@ void register_CorsikaShowerFile()
     ;
 
   CorsikaShower& (CorsikaShowerFile::*get_current)() = &CorsikaShowerFile::GetCurrentShower;
-  bool (CorsikaShowerFile::*is_valid)() = &CorsikaShowerFile::IsValid;
 
   class_<CorsikaShowerFile, boost::noncopyable>("CorsikaShowerFile")
     .def(init<const std::string&, bool>())
@@ -71,7 +70,6 @@ void register_CorsikaShowerFile()
     .def("find_event", &CorsikaShowerFile::FindEvent)
     .add_property("n_events", &CorsikaShowerFile::GetNEvents)
     .def("events", get_shower_iterator)
-    .add_property("is_valid", is_valid)
     //.staticmethod("IsValid")
     .add_property("current_shower", make_function(get_current, return_internal_reference<>()))
     .def("shower", get_shower, return_internal_reference<>())

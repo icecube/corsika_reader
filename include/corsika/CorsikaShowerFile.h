@@ -53,7 +53,6 @@ namespace corsika
 
     virtual size_t GetNEvents();
 
-    bool IsValid();
 
     bool IsOpen()
     { return bool(fRawStream); }
