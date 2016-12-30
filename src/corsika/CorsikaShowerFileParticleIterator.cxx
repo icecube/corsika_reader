@@ -63,49 +63,49 @@ CorsikaShowerFileParticleIterator::operator==(const CorsikaShowerFileParticleIte
 }
 
 
-void
-CorsikaShowerFileParticleIterator::increment()
+boost::optional<CorsikaParticle> CorsikaShowerFileParticleIterator::increment()
 {
-  boost::optional<CorsikaParticle> parent;
-  boost::optional<CorsikaParticle> grandparent;
-  boost::optional<CorsikaParticle> muaddi;
-  while((value_ = iterator_->GetCorsikaParticle())) {
-    const int particleId =
-      ParticleList::CorsikaToPDG(int(value_->fDescription/1000));
-    const short unsigned int obsLevel =  fmod(value_->fDescription, 10);
-    if (value_->fDescription < 0 && !parent) {
-      parent = value_;
-      continue;
+    boost::optional<CorsikaParticle> parent;
+    boost::optional<CorsikaParticle> grandparent;
+    boost::optional<CorsikaParticle> muaddi;
+    while((value_ = iterator_->GetCorsikaParticle())) {
+        const int particleId =
+        ParticleList::CorsikaToPDG(int(value_->fDescription/1000));
+        const short unsigned int obsLevel =  fmod(value_->fDescription, 10);
+        if (value_->fDescription < 0 && !parent) {
+            parent = value_;
+            continue;
+        }
+        if (value_->fDescription < 0 && parent) {
+            grandparent = value_;
+            continue;
+        }
+        const int temp = int(value_->fDescription/1000);
+        if ((temp == 75 || temp == 76)  && !muaddi) {
+            muaddi = value_;
+            continue;
+        }
+        
+        if (particleId == CorsikaParticle::eUndefined || (!fKeepMuProd && (particleId == CorsikaParticle::eDecayedMuon || particleId == CorsikaParticle::eDecayedAntiMuon)) || obsLevel != fObservationLevel) {
+            // reset and continue
+            parent = boost::none;
+            grandparent = boost::none;
+            muaddi = boost::none;
+            continue;
+        }
+        
+        if (grandparent && parent) {
+            value_->SetParent(parent.get());
+            value_->SetGrandParent(grandparent.get());
+        }
+        if (muaddi) {
+            value_->SetMuonInfo(muaddi.get());
+        }
+        
+        // deal with corsika's idiosyncrasies here
+        value_->fTorZ -= fTimeOffset;
+        
+        break;
     }
-    if (value_->fDescription < 0 && parent) {
-      grandparent = value_;
-      continue;
-    }
-    const int temp = int(value_->fDescription/1000);
-    if ((temp == 75 || temp == 76)  && !muaddi) {
-      muaddi = value_;
-      continue;
-    }
-
-    if (particleId == CorsikaParticle::eUndefined || (!fKeepMuProd && (particleId == CorsikaParticle::eDecayedMuon || particleId == CorsikaParticle::eDecayedAntiMuon)) || obsLevel != fObservationLevel) {
-      // reset and continue
-      parent = boost::none;
-      grandparent = boost::none;
-      muaddi = boost::none;
-      continue;
-    }
-
-    if (grandparent && parent) {
-      value_->SetParent(parent.get());
-      value_->SetGrandParent(grandparent.get());
-    }
-    if (muaddi) {
-      value_->SetMuonInfo(muaddi.get());
-    }
-
-    // deal with corsika's idiosyncrasies here
-    value_->fTorZ -= fTimeOffset;
-
-    return;
-  }
+    return value_;
 }

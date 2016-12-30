@@ -45,7 +45,7 @@ namespace corsika {
     // the following things implement an iterator interface using iterator_facade. This might be removed.
     typedef CorsikaParticle& result_type;
 
-    void increment();
+    boost::optional<CorsikaParticle> increment();
 
     CorsikaParticle& dereference() const {
       return value_.get();

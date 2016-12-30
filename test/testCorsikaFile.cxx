@@ -42,22 +42,28 @@ namespace testCorsikaFileNS {
     file.FindEvent(1);
     ShowerParticleList particles = file.GetCurrentShower().GetParticles();
     int count = 0;
-    ShowerParticleList::iterator it = particles.begin();
+      
+      boost::optional<CorsikaParticle> it = particles.NextParticle();
+      
+    //ShowerParticleList::iterator it = particles.begin();
     ENSURE_EQUAL(it->PDGCode(), CorsikaParticle::eMuon);
     ENSURE_DISTANCE(it->fTorZ, 183.053619385, 1e-8);
-    for (; it != particles.end(); ++it) {
-      it->GetName();
-      const int pdg = it->PDGCode();
-      if ((pdg == CorsikaParticle::eMuon || pdg == CorsikaParticle::eMuon)) {
-        it->KineticEnergy();
+    //for (; it != particles.end(); ++it) {
+      while(it)
+      {
+          it->GetName();
+          const int pdg = it->PDGCode();
+          if ((pdg == CorsikaParticle::eMuon || pdg == CorsikaParticle::eMuon)) {
+              it->KineticEnergy();
+          }
+          ++count;
+          it = particles.NextParticle();
       }
-      ++count;
-    }
     ENSURE_EQUAL(count, 181992);
 
     CorsikaShower shower = file.GetCurrentShower();
     ShowerParticleList particles2 = shower.GetParticles();
-    ENSURE(it == particles2.end());
+    //ENSURE(it == particles2.end());
   }
 
 }

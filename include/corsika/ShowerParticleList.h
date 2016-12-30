@@ -35,6 +35,12 @@ namespace corsika {
 
     virtual ~ShowerParticleList() { }
 
+    boost::optional<CorsikaParticle> NextParticle()
+      {
+          return fFileInterface->increment();
+      }
+      
+      /*
     CorsikaShowerFileParticleIterator
     begin() const
     {
@@ -46,7 +52,7 @@ namespace corsika {
     end() const
     {
       return fInvalid;
-    }
+    }*/
 
   private:
     CorsikaShowerFileParticleIterator* fFileInterface;
