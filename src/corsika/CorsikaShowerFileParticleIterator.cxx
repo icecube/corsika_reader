@@ -45,25 +45,9 @@ CorsikaShowerFileParticleIterator(RawStreamPtr rawStream,
 }
 
 
-bool
-CorsikaShowerFileParticleIterator::operator==(const CorsikaShowerFileParticleIterator& other) const
-{
-  if (!IsValid() || !other.IsValid()) {
-    return IsValid() == other.IsValid();
-  }
-
-  bool ret =
-    iterator_         == other.iterator_ &&
-    fTimeOffset       == other.fTimeOffset &&
-    fObservationLevel == other.fObservationLevel &&
-    fIsThinned        == other.fIsThinned &&
-    fKeepMuProd       == other.fKeepMuProd;
-
-  return ret;
-}
 
 
-boost::optional<CorsikaParticle> CorsikaShowerFileParticleIterator::increment()
+boost::optional<CorsikaParticle> CorsikaShowerFileParticleIterator::NextParticle()
 {
     boost::optional<CorsikaParticle> parent;
     boost::optional<CorsikaParticle> grandparent;

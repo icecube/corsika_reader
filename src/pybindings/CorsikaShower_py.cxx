@@ -49,12 +49,12 @@ public:
       PyErr_SetString(PyExc_StopIteration, "Empty particle list.");
       boost::python::throw_error_already_set();
     }
-    ++(*fIterator);
-    if ((*fIterator)==fInvalid) {
+      boost::optional<CorsikaParticle> p = fIterator->NextParticle();
+    if (!p) {
       PyErr_SetString(PyExc_StopIteration, "No more particles.");
       boost::python::throw_error_already_set();
     }
-    return *(*fIterator);
+    return *p;
   }
 private:
   CorsikaShowerFileParticleIterator* fIterator;

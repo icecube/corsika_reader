@@ -37,7 +37,7 @@ namespace corsika {
 
     boost::optional<CorsikaParticle> NextParticle()
       {
-          return fFileInterface->increment();
+          return fFileInterface->NextParticle();
       }
       
       /*

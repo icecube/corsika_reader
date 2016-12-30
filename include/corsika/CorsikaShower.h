@@ -53,7 +53,7 @@ namespace corsika {
     CorsikaShowerFileParticleIterator& GetParticleIt()
     {
       fParticleIterator->Rewind();
-      ++(*fParticleIterator);
+      //++(*fParticleIterator);
       return *fParticleIterator;
     }
 
