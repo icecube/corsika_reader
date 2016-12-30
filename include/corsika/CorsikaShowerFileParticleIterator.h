@@ -41,10 +41,7 @@ namespace corsika
 
 
   private:
-
-    bool IsValid() const { return iterator_ && iterator_->IsValid(); }
-
-    mutable boost::optional<CorsikaParticle> value_;
+    boost::optional<CorsikaParticle> value_;
     EventHeader event_header_;
     RawParticleIteratorPtr iterator_;
 

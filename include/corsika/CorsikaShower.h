@@ -15,7 +15,6 @@ static const char CVSId_io_CorsikaShower[] =
 
 #include <corsika/CorsikaBlock.h>
 #include <corsika/CorsikaShowerFileParticleIterator.h>
-#include <corsika/ShowerParticleList.h>
 #include <corsika/GaisserHillasParameter.h>
 
 #include <vector>
@@ -24,10 +23,7 @@ namespace corsika {
 
   class CorsikaShower {
   public:
-    CorsikaShower():
-      fParticleIterator(0),
-      fParticles(fParticleIterator)
-    {}
+    CorsikaShower(): fParticleIterator(0) {}
     CorsikaShower(const EventHeader& header,
                   const EventTrailer& trailer,
                   CorsikaShowerFileParticleIterator* particleIt);
@@ -44,11 +40,6 @@ namespace corsika {
     float GetEMEnergyCutoff() const   {return fEMEnergyCutoff;  }
     float GetMuonEnergyCutoff() const {return fMuonEnergyCutoff;}
 
-    const ShowerParticleList& GetParticles() const
-    {return fParticles;}
-
-    ShowerParticleList& GetParticles()
-    {return fParticles;}
 
     CorsikaShowerFileParticleIterator& GetParticleIt()
     {
@@ -110,7 +101,6 @@ namespace corsika {
     GaisserHillasParameter fGH;
 
     CorsikaShowerFileParticleIterator* fParticleIterator;
-    ShowerParticleList fParticles;
   };
 
 } // io

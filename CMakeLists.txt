@@ -45,7 +45,6 @@ set (Corsika_HEADERS
   include/corsika/CorsikaShower.h
   include/corsika/CorsikaShowerFile.h
   include/corsika/CorsikaShowerFileParticleIterator.h
-  include/corsika/ShowerParticleList.h
   include/corsika/GaisserHillasParameter.h
   include/corsika/particle/NucleusProperties.h
   include/corsika/particle/ParticleList.h
@@ -87,7 +86,6 @@ set (Corsika_BoostPython_SOURCES
   src/pybindings/ParticleProperties_py.cxx
   src/pybindings/PhysicalConstants_py.cxx
   src/pybindings/RawParticleIterator_py.cxx
-  src/pybindings/ShowerParticleList_py.cxx
   src/pybindings/CorsikaLongProfile_py.cxx
   src/pybindings/CorsikaLongFile_py.cxx
   src/pybindings/RawStream_py.cxx

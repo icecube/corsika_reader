@@ -6,7 +6,6 @@ const static char CVSId[] =
 #include <corsika/Index.h>
 #include <corsika/CorsikaUnits.h>
 #include <corsika/CorsikaShowerFile.h>
-#include <corsika/ShowerParticleList.h>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -40,7 +39,7 @@ namespace testCorsikaFileNS {
   {
     CorsikaShowerFile file(filename);
     file.FindEvent(1);
-    ShowerParticleList particles = file.GetCurrentShower().GetParticles();
+    CorsikaShowerFileParticleIterator& particles = file.GetCurrentShower().GetParticleIt();
     int count = 0;
       
       boost::optional<CorsikaParticle> it = particles.NextParticle();
@@ -60,10 +59,6 @@ namespace testCorsikaFileNS {
           it = particles.NextParticle();
       }
     ENSURE_EQUAL(count, 181992);
-
-    CorsikaShower shower = file.GetCurrentShower();
-    ShowerParticleList particles2 = shower.GetParticles();
-    //ENSURE(it == particles2.end());
   }
 
 }

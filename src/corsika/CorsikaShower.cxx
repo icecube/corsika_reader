@@ -30,6 +30,5 @@ CorsikaShower::CorsikaShower(const struct EventHeader& header,
   //fShowerRunId(int(fRunNumber)),
   fEMEnergyCutoff(header.fCutoffElectrons),
   fMuonEnergyCutoff(header.fCutoffMuons),
-  fParticleIterator(particleIt),
-      fParticles(fParticleIterator)
+  fParticleIterator(particleIt)
 {}
