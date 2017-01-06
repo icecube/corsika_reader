@@ -26,6 +26,16 @@ namespace corsika
             return boost::optional<CorsikaParticle>(CorsikaParticle(*d));
         return boost::optional<CorsikaParticle>();
     }
+    template <class Thinning> CorsikaParticle* RawParticleIterator<Thinning>::Next()
+    {
+        if (const ParticleData<Thinning>* p = GetOneParticle())
+        {
+            particle = CorsikaParticle(*p);
+            return &particle;
+        }
+        return 0;
+    }
+    
     template <class Thinning> void RawParticleIterator<Thinning>::Rewind()
     {
         current_particle = kParticlesInBlock;
