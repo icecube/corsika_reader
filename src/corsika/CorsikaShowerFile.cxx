@@ -221,11 +221,9 @@ CorsikaShowerFile::Read()
 
   CorsikaShowerFileParticleIterator* particleIterator =
     new CorsikaShowerFileParticleIterator(fRawStream,
-                                          headerBlock.AsEventHeader,
                                           fIndex.eventHeaders[fCurrentPosition] + 1,
                                           timeShift,
                                           fObservationLevel,
-                                          fIsThinned,
                                           true); // last one is keepMuProd
   fCurrentShower = CorsikaShower(header, trailer, particleIterator);
 

@@ -99,26 +99,16 @@ namespace corsika
       float KineticEnergy() const;
       float TotalEnergy() const;
 
-      bool HasParent() const
-      { return bool(fParent); }
+      bool HasParent() const { return bool(fParent); }
+      void SetParent(const CorsikaParticle& p) { fParent.reset(new CorsikaParticle(p)); }
+      CorsikaParticle& GetParent() { return *fParent; }
 
-      void SetParent(const CorsikaParticle& p)
-      { fParent.reset(new CorsikaParticle(p)); }
-      CorsikaParticle& GetParent()
-      { return *fParent; }
+      void SetGrandParent(const CorsikaParticle& p) { fGrandParent.reset(new CorsikaParticle(p));  }
+      CorsikaParticle& GetGrandParent() { return *fGrandParent; }
 
-      void SetGrandParent(const CorsikaParticle& p)
-      { fGrandParent.reset(new CorsikaParticle(p));  }
-      CorsikaParticle& GetGrandParent()
-      { return *fGrandParent; }
-
-      bool HasMuonInfo() const
-      { return bool(fMuonInfo); }
-
-      void SetMuonInfo(const CorsikaParticle& p)
-      { fMuonInfo.reset(new CorsikaParticle(p));  }
-      CorsikaParticle& GetMuonInfo()
-      { return *fMuonInfo; }
+      bool HasMuonInfo() const { return bool(fMuonInfo); }
+      void SetMuonInfo(const CorsikaParticle& p) { fMuonInfo.reset(new CorsikaParticle(p));  }
+      CorsikaParticle& GetMuonInfo() { return *fMuonInfo; }
 
       std::string String() const;
 

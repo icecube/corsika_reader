@@ -1,76 +1,41 @@
-/**
-   \file
-   Implementation file for CorsikaShowerFileParticleIterator class
-   \author Troy Porter
-   \version $Id$
-   \date 22 May 2003
-*/
-
 #include <corsika/CorsikaShowerFileParticleIterator.h>
-#include <corsika/CorsikaIOException.h>
 #include <corsika/particle/ParticleList.h>
-#include <corsika/CorsikaParticle.h>
-#include <corsika/CorsikaUnits.h>
-#include <corsika/Constants.h>
-#include <corsika/RawStream.h>
-#include <sstream>
-#include <cmath>
+
 using namespace corsika;
 
-
 CorsikaShowerFileParticleIterator::
-CorsikaShowerFileParticleIterator() :
-  fTimeOffset(0),
-  fObservationLevel(0),
-  fIsThinned(false),
-  fKeepMuProd(false)
-{ }
-
-CorsikaShowerFileParticleIterator::
-CorsikaShowerFileParticleIterator(RawStreamPtr rawStream,
-				  EventHeader event_header,
-                                   unsigned long int start,
-                                  const double timeOffset,
-                                  const unsigned int observationLevel,
-                                  const bool isThinned,
-                                  const bool keepMuProd) :
-  event_header_(event_header),
-    iterator_(VRawParticleIterator::Create(rawStream, start)),
-  fTimeOffset(timeOffset),
-  fObservationLevel(observationLevel),
-  fIsThinned(isThinned),
-  fKeepMuProd(keepMuProd)
+CorsikaShowerFileParticleIterator(RawStreamPtr stream, size_t start, double timeOffset, int observationLevel, bool keepMuProd):
+    iterator_(VRawParticleIterator::Create(stream, start)), fTimeOffset(timeOffset),
+    fObservationLevel(observationLevel), fKeepMuProd(keepMuProd)
 {
-  Rewind();
+    Rewind();
 }
-
-
-
 
 boost::optional<CorsikaParticle> CorsikaShowerFileParticleIterator::NextParticle()
 {
     boost::optional<CorsikaParticle> parent;
     boost::optional<CorsikaParticle> grandparent;
     boost::optional<CorsikaParticle> muaddi;
-    while((value_ = iterator_->GetCorsikaParticle())) {
-        const int particleId =
-        ParticleList::CorsikaToPDG(int(value_->fDescription/1000));
-        const short unsigned int obsLevel =  fmod(value_->fDescription, 10);
-        if (value_->fDescription < 0 && !parent) {
-            parent = value_;
+    while((value_ = iterator_->GetCorsikaParticle()))
+    {
+        int corsika_particle_id = int(value_->fDescription/1000);
+        int particleId = ParticleList::CorsikaToPDG(corsika_particle_id);
+        int obsLevel = (unsigned)value_->fDescription % 10;
+        if (value_->fDescription < 0) // history particle
+        {
+            if (!parent) parent = value_;
+            else grandparent = value_;
             continue;
         }
-        if (value_->fDescription < 0 && parent) {
-            grandparent = value_;
-            continue;
-        }
-        const int temp = int(value_->fDescription/1000);
-        if ((temp == 75 || temp == 76)  && !muaddi) {
+        
+        if ((corsika_particle_id == 75 || corsika_particle_id == 76)  && !muaddi)
+        {
             muaddi = value_;
             continue;
         }
         
-        if (particleId == CorsikaParticle::eUndefined || (!fKeepMuProd && (particleId == CorsikaParticle::eDecayedMuon || particleId == CorsikaParticle::eDecayedAntiMuon)) || obsLevel != fObservationLevel) {
+        if (particleId == CorsikaParticle::eUndefined || (!fKeepMuProd && (particleId == CorsikaParticle::eDecayedMuon || particleId == CorsikaParticle::eDecayedAntiMuon)) || obsLevel != fObservationLevel)
+        {
             // reset and continue
             parent = boost::none;
             grandparent = boost::none;
@@ -78,13 +43,12 @@ boost::optional<CorsikaParticle> CorsikaShowerFileParticleIterator::NextParticle
             continue;
         }
         
-        if (grandparent && parent) {
+        if (grandparent && parent)
+        {
             value_->SetParent(parent.get());
             value_->SetGrandParent(grandparent.get());
         }
-        if (muaddi) {
-            value_->SetMuonInfo(muaddi.get());
-        }
+        if (muaddi) value_->SetMuonInfo(muaddi.get());
         
         // deal with corsika's idiosyncrasies here
         value_->fTorZ -= fTimeOffset;
