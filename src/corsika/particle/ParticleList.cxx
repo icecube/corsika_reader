@@ -165,91 +165,79 @@ ParticleList::SetList()
   }
 }
 
-
-void
-ParticleList::InsertCorsikaToPDG(int theCorsikaCode, int thePDGCode)
+void ParticleList::InitCorsikaToPDGMap()
 {
-  if ( !corsikaToPDGMap_.insert(std::make_pair(theCorsikaCode,
-                                               thePDGCode)).second ) {
-    std::ostringstream msg;
-    msg << "Cannot insert pair ("
-        << theCorsikaCode << ", " << thePDGCode
-        << ") into CorsikaToPDG map.";
-    throw CorsikaIOException(msg.str());
-  }
-}
-
-void
-ParticleList::InitCorsikaToPDGMap()
-{
-  InsertCorsikaToPDG(1, CorsikaParticle::ePhoton);
-  InsertCorsikaToPDG(2, CorsikaParticle::ePositron);
-  InsertCorsikaToPDG(3, CorsikaParticle::eElectron);
-
-  InsertCorsikaToPDG(5, CorsikaParticle::eAntiMuon);
-  InsertCorsikaToPDG(6, CorsikaParticle::eMuon);
-  InsertCorsikaToPDG(7, CorsikaParticle::ePiZero);
-  InsertCorsikaToPDG(8, CorsikaParticle::ePiPlus);
-  InsertCorsikaToPDG(9, CorsikaParticle::ePiMinus);
-
-  InsertCorsikaToPDG(10, CorsikaParticle::eKaon0L);
-  InsertCorsikaToPDG(11, CorsikaParticle::eKaonPlus);
-  InsertCorsikaToPDG(12, CorsikaParticle::eKaonMinus);
-  InsertCorsikaToPDG(13, CorsikaParticle::eNeutron);
-  InsertCorsikaToPDG(14, CorsikaParticle::eProton);
-  InsertCorsikaToPDG(15, CorsikaParticle::eAntiProton);
-  InsertCorsikaToPDG(16, CorsikaParticle::eKaon0S);
-  InsertCorsikaToPDG(17, CorsikaParticle::eEta);
-  InsertCorsikaToPDG(18, CorsikaParticle::eLambda);
-
-  InsertCorsikaToPDG(19, CorsikaParticle::eSigmaPlus);
-  InsertCorsikaToPDG(20, CorsikaParticle::eSigmaZero);
-  InsertCorsikaToPDG(21, CorsikaParticle::eSigmaMinus);
-  InsertCorsikaToPDG(22, CorsikaParticle::eXiZero);
-  InsertCorsikaToPDG(23, CorsikaParticle::eXiMinus);
-  InsertCorsikaToPDG(24, CorsikaParticle::eOmegaMinus);
-
-  InsertCorsikaToPDG(25, CorsikaParticle::eAntiNeutron);
-  InsertCorsikaToPDG(26, CorsikaParticle::eAntiLambda);
-
-  InsertCorsikaToPDG(27, CorsikaParticle::eAntiSigmaPlus);
-  InsertCorsikaToPDG(28, CorsikaParticle::eAntiSigmaZero);
-  InsertCorsikaToPDG(29, CorsikaParticle::eAntiSigmaMinus);
-  InsertCorsikaToPDG(30, CorsikaParticle::eAntiXiZero);
-  InsertCorsikaToPDG(31, CorsikaParticle::eAntiXiMinus); // actually plus?
-  InsertCorsikaToPDG(32, CorsikaParticle::eAntiOmegaMinus); // actually plus?
-
-  InsertCorsikaToPDG(50, CorsikaParticle::eOmegaMeson);
-  InsertCorsikaToPDG(51, CorsikaParticle::eRhoZero);
-  InsertCorsikaToPDG(52, CorsikaParticle::eRhoPlus);
-  InsertCorsikaToPDG(53, CorsikaParticle::eRhoMinus);
-  InsertCorsikaToPDG(54, CorsikaParticle::eDeltaPlusPlus);
-  InsertCorsikaToPDG(55, CorsikaParticle::eDeltaPlus);
-  InsertCorsikaToPDG(56, CorsikaParticle::eDeltaZero);
-  InsertCorsikaToPDG(57, CorsikaParticle::eDeltaMinus);
-
-  // not in the enumeration type
-  // InsertCorsikaToPDG(58, CorsikaParticle::eAntiDeltaPlusPlus);
-  // InsertCorsikaToPDG(59, CorsikaParticle::eAntiDeltaPlus);
-  // InsertCorsikaToPDG(60, CorsikaParticle::eAntiDeltaZero);
-  // InsertCorsikaToPDG(61, CorsikaParticle::eAntiDeltaMinus);
-  // InsertCorsikaToPDG(62, CorsikaParticle::eKZeroResonance);
-  // InsertCorsikaToPDG(63, CorsikaParticle::eKPlusResonance);
-  // InsertCorsikaToPDG(64, CorsikaParticle::eKMinusResonance);
-  // InsertCorsikaToPDG(65, CorsikaParticle::eAntiKZeroResonance);
-
-  InsertCorsikaToPDG(66, CorsikaParticle::eNuElectron);
-  InsertCorsikaToPDG(67, CorsikaParticle::eAntiNuElectron);
-  InsertCorsikaToPDG(68, CorsikaParticle::eNuMuon);
-  InsertCorsikaToPDG(69, CorsikaParticle::eAntiNuMuon);
-
-  InsertCorsikaToPDG(71, CorsikaParticle::eEta);
-  InsertCorsikaToPDG(72, CorsikaParticle::eEta);
-  InsertCorsikaToPDG(73, CorsikaParticle::eEta);
-  InsertCorsikaToPDG(74, CorsikaParticle::eEta);
-
-  InsertCorsikaToPDG(95, CorsikaParticle::eDecayedAntiMuon);
-  InsertCorsikaToPDG(96, CorsikaParticle::eDecayedMuon);
+    corsikaToPDGMap_ =
+    {
+        {1, CorsikaParticle::ePhoton},
+        {2, CorsikaParticle::ePositron},
+        {3, CorsikaParticle::eElectron},
+        
+        {5, CorsikaParticle::eAntiMuon},
+        {6, CorsikaParticle::eMuon},
+        {7, CorsikaParticle::ePiZero},
+        {8, CorsikaParticle::ePiPlus},
+        {9, CorsikaParticle::ePiMinus},
+        
+        {10, CorsikaParticle::eKaon0L},
+        {11, CorsikaParticle::eKaonPlus},
+        {12, CorsikaParticle::eKaonMinus},
+        {13, CorsikaParticle::eNeutron},
+        {14, CorsikaParticle::eProton},
+        {15, CorsikaParticle::eAntiProton},
+        {16, CorsikaParticle::eKaon0S},
+        {17, CorsikaParticle::eEta},
+        {18, CorsikaParticle::eLambda},
+        
+        {19, CorsikaParticle::eSigmaPlus},
+        {20, CorsikaParticle::eSigmaZero},
+        {21, CorsikaParticle::eSigmaMinus},
+        {22, CorsikaParticle::eXiZero},
+        {23, CorsikaParticle::eXiMinus},
+        {24, CorsikaParticle::eOmegaMinus},
+        
+        {25, CorsikaParticle::eAntiNeutron},
+        {26, CorsikaParticle::eAntiLambda},
+        
+        {27, CorsikaParticle::eAntiSigmaPlus},
+        {28, CorsikaParticle::eAntiSigmaZero},
+        {29, CorsikaParticle::eAntiSigmaMinus},
+        {30, CorsikaParticle::eAntiXiZero},
+        {31, CorsikaParticle::eAntiXiMinus}, // actually plus?
+        {32, CorsikaParticle::eAntiOmegaMinus}, // actually plus?
+        
+        {50, CorsikaParticle::eOmegaMeson},
+        {51, CorsikaParticle::eRhoZero},
+        {52, CorsikaParticle::eRhoPlus},
+        {53, CorsikaParticle::eRhoMinus},
+        {54, CorsikaParticle::eDeltaPlusPlus},
+        {55, CorsikaParticle::eDeltaPlus},
+        {56, CorsikaParticle::eDeltaZero},
+        {57, CorsikaParticle::eDeltaMinus},
+        
+        // not in the enumeration type
+        // {58, CorsikaParticle::eAntiDeltaPlusPlus},
+        // {59, CorsikaParticle::eAntiDeltaPlus},
+        // {60, CorsikaParticle::eAntiDeltaZero},
+        // {61, CorsikaParticle::eAntiDeltaMinus},
+        // {62, CorsikaParticle::eKZeroResonance},
+        // {63, CorsikaParticle::eKPlusResonance},
+        // {64, CorsikaParticle::eKMinusResonance},
+        // {65, CorsikaParticle::eAntiKZeroResonance},
+        
+        {66, CorsikaParticle::eNuElectron},
+        {67, CorsikaParticle::eAntiNuElectron},
+        {68, CorsikaParticle::eNuMuon},
+        {69, CorsikaParticle::eAntiNuMuon},
+        
+        {71, CorsikaParticle::eEta},
+        {72, CorsikaParticle::eEta},
+        {73, CorsikaParticle::eEta},
+        {74, CorsikaParticle::eEta},
+        
+        {95, CorsikaParticle::eDecayedAntiMuon},
+        {96, CorsikaParticle::eDecayedMuon},
+    };
 }
 
 

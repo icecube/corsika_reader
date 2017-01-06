@@ -41,7 +41,6 @@ namespace corsika
     static std::string NameFromCorsika(int corsikaCode);
 
   private:
-    static void InsertCorsikaToPDG(int theCorsikaCode, int thePDGCode);
     static void InitCorsikaToPDGMap();
 
     static void SetList();
