@@ -157,7 +157,7 @@ install(FILES
   include/corsika/particle/VParticleProperties.h
   DESTINATION include/corsika/particle
 )
-
+install(DIRECTORY share/data DESTINATION share/corsika)
 
 add_executable(test_corsika
   test/main.cxx
