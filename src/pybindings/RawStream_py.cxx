@@ -16,13 +16,13 @@ struct RawStream
     {
         stream.reset();
     }
-    void get_next_block(corsika::Block<corsika::NotThinned>& block)
+    bool get_next_block(corsika::Block<corsika::NotThinned>& block)
     {
-        stream->GetNextBlock(block);
+        return stream->GetNextBlock(block);
     }
-    void get_next_block_th(corsika::Block<corsika::Thinned>& block)
+    bool get_next_block_th(corsika::Block<corsika::Thinned>& block)
     {
-        stream->GetNextBlock(block);
+        return stream->GetNextBlock(block);
     }
     void seek_to(size_t to)
     {
