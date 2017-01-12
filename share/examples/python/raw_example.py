@@ -2,9 +2,14 @@
 
 import sys
 try:
-    import corsika
+    import icecube
+    within_icecube = True
 except:
-    from icecube import corsika
+    within_icecube = False
+
+if within_icecube: from icecube import corsika
+else: import corsika
+
 
 if len(sys.argv)>1:
     filename = sys.argv[1]
@@ -28,4 +33,5 @@ while raw.get_next_block(block):
     n_blocks += 1
 
 print n_blocks, 'blocks'
+assert n_blocks == 4724
 #print "%s particles"% len([p for p in particles if not int(p.fDescription/1000) in [0, 75, 76, 85, 86, 95, 96]])

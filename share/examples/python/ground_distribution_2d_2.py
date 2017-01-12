@@ -1,9 +1,14 @@
 import sys
 
 try:
-    import corsika
+    import icecube
+    within_icecube = True
 except:
-    from icecube import corsika
+    within_icecube = False
+
+if within_icecube: from icecube import corsika
+else: import corsika
+
 import ROOT
 
 # this is a ROOT option, you can try uncommenting it to see what happens
