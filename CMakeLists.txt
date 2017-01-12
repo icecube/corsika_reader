@@ -3,6 +3,11 @@ project(corsika_reader CXX)
 enable_language(C)
 
 set(CMAKE_MACOSX_RPATH True)
+# the RPATH to be used when installing, but only if it's not a system directory
+LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
+IF("${isSystemDir}" STREQUAL "-1")
+   SET(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+ENDIF("${isSystemDir}" STREQUAL "-1")
 
 set (Corsika_PACKAGE_NAME "corsika")
 
@@ -157,6 +162,7 @@ install(FILES
   DESTINATION include/corsika/particle
 )
 install(DIRECTORY share/data DESTINATION share/corsika)
+
 
 add_executable(test_corsika
   test/main.cxx
