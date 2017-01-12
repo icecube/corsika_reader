@@ -146,7 +146,6 @@ install(FILES
   include/corsika/CorsikaShower.h
   include/corsika/CorsikaShowerFile.h
   include/corsika/CorsikaShowerFileParticleIterator.h
-  include/corsika/ShowerParticleList.h
   include/corsika/GaisserHillasParameter.h
   DESTINATION include/corsika
 )
