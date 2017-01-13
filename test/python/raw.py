@@ -54,7 +54,7 @@ filename = None
 class RawTest(unittest.TestCase):
     def test(self):
         global filename
-        filename = corsika.example_data_dir + '/DAT000002-32'
+        if filename is None: filename = corsika.example_data_dir + '/DAT000002-32'
         assert os.path.exists(filename)
 
         raw = corsika.RawStream(filename)
