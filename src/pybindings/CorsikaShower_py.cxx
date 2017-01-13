@@ -43,7 +43,7 @@ public:
     fIterator->Rewind();
   }
 
-  CorsikaParticle& next_particle()
+  CorsikaParticle next_particle()
   {
     if (!fIterator) {
       PyErr_SetString(PyExc_StopIteration, "Empty particle list.");
@@ -75,7 +75,7 @@ void register_CorsikaShower()
 
   class_<ParticleIterator>("ParticleIterator")
     .def("__iter__", identity)
-    .def("next", &ParticleIterator::next_particle, return_internal_reference<>())
+    .def("next", &ParticleIterator::next_particle)
     .def("rewind", &ParticleIterator::Rewind)
     ;
 
