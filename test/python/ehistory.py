@@ -6,11 +6,17 @@ try:
     import corsika
 except:
     from icecube import corsika
-import sys
+import sys, os
+
+files = []
 
 class EHistoryTest(unittest.TestCase):
     def test(self):
-        files = [corsika.example_data_dir + '/DAT000011-proton-EHISTORY-MUPROD']
+        global files
+        if not files: files = [corsika.example_data_dir + '/DAT000011-proton-EHISTORY-MUPROD']
+        for f in files:
+            if not os.path.exists(f): print f, 'does not exist'
+            assert os.path.exists(f)
 
         for f in files:
             print '\n', f
@@ -60,4 +66,14 @@ class EHistoryTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    # unittest uses sys.argv, so in order to pass arguments we read them first and set sys.argv so it is k for unittest
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', help='Input file', action='append')
+    parser.add_argument('unittest_args', nargs='*')
+
+    args = parser.parse_args()
+    if args.input: files = args.input
+
+    sys.argv[1:] = args.unittest_args
     unittest.main()

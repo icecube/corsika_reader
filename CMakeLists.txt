@@ -180,10 +180,10 @@ add_test(read ${CMAKE_SOURCE_DIR}/share/examples/python/read_example.py ${CMAKE_
 add_test(ehistory ${CMAKE_SOURCE_DIR}/share/examples/python/check_ehistory.py ${CMAKE_SOURCE_DIR}/share/data/DAT000011-proton-EHISTORY-MUPROD)
 add_test(high_low ${CMAKE_SOURCE_DIR}/share/examples/python/compare_high_low.py ${CMAKE_SOURCE_DIR}/share/data/DAT000011-proton-EHISTORY-MUPROD)
 
-add_test(raw python ${CMAKE_SOURCE_DIR}/test/python/raw.py)
-add_test(read python ${CMAKE_SOURCE_DIR}/test/python/read.py)
-add_test(ehistory python ${CMAKE_SOURCE_DIR}/test/python/ehistory.py)
-add_test(high_low ${CMAKE_SOURCE_DIR}/test/python/high_low.py)
+add_test(raw python ${CMAKE_SOURCE_DIR}/test/python/raw.py --input ${CMAKE_SOURCE_DIR}/share/data/DAT000002-32)
+add_test(read python ${CMAKE_SOURCE_DIR}/test/python/read.py --input ${CMAKE_SOURCE_DIR}/share/data/DAT000002-32)
+add_test(ehistory python ${CMAKE_SOURCE_DIR}/test/python/ehistory.py --input ${CMAKE_SOURCE_DIR}/share/data/DAT000011-proton-EHISTORY-MUPROD)
+add_test(high_low ${CMAKE_SOURCE_DIR}/test/python/high_low.py --input ${CMAKE_SOURCE_DIR}/share/data/DAT000011-proton-EHISTORY-MUPROD)
 
 configure_file(docs/Doxyfile docs/Doxyfile)
 add_custom_target(docs doxygen ${CMAKE_BINARY_DIR}/docs/Doxyfile

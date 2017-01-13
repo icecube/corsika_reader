@@ -2,7 +2,7 @@
 
 import unittest
 import numpy
-import sys
+import sys, os
 
 try:
     import corsika
@@ -42,10 +42,13 @@ def raw_particle2dtype(particle, row):
     row['y'] = particle.y
     row['z_or_t'] = particle.t_or_z
 
+filename = None
 
 class HighLowTest(unittest.TestCase):
     def test(self):
-        filename = corsika.example_data_dir + '/DAT000011-proton-EHISTORY-MUPROD'
+        global filename
+        if filename is None: filename = corsika.example_data_dir + '/DAT000011-proton-EHISTORY-MUPROD'
+        assert os.path.exists(filename)
 
         #print 'opening', filename
         f = corsika.CorsikaShowerFile(filename)
@@ -138,4 +141,14 @@ class HighLowTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    # unittest uses sys.argv, so in order to pass arguments we read them first and set sys.argv so it is k for unittest
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', help='Input file')
+    parser.add_argument('unittest_args', nargs='*')
+
+    args = parser.parse_args()
+    if args.input: filename = args.input
+
+    sys.argv[1:] = args.unittest_args
     unittest.main()

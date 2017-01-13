@@ -49,11 +49,15 @@ reference = numpy.array([[7.653100e+04,  -1.160752e+01,   9.754623e-01,   3.1252
                          [1.031000e+03,  -2.047075e-02,   5.394848e-03,   5.156138e-02,  -6.481782e+02,  -1.726373e+03,   3.898707e+05],
                          [1.031000e+03,  -2.477210e-03,   5.616519e-04,   7.321044e-03,  -2.029909e+02,  -2.003557e+03,   3.898648e+05]])
 
+filename = None
+
 class RawTest(unittest.TestCase):
     def test(self):
+        global filename
         filename = corsika.example_data_dir + '/DAT000002-32'
-        raw = corsika.RawStream(filename)
+        assert os.path.exists(filename)
 
+        raw = corsika.RawStream(filename)
         block = corsika.Block()
 
         # get the run header, event header and first particle block
@@ -81,5 +85,15 @@ class RawTest(unittest.TestCase):
             assert numpy.all(numpy.isclose([p.px, p.py, p.pz, p.x, p.y, p.t_or_z], reference[i][1:], 3))
 
 if __name__ == '__main__':
+    # unittest uses sys.argv, so in order to pass arguments we read them first and set sys.argv so it is k for unittest
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', help='Input file')
+    parser.add_argument('unittest_args', nargs='*')
+
+    args = parser.parse_args()
+    if args.input: filename = args.input
+
+    sys.argv[1:] = args.unittest_args
     unittest.main()
 

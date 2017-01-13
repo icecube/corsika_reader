@@ -48,9 +48,13 @@ reference = numpy.array([[6.531000e+03,  -1.087171e+01,   1.039457e+00,   2.9436
                          [1.031000e+03,  -2.047075e-02,   5.394848e-03,   5.156138e-02,  -6.481782e+02,  -1.726373e+03,   3.898707e+05],
                          [1.031000e+03,  -2.477210e-03,   5.616519e-04,   7.321044e-03,  -2.029909e+02,  -2.003557e+03,   3.898648e+05]])
 
+filename = None
+
 class ReadTest(unittest.TestCase):
     def test(self):
-        filename = corsika.example_data_dir + '/DAT000002-32'
+        print sys.argv
+        global filename
+        if filename is None: filename = corsika.example_data_dir + '/DAT000002-32'
         assert os.path.exists(filename)
         f = corsika.CorsikaShowerFile(filename)
         assert f.find_event(1) == corsika.Status.eSuccess
@@ -83,4 +87,14 @@ class ReadTest(unittest.TestCase):
         assert f.find_event(2) == corsika.Status.eFail
 
 if __name__ == '__main__':
+    # unittest uses sys.argv, so in order to pass arguments we read them first and set sys.argv so it is k for unittest
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', help='Input file')
+    parser.add_argument('unittest_args', nargs='*')
+
+    args = parser.parse_args()
+    if args.input: filename = args.input
+
+    sys.argv[1:] = args.unittest_args
     unittest.main()
