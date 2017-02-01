@@ -41,7 +41,7 @@ namespace corsika {
     float GetMuonEnergyCutoff() const {return fMuonEnergyCutoff;}
 
 
-    CorsikaShowerFileParticleIterator& GetParticleIt()
+    CorsikaShowerFileParticleIterator& GetParticleIt() const
     {
       fParticleIterator->Rewind();
       //++(*fParticleIterator);
