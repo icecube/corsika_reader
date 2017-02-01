@@ -178,7 +178,6 @@ add_test(raw ${CMAKE_SOURCE_DIR}/share/examples/python/raw_example.py ${CMAKE_SO
 add_test(raw_2 ${CMAKE_SOURCE_DIR}/share/examples/python/raw_example_2.py ${CMAKE_SOURCE_DIR}/share/data/DAT000002-32)
 add_test(read ${CMAKE_SOURCE_DIR}/share/examples/python/read_example.py ${CMAKE_SOURCE_DIR}/share/data/DAT000002-32)
 add_test(ehistory ${CMAKE_SOURCE_DIR}/share/examples/python/check_ehistory.py ${CMAKE_SOURCE_DIR}/share/data/DAT000011-proton-EHISTORY-MUPROD)
-add_test(high_low ${CMAKE_SOURCE_DIR}/share/examples/python/compare_high_low.py ${CMAKE_SOURCE_DIR}/share/data/DAT000011-proton-EHISTORY-MUPROD)
 
 add_test(raw python ${CMAKE_SOURCE_DIR}/test/python/raw.py --input ${CMAKE_SOURCE_DIR}/share/data/DAT000002-32)
 add_test(read python ${CMAKE_SOURCE_DIR}/test/python/read.py --input ${CMAKE_SOURCE_DIR}/share/data/DAT000002-32)
