@@ -10,6 +10,7 @@ if within_icecube: from icecube import corsika
 else: import corsika
 
 import ROOT
+import numpy
 
 if len(sys.argv)>1:
     filename = sys.argv[1]
