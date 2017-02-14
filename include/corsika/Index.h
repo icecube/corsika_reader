@@ -95,46 +95,78 @@ namespace corsika {
     typedef std::vector<boost::shared_ptr<Pointee> > pointer_list_type;
 
     /**
-       Constructor takes grid size and bin size as arguments. Bin size can be modified to guarantee an integer number of bins.
+       Constructor takes grid size and bin size as arguments. The
+       result is a square grid centered at zero. The bin size is
+       modified to guarantee an integer number of bins.
      */
     PositionIndex(double x=50*km, double dx = 100*m):
-      fSize(x),
-      fSpacing(dx)
+      fSize(2, x),
+      fSpacing(2),
+      fBinEdges(2)
     {
-      const unsigned int s(std::floor(x/dx)+2);
+      const unsigned int s(std::floor(x/dx)+2); // includes over/under-flow
       fGrid.resize(s);
       for (unsigned int i=0; i != s; ++i) {
         fGrid[i].resize(s);
       }
-      fSpacing = fSize/(fGrid.size() - 2);
-      fBinEdges.resize(s-1);
-      for (unsigned int i=0; i!=s-1; ++i) {
-        fBinEdges[i] = i*fSpacing - fSize/2;
+      for (unsigned int i = 0; i != fSize.size(); ++i) {
+        fSpacing[i] = fSize[i]/(s - 2);
+        fBinEdges[i].resize(s-1);
+        for (unsigned int j=0; j!=s-1; ++j) {
+          fBinEdges[i][j] = j*fSpacing[i] - fSize[i]/2;
+        }
+      }
+    }
+
+    /**
+       Constructor takes (min, max, n_bins) for each axis as arguments.
+     */
+    PositionIndex(double xmin, double xmax, unsigned int xbins, double ymin, double ymax, unsigned int ybins):
+      fSize(2),
+      fSpacing(2),
+      fBinEdges(2)
+    {
+      fSize[0] = xmax-xmin;
+      fSize[1] = ymax-ymin;
+
+      fGrid.resize(xbins+2); // include over/under-flow
+      for (unsigned int i=0; i != fGrid.size(); ++i) {
+        fGrid[i].resize(ybins+2);
+      }
+      std::vector<double> min = {xmin, ymin};
+      std::vector<unsigned int> shape = {xbins, ybins};
+      for (unsigned int i = 0; i != shape.size(); ++i) {
+          fSpacing[i] = fSize[i]/shape[i];
+          fBinEdges[i].resize(shape[i]+1);
+          for (unsigned int j=0; j!=fBinEdges[i].size(); ++j) {
+            fBinEdges[i][j] = min[i] + j*fSpacing[i];
+          }
       }
     }
 
     ~PositionIndex() {}
 
-    double GetSize() const
-    { return fSize; }
-    double GetSpacing() const
-    { return fSpacing; }
-    int GetBins() const
-    { return fBinEdges.size() - 1; }
+    double GetSize(unsigned int i) const
+    { return fSize[i]; }
+    double GetSpacing(unsigned int i) const
+    { return fSpacing[i]; }
+    int GetBins(unsigned int i) const
+    { return fBinEdges[i].size() - 1; }
 
     void Add(boost::shared_ptr<Pointee> p)
     {
       if (std::find(fAll.begin(), fAll.end(), p) != fAll.end())
-	return;
-      std::vector<std::pair<unsigned int,unsigned int> > indices = fCollisionPolicy(fBinEdges, fBinEdges, *p);
+        return;
+      std::vector<std::pair<unsigned int,unsigned int> > indices = fCollisionPolicy(fBinEdges[0], fBinEdges[1], *p);
       fAll.push_back(p);
       for (std::vector<std::pair<unsigned int,unsigned int> >::iterator it = indices.begin(); it != indices.end(); ++it) {
-	std::vector<boost::shared_ptr<Pointee> >& v = fGrid[it->first][it->second];
-	if (std::find(v.begin(), v.end(), p) == v.end()) {
-	  v.push_back(p);
-	}
+        std::vector<boost::shared_ptr<Pointee> >& v = fGrid[it->first][it->second];
+        if (std::find(v.begin(), v.end(), p) == v.end()) {
+          v.push_back(p);
+        }
       }
     }
+
     void Add(const Pointee& v)
     {
       Add(boost::shared_ptr<Pointee>(new Pointee(v)));
@@ -142,20 +174,21 @@ namespace corsika {
     void Add(std::vector<boost::shared_ptr<Pointee> > v)
     {
       for (typename std::vector<boost::shared_ptr<Pointee> >::const_iterator it = v.begin(); it != v.end(); ++it) {
-	Add(*it);
+        Add(*it);
       }
     }
     void Add(std::vector<Pointee> v)
     {
       for (typename std::vector<boost::shared_ptr<Pointee> >::const_iterator it = v.begin(); it != v.end(); ++it) {
-	Add(*it);
+        Add(*it);
       }
     }
 
     const std::vector<boost::shared_ptr<Pointee> >& Get(double x, double y) const
-    { return fGrid[GetIndex(x)][GetIndex(y)]; }
+    { return fGrid[GetIndex(0, x)][GetIndex(1, y)]; }
+
     std::vector<boost::shared_ptr<Pointee> >& Get(double x, double y)
-    { return fGrid[GetIndex(x)][GetIndex(y)]; }
+    { return fGrid[GetIndex(0, x)][GetIndex(1, y)]; }
 
     const std::vector<boost::shared_ptr<Pointee> >& GetAll() const
     { return fAll; }
@@ -163,23 +196,26 @@ namespace corsika {
     void Clear()
     {
       for (unsigned int i=0; i!=fGrid.size(); ++i) {
-	for (unsigned int j=0; j!=fGrid[i].size(); ++j) {
-	  fGrid[i][j].clear();
-	}
+        for (unsigned int j=0; j!=fGrid[i].size(); ++j) {
+          fGrid[i][j].clear();
+        }
       }
     }
 
+    bool IsEmpty(double x, double y) const
+    { return fGrid[GetIndex(0, x)][GetIndex(1, y)].empty(); }
+
   private:
-    unsigned int GetIndex(double x) const
+    unsigned int GetIndex(unsigned int i, double x) const
     {
-      return detail::digitize(fBinEdges, x);
+      return detail::digitize(fBinEdges[i], x);
     }
 
     CollisionPolicy fCollisionPolicy;
-    double fSize;
-    double fSpacing;
+    std::vector<double> fSize;
+    std::vector<double> fSpacing;
 
-    std::vector<double> fBinEdges;
+    std::vector<std::vector<double> > fBinEdges;
     std::vector<std::vector<std::vector<boost::shared_ptr<Pointee> > > > fGrid;
     std::vector<boost::shared_ptr<Pointee> > fAll;
   };
