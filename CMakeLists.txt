@@ -166,6 +166,7 @@ install(DIRECTORY share/data DESTINATION share/corsika)
 
 add_executable(test_corsika
   test/main.cxx
+  test/testIndex.cxx
   test/testRawStream.cxx
   test/testCorsikaFile.cxx
 )
