@@ -72,7 +72,7 @@ namespace corsika {
     const EventHeader& GetEventHeader() const
     { return fEventHeader; }
 
-    const EventTrailer& EventTrailer() const
+    const EventTrailer& GetEventTrailer() const
     { return fEventTrailer; }
 
     std::vector<double> fdEdX;
