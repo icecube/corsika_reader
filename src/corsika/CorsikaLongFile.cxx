@@ -172,8 +172,13 @@ CorsikaLongFile::FetchProfile(int findShower)
   vector<double> auxDepth(fNBinsParticles);
   vector<double> auxCharge(fNBinsParticles);
   vector<double> auxMuons(fNBinsParticles);
+  vector<double> auxAntiMuons(fNBinsParticles);
   vector<double> auxGammas(fNBinsParticles);
   vector<double> auxElectrons(fNBinsParticles);
+  vector<double> auxPositrons(fNBinsParticles);
+  vector<double> auxHadrons(fNBinsParticles);
+  vector<double> auxNuclei(fNBinsParticles);
+  vector<double> auxCherenkov(fNBinsParticles);
 
   vector<double> auxDepth_dE (fNBinsEnergyDeposit);
   vector<double> auxDeltaEn (fNBinsEnergyDeposit);
@@ -279,9 +284,14 @@ CorsikaLongFile::FetchProfile(int findShower)
           xdepth /= fCosZenith;
         auxDepth[i] = xdepth;
         auxCharge[i] = chargedparticles;
-        auxMuons[i] = muplus + muminus;
+        auxMuons[i] =  muminus;
+        auxAntiMuons[i] =  muminus;
         auxGammas[i] = gammas;
-        auxElectrons[i] = electrons + positrons;
+        auxElectrons[i] = electrons;
+        auxPositrons[i] = positrons;
+        auxHadrons[i] = hadrons;
+        auxNuclei[i] = nuclei;
+        auxCherenkov[i] = cerenkov;
         ++i;
       }
     }
@@ -314,42 +324,46 @@ CorsikaLongFile::FetchProfile(int findShower)
       }
 
       // GaisserHillas6Parameter gh;
-      gh.SetXMax(axmax*(g/cm2), 0);
-      gh.SetNMax(anmax, 0);
-      gh.SetXZero(ax0*(g/cm2), 0);
-      gh.SetChiSquare(fNBinsParticles*achi, fNBinsParticles);
-      gh.SetA(A, 0.);
-      gh.SetB(B, 0.);
-      gh.SetC(C, 0.);
-
-      // ostringstream info;
-      // info << "Nmax = " << anmax << ", "
-      //   "Xmax = " << axmax << ", "
-      //   "X0 = " << ax0 << ", "
-      //   "zenith = " << acos(fCosZenith)/deg
-      //      << (fIsSlantDepthProfile ? " (SLANT DEPTH)" : " (VERTICAL DEPTH)");
-      //INFO(info);
-
-      // Adding GH information to simulated shower
-      // if (!theShower.HasGHParameters() && hasValidGHfit)
-      //   theShower.MakeGHParameters(gh);
-
-      // if (!hasValidGHfit) {
-      //   ostringstream err;
-      //   err << "CORISKA shower with invalid GH fit: Xmax=" << axmax
-      //       << " Nmax=" << anmax << " X0=" << ax0
-      //       << " chi2/ndf=" << achi;
-      //   ERROR(err);
-      // }
+      if (hasValidGHfit) {
+        gh.SetXMax(axmax*(g/cm2), 0);
+        gh.SetNMax(anmax, 0);
+        gh.SetXZero(ax0*(g/cm2), 0);
+        gh.SetChiSquare(fNBinsParticles*achi, fNBinsParticles);
+        gh.SetA(A, 0.);
+        gh.SetB(B, 0.);
+        gh.SetC(C, 0.);
+      }
 
       break;
     }
   }
-  // end of read profile
 
-  // -------------------------------------------------------------
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // -------------------------------------------------------------
+  CorsikaLongProfile profile;
+  profile.fChargeProfile = auxCharge;
+  profile.fGammaProfile = auxGammas;
+  profile.fElectronProfile = auxElectrons;
+  profile.fPositronProfile = auxPositrons;
+  profile.fMuonProfile = auxMuons;
+  profile.fAntiMuonProfile = auxAntiMuons;
+  profile.fDepth = auxDepth;
+  profile.fHadronProfile = auxHadrons;
+  profile.fNucleiProfile = auxNuclei;
+  profile.fCherenkovProfile = auxCherenkov;
+  //profile.fdEdX = auxDeltaEn;
+  //profile.fDepth_dE = auxDepth_dE;
+
+  profile.fCalorimetricEnergy = energyDepositSum;
+  profile.fGaisserHillas = gh;
+  return profile;
+}
+
+
+void CorrectProfile(CorsikaLongProfile& profile, double dX)
+{
+  // This code is quarantined because is mostly dead code, very
+  // specific for other purposes, so maybe it should not be here at
+  // all.
+  //
   // CORSIKA writes into the last bin of the dEdX profile not only
   // the energy deposit in the atmosphere, but also the energy hitting
   // the ground (observation level). For vertical event this can be
@@ -362,22 +376,34 @@ CorsikaLongFile::FetchProfile(int findShower)
   //   shower will hit the ground, and does not just disappear
   //   somewhere in the middle of the atmosphere !
 
+
+  vector<double> auxDepth = profile.fDepth;
+  vector<double> auxCharge = profile.fChargeProfile;
+  vector<double> auxMuons = profile.fMuonProfile;
+  vector<double> auxAntiMuons = profile.fAntiMuonProfile;
+  vector<double> auxGammas = profile.fGammaProfile;
+  vector<double> auxElectrons = profile.fElectronProfile;
+  vector<double> auxPositrons = profile.fPositronProfile;
+  vector<double> auxHadrons = profile.fHadronProfile;
+  vector<double> auxNuclei = profile.fNucleiProfile;
+  vector<double> auxCherenkov = profile.fCherenkovProfile;
+
+  vector<double> auxDepth_dE = profile.fDepth_dE;
+  vector<double> auxDeltaEn = profile.fdEdX;
+  int i = auxDepth.size();
+
+  const int nBinsEnergyDeposit = auxDepth_dE.size();
+  const int nBinsParticles = auxDepth.size();
+
   // go three bins back, since CORSIKA sometimes has a funny second-last bin
-  //const double normDepth_dedx = auxDepth_dE[fNBinsEnergyDeposit-3];
+  //const double normDepth_dedx = auxDepth_dE[nBinsEnergyDeposit-3];
   const double normN_dedx = 1;
   // const double normN_dedx =
   //   theShower.HasGHParameters() ?
   //     theShower.GetGHParameters().Eval(normDepth_dedx * g/cm2) : 1;
   const double normdEdX = auxDeltaEn[i-3];
-  /*
-    cout << " fNBinsEnergyDeposit=" <<fNBinsEnergyDeposit
-    << " normDepth_dedx=" << normDepth_dedx
-    << " normN_dedx=" << normN_dedx
-    << " normdEdX=" << normdEdX/1e6
-    << endl;
-  */
 
-  // const double normDepth_part = auxDepth[fNBinsEnergyDeposit-1];
+  // const double normDepth_part = auxDepth[nBinsEnergyDeposit-1];
   const double normN_part = 1.;
   // const double normN_part =
   //   theShower.HasGHParameters() ?
@@ -387,37 +413,24 @@ CorsikaLongFile::FetchProfile(int findShower)
   const double normGammas = auxGammas[i-1];
   const double normElectrons = auxElectrons[i-1];
 
-  const double lastBinDepth_dEdX = auxDepth_dE[fNBinsEnergyDeposit-1];
-  const double lastBinDepth_part = auxDepth[fNBinsParticles-1];
-
-  /*
-    for (int i=0; i<fNBinsEnergyDeposit; i++) {
-    cout << " profile i=" << i
-    << " depth=" << auxDepth_dE[i]
-    << " dedx=" << auxDeltaEn[i]/1e6
-    << " " << theShower.GetGHParameters().Eval(auxDepth_dE[i]*g/cm2)/1e6
-    << " dedxGH=" << normdEdX/normN_dedx * theShower.GetGHParameters().Eval(auxDepth_dE[i]*g/cm2)/1e6
-    << endl;
-    }
-  */
+  const double lastBinDepth_dEdX = auxDepth_dE[profile.fDepth_dE.size()-1];
+  const double lastBinDepth_part = auxDepth[profile.fDepth.size()-1];
 
   // recalculate last dedx bins
   for (int iCorrect = 0; iCorrect < 2; ++iCorrect) {
-    const int binCorrect = fNBinsEnergyDeposit - 2 + iCorrect;
+    const int binCorrect = nBinsEnergyDeposit - 2 + iCorrect;
     //const double binDepth = auxDepth_dE[binCorrect];
-    //cout << " last-bin: i=" << binCorrect << " depth=" << binDepth << " " << auxDeltaEn[binCorrect]/1e6 << flush;
     auxDeltaEn[binCorrect] = normdEdX / normN_dedx;
     // auxDeltaEn[binCorrect] = normdEdX / normN_dedx *
     //   (theShower.HasGHParameters() ?
     //      theShower.GetGHParameters().Eval(binDepth*g/cm2) : 1);
-    //cout << " last-bin (new): " << auxDeltaEn[binCorrect]/1e6 << endl;
   }
 
   // prolongate profiles by some bins
   const int nBinAdd = 2;
   for (int iBinAdd = 0; iBinAdd < nBinAdd; ++iBinAdd) {
-    const double addDepth_dEdX = lastBinDepth_dEdX + fDx * (iBinAdd+1);
-    const double addDepth_part = lastBinDepth_part + fDx * (iBinAdd+1);
+    const double addDepth_dEdX = lastBinDepth_dEdX + dX * (iBinAdd+1);
+    const double addDepth_part = lastBinDepth_part + dX * (iBinAdd+1);
     const double Nch_dedx = 1;
     // const double Nch_dedx =
     //   theShower.HasGHParameters() ?
@@ -443,30 +456,18 @@ CorsikaLongFile::FetchProfile(int findShower)
     auxGammas.push_back(addGammas);
     auxElectrons.push_back(addElectrons);
 
-    /*
-      cout << " iBinAdd=" << iBinAdd << " addDepth_dEdX=" << addDepth_dEdX
-      << " addDepth_part=" << addDepth_part
-      << " adddedx=" << adddEdX/1e6
-      << " Nch_part=" << Nch_part
-      << " addCharge=" << addCharge
-      << endl;
-    */
   }
 
-  // -------------------------------------------------------------
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // -------------------------------------------------------------
-  CorsikaLongProfile profile;
   profile.fChargeProfile = auxCharge;
   profile.fGammaProfile = auxGammas;
   profile.fElectronProfile = auxElectrons;
+  profile.fPositronProfile = auxPositrons;
   profile.fMuonProfile = auxMuons;
+  profile.fAntiMuonProfile = auxAntiMuons;
   profile.fDepth = auxDepth;
+  profile.fHadronProfile = auxHadrons;
+  profile.fNucleiProfile = auxNuclei;
+  profile.fCherenkovProfile = auxCherenkov;
   //profile.fdEdX = auxDeltaEn;
   //profile.fDepth_dE = auxDepth_dE;
-
-  //profile.SetGaisserHillasParams(gh);
-  profile.fCalorimetricEnergy = energyDepositSum;
-  profile.fGaisserHillas = gh;
-  return profile;
 }

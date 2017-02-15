@@ -26,7 +26,12 @@ namespace corsika {
     std::vector<double> fChargeProfile;
     std::vector<double> fGammaProfile;
     std::vector<double> fElectronProfile;
+    std::vector<double> fPositronProfile;
     std::vector<double> fMuonProfile;
+    std::vector<double> fAntiMuonProfile;
+    std::vector<double> fHadronProfile;
+    std::vector<double> fNucleiProfile;
+    std::vector<double> fCherenkovProfile;
     std::vector<double> fDepth;
     std::vector<double> fdEdX;
     std::vector<double> fDepth_dE;
