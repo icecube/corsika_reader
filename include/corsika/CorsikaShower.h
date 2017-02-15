@@ -72,8 +72,8 @@ namespace corsika {
     const EventHeader& GetEventHeader() const
     { return fEventHeader; }
 
-    // EventTrailer& EventTrailer()
-    // { return fEventTrailer; }
+    const EventTrailer& EventTrailer() const
+    { return fEventTrailer; }
 
     std::vector<double> fdEdX;
     std::vector<double> fChargeProfile;
