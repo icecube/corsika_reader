@@ -315,7 +315,12 @@ CorsikaShowerFile::ReadLongFile()
     fCurrentShower.fChargeProfile = p.fChargeProfile;
     fCurrentShower.fGammaProfile = p.fGammaProfile;
     fCurrentShower.fElectronProfile = p.fElectronProfile;
+    fCurrentShower.fPositronProfile = p.fPositronProfile;
     fCurrentShower.fMuonProfile = p.fMuonProfile;
+    fCurrentShower.fAntiMuonProfile = p.fAntiMuonProfile;
+    fCurrentShower.fHadronProfile = p.fHadronProfile;
+    fCurrentShower.fNucleiProfile = p.fNucleiProfile;
+    fCurrentShower.fCherenkovProfile = p.fCherenkovProfile;
     fCurrentShower.fDepth_dE = p.fDepth_dE;
     fCurrentShower.fDepth = p.fDepth;
 
@@ -327,7 +332,12 @@ CorsikaShowerFile::ReadLongFile()
     fCurrentShower.fChargeProfile.clear();
     fCurrentShower.fGammaProfile.clear();
     fCurrentShower.fElectronProfile.clear();
+    fCurrentShower.fPositronProfile.clear();
     fCurrentShower.fMuonProfile.clear();
+    fCurrentShower.fAntiMuonProfile.clear();
+    fCurrentShower.fHadronProfile.clear();
+    fCurrentShower.fNucleiProfile.clear();
+    fCurrentShower.fCherenkovProfile.clear();
     fCurrentShower.fDepth_dE.clear();
     fCurrentShower.fDepth.clear();
 
@@ -369,7 +379,12 @@ CorsikaShowerFile::ReadLongBlocks()
   vector<double> auxCharge;
   vector<double> auxGammas;
   vector<double> auxElectrons;
+  vector<double> auxPositrons;
   vector<double> auxMuons;
+  vector<double> auxAntiMuons;
+  vector<double> auxHadrons;
+  vector<double> auxNuclei;
+  vector<double> auxCherenkov;
   vector<double> auxDepth_dE;
   vector<double> auxDepth;
 
@@ -383,8 +398,13 @@ CorsikaShowerFile::ReadLongBlocks()
     auxDeltaEn.push_back(0);
     auxCharge.push_back(longBlock.fEntries[i].fCharged);
     auxGammas.push_back(longBlock.fEntries[i].fGamma);
-    auxElectrons.push_back(longBlock.fEntries[i].fEplus + longBlock.fEntries[i].fEminus);
-    auxMuons.push_back(longBlock.fEntries[i].fMuPlus + longBlock.fEntries[i].fMuMinus);
+    auxElectrons.push_back(longBlock.fEntries[i].fEminus);
+    auxPositrons.push_back(longBlock.fEntries[i].fEplus);
+    auxMuons.push_back(longBlock.fEntries[i].fMuMinus);
+    auxAntiMuons.push_back(longBlock.fEntries[i].fMuPlus);
+    auxHadrons.push_back(longBlock.fEntries[i].fNuclei);
+    auxNuclei.push_back(longBlock.fEntries[i].fHadron);
+    auxCherenkov.push_back(longBlock.fEntries[i].fCherenkov);
     auxDepth.push_back(longBlock.fEntries[i].fDepth);
     auxDepth_dE.push_back(longBlock.fEntries[i].fDepth);
   }
@@ -404,8 +424,13 @@ CorsikaShowerFile::ReadLongBlocks()
       auxDeltaEn.push_back(0);
       auxCharge.push_back(longBlock.fEntries[j].fCharged);
       auxGammas.push_back(longBlock.fEntries[j].fGamma);
-      auxElectrons.push_back(longBlock.fEntries[j].fEplus + longBlock.fEntries[j].fEminus);
-      auxMuons.push_back(longBlock.fEntries[j].fMuPlus + longBlock.fEntries[j].fMuMinus);
+      auxElectrons.push_back(longBlock.fEntries[j].fEminus);
+      auxPositrons.push_back(longBlock.fEntries[i].fEplus);
+      auxMuons.push_back(longBlock.fEntries[i].fMuMinus);
+      auxAntiMuons.push_back(longBlock.fEntries[i].fMuPlus);
+      auxHadrons.push_back(longBlock.fEntries[i].fNuclei);
+      auxNuclei.push_back(longBlock.fEntries[i].fHadron);
+      auxCherenkov.push_back(longBlock.fEntries[i].fCherenkov);
       auxDepth.push_back(longBlock.fEntries[j].fDepth);
       auxDepth_dE.push_back(longBlock.fEntries[j].fDepth);
     }
@@ -416,7 +441,12 @@ CorsikaShowerFile::ReadLongBlocks()
   fCurrentShower.fChargeProfile = auxCharge;
   fCurrentShower.fGammaProfile = auxGammas;
   fCurrentShower.fElectronProfile = auxElectrons;
+  fCurrentShower.fPositronProfile = auxPositrons;
   fCurrentShower.fMuonProfile = auxMuons;
+  fCurrentShower.fAntiMuonProfile = auxAntiMuons;
+  fCurrentShower.fHadronProfile = auxHadrons;
+  fCurrentShower.fNucleiProfile = auxNuclei;
+  fCurrentShower.fCherenkovProfile = auxCherenkov;
   fCurrentShower.fDepth_dE = auxDepth_dE;
   fCurrentShower.fDepth = auxDepth;
 
