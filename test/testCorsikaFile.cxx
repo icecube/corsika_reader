@@ -21,6 +21,10 @@ namespace testCorsikaFileNS {
   {
     CorsikaShowerFile file(filename);
     ENSURE(file.IsOpen(), "File is open");
+
+    const corsika::RunHeader& run_header = file.GetRunHeader();
+    ENSURE_EQUAL(run_header.fRunNumber, 2);
+
     corsika::Status status = file.FindEvent(1);
 
     ENSURE_EQUAL(status, corsika::eSuccess, "Event 1 found");
@@ -78,9 +82,9 @@ TEST(testCorsikaFile)
   ENSURE(!file.IsOpen());
 
   for (unsigned int i = 0; i != filenames.size(); ++i) {
-    std::cout << "testing header " << filenames[i] << std::endl;
+    std::cout << "testing header " << dir << filenames[i] << std::endl;
     test_header(dir + filenames[i]);
-    std::cout << "testing particles " << filenames[i] << std::endl;
+    std::cout << "testing particles " << dir << filenames[i] << std::endl;
     test_particles(dir + filenames[i]);
   }
 }

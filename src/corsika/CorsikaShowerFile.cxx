@@ -105,11 +105,18 @@ CorsikaShowerFile::Open(const std::string& theFileName, bool scan)
     msg << "File " << theFileName << " does not support random access. This class can not handle it";
     throw CorsikaIOException(msg.str());
   }
+  if (fIsThinned) {
+    ReadRunHeader<Thinned>();
+  }
+  else {
+    ReadRunHeader<NotThinned>();
+  }
 }
 
 void
 CorsikaShowerFile::Close()
 {
+  fRunHeader = corsika::RunHeader();
   fRawStream.reset();
 
   fIndex.eventHeaders.clear();
@@ -234,6 +241,24 @@ CorsikaShowerFile::Read()
 
   ++fCurrentPosition;
 
+  return eSuccess;
+}
+
+
+template <class Thinning>
+Status
+CorsikaShowerFile::ReadRunHeader()
+{
+  Block<Thinning> runHeaderBlock;
+  if (!fRawStream->GetNextBlock(runHeaderBlock)) {
+    FATAL("Cannot read CORSIKA run header");
+    return eFail;
+  }
+  if (!runHeaderBlock.IsRunHeader()) {
+    FATAL("First block is not a run header");
+    return eFail;
+  }
+  fRunHeader = runHeaderBlock.AsRunHeader;
   return eSuccess;
 }
 

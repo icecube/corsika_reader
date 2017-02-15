@@ -22,10 +22,11 @@ struct register_block_helper {
 };
 
 
+template<class Head>
 struct expose_arrays {
   static
   object
-  EventHeader_observation_levels(EventHeader& self)
+  observation_levels(Head& self)
   {
     std::vector<double> a(self.fObservationLevels);
     for (int i = 0; i < self.fObservationLevels; ++i) {
@@ -132,6 +133,24 @@ struct register_subblocks {
   static void
   go()
   {
+    typedef RunHeader RunHeader;
+    class_<RunHeader>("RunHeader")
+      .def_readonly("run_number", &RunHeader::fRunNumber)
+      .def_readonly("start_date", &RunHeader::fDateStart)
+      .def_readonly("version", &RunHeader::fVersion)
+      .def_readonly("n_observation_levels", &RunHeader::fObservationLevels)
+      .add_property("observation_levels", &expose_arrays<RunHeader>::observation_levels)
+      .def_readonly("spectral_slope", &RunHeader::fSpectralSlope)
+      .def_readonly("emin", &RunHeader::fEMin)
+      .def_readonly("emax", &RunHeader::fEMax)
+      .def_readonly("flag_egs4", &RunHeader::fFlagEGS4)
+      .def_readonly("flag_nkg", &RunHeader::fFlagNKG)
+      .def_readonly("cutoff_hadrons", &RunHeader::fCutoffHadrons)
+      .def_readonly("cutoff_muons", &RunHeader::fCutoffMuons)
+      .def_readonly("cutoff_electrons", &RunHeader::fCutoffElectrons)
+      .def_readonly("cutoff_photons", &RunHeader::fCutoffPhotons)
+      ;
+
     typedef EventHeader EventHeader;
     class_<EventHeader>("EventHeader")
       .def_readonly("shower_number", &EventHeader::fEventNumber)
@@ -155,7 +174,7 @@ struct register_subblocks {
       .def_readonly("date_start", &EventHeader::fDateStart)
       .def_readonly("version", &EventHeader::fVersion)
       .def_readonly("n_observation_levels", &EventHeader::fObservationLevels)
-      .add_property("observation_levels", &expose_arrays::EventHeader_observation_levels)
+      .add_property("observation_levels", &expose_arrays<EventHeader>::observation_levels)
       .def_readonly("spectral_slope", &EventHeader::fSpectralSlope)
       .def_readonly("E_min", &EventHeader::fEMin)
       .def_readonly("E_max", &EventHeader::fEMax)

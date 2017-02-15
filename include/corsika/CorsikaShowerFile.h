@@ -62,10 +62,16 @@ namespace corsika
     const CorsikaShower& GetCurrentShower() const {return fCurrentShower;}
     CorsikaShower& GetCurrentShower() {return fCurrentShower;}
 
+    const corsika::RunHeader& GetRunHeader() const { return fRunHeader; }
+
+    const bool IsThinned() const { return fIsThinned; }
+
   private:
     typedef std::vector<size_t> PositionVector;
     typedef std::map<unsigned int, unsigned int> IdToPositionMap;
 
+    template <class Thinning>
+    Status ReadRunHeader();
     template <class Thinning>
     Status Read();
     Status ReadLongFile();
@@ -73,6 +79,7 @@ namespace corsika
     Status ReadLongBlocks();
 
     CorsikaShower fCurrentShower;
+    corsika::RunHeader fRunHeader;
 
     RawStreamPtr fRawStream;
     std::string fLongFile;
