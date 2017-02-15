@@ -16,7 +16,7 @@ using namespace corsika;
 
 
 CorsikaShower::CorsikaShower(const struct EventHeader& header,
-                             const EventTrailer& trailer,
+                             const struct EventTrailer& trailer,
                              CorsikaShowerFileParticleIterator* particleIt):
   fEventHeader(header),
   fEventTrailer(trailer),

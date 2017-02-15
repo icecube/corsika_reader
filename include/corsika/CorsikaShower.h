@@ -90,7 +90,7 @@ namespace corsika {
 
   private:
     struct EventHeader fEventHeader;
-    EventTrailer fEventTrailer;
+    struct EventTrailer fEventTrailer;
 
     int fPrimaryParticle;
     float fEnergy;
