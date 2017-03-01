@@ -1,14 +1,10 @@
 // CORSIKA system of units
-//
-
-#ifndef _corsika_CORSIKASystemOfUnits_h_
-#define _corsika_CORSIKASystemOfUnits_h_
+#pragma once
 
 // Partition the global namespace in order to avoid ambiguity between
 // Geant4 units
-
-
-namespace corsika {
+namespace corsika
+{
 
   /**
      \file CorsikaUnits.h
@@ -354,5 +350,3 @@ namespace corsika {
   }
 
 } // end of corsika namespace
-
-#endif /* _corsika_CORSIKASystemOfUnits_h_ */

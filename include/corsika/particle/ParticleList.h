@@ -15,7 +15,6 @@
 
 namespace corsika
 {
-    
     /**
      \class ParticleList ParticleList.h
      
@@ -26,10 +25,8 @@ namespace corsika
      \date 04 Jan 2015
      */
     
-    class ParticleList
+    struct ParticleList
     {
-    public:
-        
         const VParticleProperties& operator()(int code) const { return ParticleList::Get(code); }
         
         static const VParticleProperties& Get(int code);
@@ -49,5 +46,4 @@ namespace corsika
         static std::map<int, ParticleProperties> particles_;
         static std::map<int, NucleusProperties> nuclei_;
     };
-    
 }

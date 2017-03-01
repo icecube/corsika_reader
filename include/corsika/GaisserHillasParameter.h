@@ -1,13 +1,8 @@
-#ifndef _corsika_GaisserHillasParameter_h_
-#define _corsika_GaisserHillasParameter_h_
-
-static const char CvsId_corsika_GaisserHillasParameter[] =
-  "$Id$";
-
-
+#pragma once
 #include <iostream>
 
-namespace corsika {
+namespace corsika
+{
 
   /**
      \class GaisserHillasParameter
@@ -101,12 +96,3 @@ namespace corsika {
   };
 
 }
-
-
-#endif
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode: c++
-// compile-command: "make -C .. -k"
-// End:
