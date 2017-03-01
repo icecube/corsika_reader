@@ -6,7 +6,7 @@
    \version $Id$
    \date 19 Nov 2003
 */
-#include <corsika/CorsikaBlock.h>
+#include <corsika/Block.h>
 #include <sstream>
 #include <string.h>
 

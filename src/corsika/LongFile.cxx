@@ -8,8 +8,8 @@
 */
 
 #include <corsika/Constants.h>
-#include <corsika/CorsikaLongFile.h>
-#include <corsika/CorsikaIOException.h>
+#include <corsika/LongFile.h>
+#include <corsika/IOException.h>
 
 #include <fstream>
 #include <sstream>

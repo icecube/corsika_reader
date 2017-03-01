@@ -9,8 +9,8 @@
 
 #pragma once
 #include <boost/shared_ptr.hpp>
-#include <corsika/CorsikaBlock.h>
-#include <corsika/CorsikaIOException.h>
+#include <corsika/Block.h>
+#include <corsika/IOException.h>
 
 namespace corsika
 {

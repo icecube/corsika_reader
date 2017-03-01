@@ -41,58 +41,58 @@ include_directories(${CMAKE_SOURCE_DIR}/include ${Boost_INCLUDE_DIR})
 
 set (Corsika_HEADERS
   include/corsika/Constants.h
-  include/corsika/CorsikaUnits.h
-  include/corsika/CorsikaBlock.h
+  include/corsika/Units.h
+  include/corsika/Block.h
   include/corsika/RawStream.h
   include/corsika/RawParticleIterator.h
-  include/corsika/CorsikaIOException.h
-  include/corsika/CorsikaParticle.h
-  include/corsika/CorsikaShower.h
-  include/corsika/CorsikaShowerFile.h
-  include/corsika/CorsikaShowerFileParticleIterator.h
+  include/corsika/IOException.h
+  include/corsika/Particle.h
+  include/corsika/Shower.h
+  include/corsika/ShowerFile.h
+  include/corsika/ShowerFileParticleIterator.h
   include/corsika/GaisserHillasParameter.h
   include/corsika/particle/NucleusProperties.h
   include/corsika/particle/ParticleList.h
   include/corsika/particle/ParticleProperties.h
   include/corsika/particle/VParticleProperties.h
-  include/corsika/CorsikaLongProfile.h
-  include/corsika/CorsikaLongFile.h
+  include/corsika/LongProfile.h
+  include/corsika/LongFile.h
   include/corsika/FileStream.h
   DESTINATION include
 )
 
 set (Corsika_SOURCES
-  src/corsika/CorsikaBlock.cxx
-  src/corsika/CorsikaParticle.cxx
-  src/corsika/CorsikaShower.cxx
-  src/corsika/CorsikaShowerFile.cxx
-  src/corsika/CorsikaShowerFileParticleIterator.cxx
+  src/corsika/Block.cxx
+  src/corsika/Particle.cxx
+  src/corsika/Shower.cxx
+  src/corsika/ShowerFile.cxx
+  src/corsika/ShowerFileParticleIterator.cxx
   src/corsika/GaisserHillasParameter.cxx
   src/corsika/RawStream.cxx
   src/corsika/Index.cxx
   src/corsika/particle/NucleusProperties.cxx
   src/corsika/particle/ParticleList.cxx
   src/corsika/RawParticleIterator.cxx
-  src/corsika/CorsikaLongFile.cxx
+  src/corsika/LongFile.cxx
   src/corsika/FileStream.cxx
   src/corsika/FileIndex.cxx
 )
 
 
 set (Corsika_BoostPython_SOURCES
-  src/pybindings/CorsikaBlock_py.cxx
-  src/pybindings/CorsikaParticle_py.cxx
-  src/pybindings/CorsikaShower_py.cxx
-  src/pybindings/CorsikaShowerFile_py.cxx
-  src/pybindings/CorsikaShowerFileParticleIterator_py.cxx
-  src/pybindings/CorsikaUnits_py.cxx
+  src/pybindings/Block_py.cxx
+  src/pybindings/Particle_py.cxx
+  src/pybindings/Shower_py.cxx
+  src/pybindings/ShowerFile_py.cxx
+  src/pybindings/ShowerFileParticleIterator_py.cxx
+  src/pybindings/Units_py.cxx
   src/pybindings/MathConstants_py.cxx
   src/pybindings/ParticleList_py.cxx
   src/pybindings/ParticleProperties_py.cxx
   src/pybindings/PhysicalConstants_py.cxx
   src/pybindings/RawParticleIterator_py.cxx
-  src/pybindings/CorsikaLongProfile_py.cxx
-  src/pybindings/CorsikaLongFile_py.cxx
+  src/pybindings/LongProfile_py.cxx
+  src/pybindings/LongFile_py.cxx
   src/pybindings/RawStream_py.cxx
   src/pybindings/module.cxx
 )
@@ -142,15 +142,15 @@ install (TARGETS CorsikaReader
 install(FILES
   include/corsika/Index.h
   include/corsika/Constants.h
-  include/corsika/CorsikaUnits.h
-  include/corsika/CorsikaBlock.h
+  include/corsika/Units.h
+  include/corsika/Block.h
   include/corsika/RawStream.h
   include/corsika/RawParticleIterator.h
-  include/corsika/CorsikaIOException.h
-  include/corsika/CorsikaParticle.h
-  include/corsika/CorsikaShower.h
-  include/corsika/CorsikaShowerFile.h
-  include/corsika/CorsikaShowerFileParticleIterator.h
+  include/corsika/IOException.h
+  include/corsika/Particle.h
+  include/corsika/Shower.h
+  include/corsika/ShowerFile.h
+  include/corsika/ShowerFileParticleIterator.h
   include/corsika/GaisserHillasParameter.h
   DESTINATION include/corsika
 )
@@ -168,7 +168,7 @@ add_executable(test_corsika
   test/main.cxx
   test/testIndex.cxx
   test/testRawStream.cxx
-  test/testCorsikaFile.cxx
+  test/testFile.cxx
 )
 
 target_link_libraries(test_corsika CorsikaReader ${PYTHON_LIBRARIES})

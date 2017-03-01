@@ -1,6 +1,6 @@
 #include <sstream>
 #include <corsika/particle/ParticleList.h>
-#include <corsika/CorsikaParticle.h>
+#include <corsika/Particle.h>
 #include <boost/python.hpp>
 
 using namespace boost::python;

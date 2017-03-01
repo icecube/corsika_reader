@@ -8,13 +8,13 @@
 */
 
 #include <corsika/Constants.h>
-#include <corsika/CorsikaShowerFile.h>
-#include <corsika/CorsikaShowerFileParticleIterator.h>
-#include <corsika/CorsikaIOException.h>
-#include <corsika/CorsikaBlock.h>
-#include <corsika/CorsikaShower.h>
-#include <corsika/CorsikaLongFile.h>
-#include <corsika/CorsikaLongProfile.h>
+#include <corsika/ShowerFile.h>
+#include <corsika/ShowerFileParticleIterator.h>
+#include <corsika/IOException.h>
+#include <corsika/Block.h>
+#include <corsika/Shower.h>
+#include <corsika/LongFile.h>
+#include <corsika/LongProfile.h>
 #include <corsika/particle/ParticleList.h>
 
 #include <sstream>

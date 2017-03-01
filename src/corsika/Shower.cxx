@@ -7,9 +7,9 @@
    \date 04 May 2011
 */
 
-#include <corsika/CorsikaShower.h>
+#include <corsika/Shower.h>
 #include <corsika/particle/ParticleList.h>
-#include <corsika/CorsikaBlock.h>
+#include <corsika/Block.h>
 #include <iostream>
 
 using namespace corsika;

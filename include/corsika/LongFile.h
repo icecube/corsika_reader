@@ -14,7 +14,7 @@
 #include <vector>
 #include <fstream>
 #include <boost/shared_ptr.hpp>
-#include <corsika/CorsikaLongProfile.h>
+#include <corsika/LongProfile.h>
 
 namespace corsika {
 

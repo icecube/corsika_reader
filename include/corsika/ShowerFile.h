@@ -9,9 +9,9 @@
 
 #pragma once
 #include <corsika/RawStream.h>
-#include <corsika/CorsikaIOException.h>
-#include <corsika/CorsikaShower.h>
-#include <corsika/CorsikaLongFile.h>
+#include <corsika/IOException.h>
+#include <corsika/Shower.h>
+#include <corsika/LongFile.h>
 #include <corsika/FileIndex.h>
 #include <string>
 #include <map>

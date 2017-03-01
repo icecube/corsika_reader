@@ -7,10 +7,10 @@
    \date 04 May 2011
 */
 
-#include <corsika/CorsikaParticle.h>
-#include <corsika/CorsikaBlock.h>
+#include <corsika/Particle.h>
+#include <corsika/Block.h>
 #include <corsika/particle/ParticleList.h>
-#include <corsika/CorsikaUnits.h>
+#include <corsika/Units.h>
 #include <corsika/particle/NucleusProperties.h>
 #include <iostream>
 #include <sstream>

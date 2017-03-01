@@ -9,7 +9,7 @@
 
 #pragma once
 #include <boost/shared_ptr.hpp>
-#include <corsika/CorsikaBlock.h>
+#include <corsika/Block.h>
 #include <cmath>
 #include <memory>
 

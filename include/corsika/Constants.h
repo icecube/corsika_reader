@@ -8,7 +8,7 @@
 #ifndef _utl_Constants_h_
 #define _utl_Constants_h_
 
-#include <corsika/CorsikaUnits.h>
+#include <corsika/Units.h>
 
 
 namespace corsika {

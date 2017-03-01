@@ -8,7 +8,7 @@
 
 #pragma once
 #include <boost/shared_ptr.hpp>
-#include <corsika/CorsikaUnits.h>
+#include <corsika/Units.h>
 #include <vector>
 #include <algorithm>
 #include <iterator>

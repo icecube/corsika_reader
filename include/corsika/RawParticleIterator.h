@@ -1,6 +1,6 @@
 #pragma once
-#include <corsika/CorsikaBlock.h>
-#include <corsika/CorsikaParticle.h>
+#include <corsika/Block.h>
+#include <corsika/Particle.h>
 #include <corsika/RawStream.h>
 #include <boost/optional.hpp>
 

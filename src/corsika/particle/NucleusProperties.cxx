@@ -13,7 +13,7 @@ static const char CVSId[] =
 #include <corsika/particle/NucleusProperties.h>
 #include <corsika/particle/ParticleList.h>
 #include <corsika/Constants.h>
-#include <corsika/CorsikaParticle.h>
+#include <corsika/Particle.h>
 #include <boost/format.hpp>
 using boost::format;
 using boost::io::str;

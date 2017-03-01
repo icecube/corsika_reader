@@ -13,8 +13,8 @@
 static const char CVSId_io_CorsikaShower[] =
 "$Id$";
 
-#include <corsika/CorsikaBlock.h>
-#include <corsika/CorsikaShowerFileParticleIterator.h>
+#include <corsika/Block.h>
+#include <corsika/ShowerFileParticleIterator.h>
 #include <corsika/GaisserHillasParameter.h>
 
 #include <vector>

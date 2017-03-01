@@ -7,9 +7,9 @@
    \date 04 Jan 2015
 */
 #include <corsika/particle/ParticleList.h>
-#include <corsika/CorsikaParticle.h>
-#include <corsika/CorsikaUnits.h>
-#include <corsika/CorsikaIOException.h>
+#include <corsika/Particle.h>
+#include <corsika/Units.h>
+#include <corsika/IOException.h>
 #include <vector>
 #include <sstream>
 

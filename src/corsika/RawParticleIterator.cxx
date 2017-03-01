@@ -8,7 +8,7 @@
 
 #include <corsika/RawParticleIterator.h>
 #include <corsika/RawStream.h>
-#include <corsika/CorsikaIOException.h>
+#include <corsika/IOException.h>
 #include <sstream>
 
 namespace corsika

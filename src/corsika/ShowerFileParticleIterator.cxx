@@ -1,4 +1,4 @@
-#include <corsika/CorsikaShowerFileParticleIterator.h>
+#include <corsika/ShowerFileParticleIterator.h>
 #include <corsika/particle/ParticleList.h>
 
 using namespace corsika;
