@@ -410,7 +410,7 @@ CorsikaShowerFile::ReadLongBlocks()
   }
 
   for (int b = 1; b < nBlocks; ++b) {
-    if (!fRawStream->GetNextBlock(block)) {
+    if (!fRawStream->GetNextBlock(block) || !block.IsLongitudinal()) {
       ostringstream err;
       err << "Cannot read CORSIKA long block #" << b << "at position "
           << fCurrentPosition;
@@ -419,18 +419,18 @@ CorsikaShowerFile::ReadLongBlocks()
     }
     const LongitudinalBlock& longBlock = block.AsLongitudinalBlock;
     for (int j = 0; j != kLongEntriesPerBlock; ++j,++i) {
-      if (i && !longBlock.fEntries[j].fDepth)
+      if (j && !longBlock.fEntries[j].fDepth)
         break;
       auxDeltaEn.push_back(0);
       auxCharge.push_back(longBlock.fEntries[j].fCharged);
       auxGammas.push_back(longBlock.fEntries[j].fGamma);
       auxElectrons.push_back(longBlock.fEntries[j].fEminus);
-      auxPositrons.push_back(longBlock.fEntries[i].fEplus);
-      auxMuons.push_back(longBlock.fEntries[i].fMuMinus);
-      auxAntiMuons.push_back(longBlock.fEntries[i].fMuPlus);
-      auxHadrons.push_back(longBlock.fEntries[i].fNuclei);
-      auxNuclei.push_back(longBlock.fEntries[i].fHadron);
-      auxCherenkov.push_back(longBlock.fEntries[i].fCherenkov);
+      auxPositrons.push_back(longBlock.fEntries[j].fEplus);
+      auxMuons.push_back(longBlock.fEntries[j].fMuMinus);
+      auxAntiMuons.push_back(longBlock.fEntries[j].fMuPlus);
+      auxHadrons.push_back(longBlock.fEntries[j].fNuclei);
+      auxNuclei.push_back(longBlock.fEntries[j].fHadron);
+      auxCherenkov.push_back(longBlock.fEntries[j].fCherenkov);
       auxDepth.push_back(longBlock.fEntries[j].fDepth);
       auxDepth_dE.push_back(longBlock.fEntries[j].fDepth);
     }
