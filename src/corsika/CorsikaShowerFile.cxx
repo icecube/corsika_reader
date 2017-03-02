@@ -402,8 +402,8 @@ CorsikaShowerFile::ReadLongBlocks()
     auxPositrons.push_back(longBlock.fEntries[i].fEplus);
     auxMuons.push_back(longBlock.fEntries[i].fMuMinus);
     auxAntiMuons.push_back(longBlock.fEntries[i].fMuPlus);
-    auxHadrons.push_back(longBlock.fEntries[i].fNuclei);
-    auxNuclei.push_back(longBlock.fEntries[i].fHadron);
+    auxHadrons.push_back(longBlock.fEntries[i].fHadron);
+    auxNuclei.push_back(longBlock.fEntries[i].fNuclei);
     auxCherenkov.push_back(longBlock.fEntries[i].fCherenkov);
     auxDepth.push_back(longBlock.fEntries[i].fDepth);
     auxDepth_dE.push_back(longBlock.fEntries[i].fDepth);
@@ -428,8 +428,8 @@ CorsikaShowerFile::ReadLongBlocks()
       auxPositrons.push_back(longBlock.fEntries[j].fEplus);
       auxMuons.push_back(longBlock.fEntries[j].fMuMinus);
       auxAntiMuons.push_back(longBlock.fEntries[j].fMuPlus);
-      auxHadrons.push_back(longBlock.fEntries[j].fNuclei);
-      auxNuclei.push_back(longBlock.fEntries[j].fHadron);
+      auxHadrons.push_back(longBlock.fEntries[j].fHadron);
+      auxNuclei.push_back(longBlock.fEntries[j].fNuclei);
       auxCherenkov.push_back(longBlock.fEntries[j].fCherenkov);
       auxDepth.push_back(longBlock.fEntries[j].fDepth);
       auxDepth_dE.push_back(longBlock.fEntries[j].fDepth);
