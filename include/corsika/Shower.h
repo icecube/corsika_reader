@@ -9,7 +9,7 @@
 
 #pragma once
 #include <corsika/Block.h>
-#include <corsika/ShowerFileParticleIterator.h>
+#include <corsika/ShowerParticleStream.h>
 #include <corsika/GaisserHillasParameter.h>
 #include <vector>
 
@@ -18,10 +18,10 @@ namespace corsika
     
     class CorsikaShower {
     public:
-        CorsikaShower(): fParticleIterator(0) {}
+        CorsikaShower(): particle_stream(0) {}
         CorsikaShower(const EventHeader& header,
                       const EventTrailer& trailer,
-                      CorsikaShowerFileParticleIterator* particleIt);
+                      ShowerParticleStream* particle_stream);
         ~CorsikaShower(){}
         
         int GetPrimary() const            {return fPrimaryParticle;   }
@@ -36,11 +36,11 @@ namespace corsika
         float GetMuonEnergyCutoff() const {return fMuonEnergyCutoff;}
         
         
-        CorsikaShowerFileParticleIterator& GetParticleIt() const
+        ShowerParticleStream& ParticleStream() const
         {
-            fParticleIterator->Rewind();
+            particle_stream->Rewind();
             //++(*fParticleIterator);
-            return *fParticleIterator;
+            return *particle_stream;
         }
         
         GaisserHillasParameter GetGaisserHillasParams() const
@@ -100,6 +100,6 @@ namespace corsika
         float fCalorimetricEnergy;
         GaisserHillasParameter fGH;
         
-        CorsikaShowerFileParticleIterator* fParticleIterator;
+        ShowerParticleStream* particle_stream; // TODO who owns this pointer?
     };
 }

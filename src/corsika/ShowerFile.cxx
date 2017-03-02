@@ -9,7 +9,7 @@
 
 #include <corsika/Constants.h>
 #include <corsika/ShowerFile.h>
-#include <corsika/ShowerFileParticleIterator.h>
+#include <corsika/ShowerParticleStream.h>
 #include <corsika/IOException.h>
 #include <corsika/Block.h>
 #include <corsika/Shower.h>
@@ -226,8 +226,8 @@ CorsikaShowerFile::Read()
     timeShift = (hReference - heightObsLevel) / (cosZenith * kSpeedOfLight);
 
 
-  CorsikaShowerFileParticleIterator* particleIterator =
-    new CorsikaShowerFileParticleIterator(fRawStream,
+  ShowerParticleStream* particleIterator =
+    new ShowerParticleStream(fRawStream,
                                           fIndex.eventHeaders[fCurrentPosition] + 1,
                                           timeShift,
                                           fObservationLevel,

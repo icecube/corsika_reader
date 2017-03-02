@@ -17,7 +17,7 @@ using namespace corsika;
 
 CorsikaShower::CorsikaShower(const struct EventHeader& header,
                              const struct EventTrailer& trailer,
-                             CorsikaShowerFileParticleIterator* particleIt):
+                             ShowerParticleStream* particle_stream):
   fEventHeader(header),
   fEventTrailer(trailer),
   fPrimaryParticle(ParticleList::CorsikaToPDG(int(header.fParticleId))),
@@ -30,5 +30,5 @@ CorsikaShower::CorsikaShower(const struct EventHeader& header,
   //fShowerRunId(int(fRunNumber)),
   fEMEnergyCutoff(header.fCutoffElectrons),
   fMuonEnergyCutoff(header.fCutoffMuons),
-  fParticleIterator(particleIt)
+  particle_stream(particle_stream)
 {}

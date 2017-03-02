@@ -43,10 +43,10 @@ namespace testCorsikaFileNS {
   {
     CorsikaShowerFile file(filename);
     file.FindEvent(1);
-    CorsikaShowerFileParticleIterator& particles = file.GetCurrentShower().GetParticleIt();
+    auto& stream = file.GetCurrentShower().ParticleStream();
     int count = 0;
       
-      boost::optional<CorsikaParticle> it = particles.NextParticle();
+      boost::optional<CorsikaParticle> it = stream.NextParticle();
       
     //ShowerParticleList::iterator it = particles.begin();
     ENSURE_EQUAL(it->PDGCode(), CorsikaParticle::eMuon);
@@ -60,7 +60,7 @@ namespace testCorsikaFileNS {
               it->KineticEnergy();
           }
           ++count;
-          it = particles.NextParticle();
+          it = stream.NextParticle();
       }
     ENSURE_EQUAL(count, 181992);
   }

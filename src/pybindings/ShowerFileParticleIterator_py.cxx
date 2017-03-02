@@ -1,5 +1,5 @@
 #include <boost/python.hpp>
-#include <corsika/ShowerFileParticleIterator.h>
+#include <corsika/ShowerParticleStream.h>
 
 
 using namespace boost::python;
@@ -10,7 +10,7 @@ inline object identity(object const& o) { return o; }
 /*
   "ranges" do not make sense for this iterator, so I am doing the minimum necessary to provide a python iterator interface.
  */
-CorsikaParticle& next_particle(CorsikaShowerFileParticleIterator& o)
+CorsikaParticle& next_particle(ShowerParticleStream& o)
 {
     boost::optional<CorsikaParticle> p = o.NextParticle();
 
@@ -29,10 +29,10 @@ CorsikaParticle& next_particle(CorsikaShowerFileParticleIterator& o)
 void register_CorsikaShowerFileParticleIterator()
 {
 
-  class_<CorsikaShowerFileParticleIterator>("CorsikaShowerFileParticleIterator")
+  class_<ShowerParticleStream>("ShowerParticleStream")
     .def("next", next_particle, return_internal_reference<>())
     .def("__iter__", identity)
-    .def("rewind", &CorsikaShowerFileParticleIterator::Rewind)
+    .def("rewind", &ShowerParticleStream::Rewind)
     ;
 
 }

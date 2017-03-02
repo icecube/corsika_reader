@@ -1,17 +1,17 @@
-#include <corsika/ShowerFileParticleIterator.h>
+#include <corsika/ShowerParticleStream.h>
 #include <corsika/particle/ParticleList.h>
 
 using namespace corsika;
 
-CorsikaShowerFileParticleIterator::
-CorsikaShowerFileParticleIterator(RawStreamPtr stream, size_t start, double timeOffset, int observationLevel, bool keepMuProd):
+ShowerParticleStream::
+ShowerParticleStream(RawStreamPtr stream, size_t start, double timeOffset, int observationLevel, bool keepMuProd):
     iterator_(VRawParticleIterator::Create(stream, start)), fTimeOffset(timeOffset),
     fObservationLevel(observationLevel), fKeepMuProd(keepMuProd)
 {
     Rewind();
 }
 
-boost::optional<CorsikaParticle> CorsikaShowerFileParticleIterator::NextParticle()
+boost::optional<CorsikaParticle> ShowerParticleStream::NextParticle()
 {
     boost::optional<CorsikaParticle> parent;
     boost::optional<CorsikaParticle> grandparent;

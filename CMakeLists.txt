@@ -49,7 +49,7 @@ set (Corsika_HEADERS
   include/corsika/Particle.h
   include/corsika/Shower.h
   include/corsika/ShowerFile.h
-  include/corsika/ShowerFileParticleIterator.h
+  include/corsika/ShowerParticleStream.h
   include/corsika/GaisserHillasParameter.h
   include/corsika/particle/NucleusProperties.h
   include/corsika/particle/ParticleList.h
@@ -66,7 +66,7 @@ set (Corsika_SOURCES
   src/corsika/Particle.cxx
   src/corsika/Shower.cxx
   src/corsika/ShowerFile.cxx
-  src/corsika/ShowerFileParticleIterator.cxx
+  src/corsika/ShowerParticleStream.cxx
   src/corsika/GaisserHillasParameter.cxx
   src/corsika/RawStream.cxx
   src/corsika/Index.cxx

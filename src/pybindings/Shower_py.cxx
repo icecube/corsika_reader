@@ -32,7 +32,7 @@ object muon_profile(CorsikaShower& self) { return expose_vector_as_array(self, s
 
 class ParticleIterator {
 public:
-  ParticleIterator(CorsikaShowerFileParticleIterator* f=0):
+  ParticleIterator(ShowerParticleStream* f=0):
     fIterator(f)
   {
     fIterator->Rewind();
@@ -57,14 +57,14 @@ public:
     return *p;
   }
 private:
-  CorsikaShowerFileParticleIterator* fIterator;
-  CorsikaShowerFileParticleIterator fInvalid;
+  ShowerParticleStream* fIterator;
+  ShowerParticleStream fInvalid;
 };
 
 
 ParticleIterator get_particle_iterator(CorsikaShower& shower)
 {
-  return ParticleIterator(&shower.GetParticleIt());
+  return ParticleIterator(&shower.ParticleStream());
 }
 
 void register_CorsikaShower()
