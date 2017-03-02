@@ -27,8 +27,12 @@ object depth(CorsikaShower& self) { return expose_vector_as_array(self, self.fDe
 object charge_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fChargeProfile); }
 object gamma_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fGammaProfile); }
 object electron_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fElectronProfile); }
+object positron_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fPositronProfile); }
 object muon_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fMuonProfile); }
-
+object anti_muon_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fAntiMuonProfile); }
+object hadron_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fHadronProfile); }
+object nuclei_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fNucleiProfile); }
+object cherenkov_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fCherenkovProfile); }
 
 class ParticleIterator {
 public:
@@ -101,7 +105,12 @@ void register_CorsikaShower()
     .add_property("charge_profile", charge_profile)
     .add_property("gamma_profile", gamma_profile)
     .add_property("electron_profile", electron_profile)
+    .add_property("positron_profile",  positron_profile)
     .add_property("muon_profile", muon_profile)
+    .add_property("anti_muon_profile", anti_muon_profile)
+    .add_property("hadron_profile",    hadron_profile)
+    .add_property("nuclei_profile",    nuclei_profile)
+    .add_property("cherenkov_profile", cherenkov_profile)
     .add_property("depth", depth)
     .add_property("de_dx", de_dx)
     .add_property("depth_de_dx", depth_de)
