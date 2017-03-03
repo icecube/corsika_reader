@@ -95,7 +95,7 @@ namespace corsika
                 if (GetNextPosition() > thePosition)
                 {
                     file.reset(FileStream::open(filename.c_str()));
-                    if (!file) throw CorsikaIOException("Failed in dumb seek");
+                    if (!file) throw IOException("Failed in dumb seek");
                     current_block = 0;
                     current_disk_block = 0;
                     buffer_valid = false;
@@ -112,7 +112,7 @@ namespace corsika
         bool ReadDiskBlock()
         {
             if (file->read(sizeof(DiskBlock), &buffer) <= 0) return false;
-            if (buffer.padding_start != buffer.padding_end) throw CorsikaIOException("Padding mismatch\n");
+            if (buffer.padding_start != buffer.padding_end) throw IOException("Padding mismatch\n");
             buffer_valid = true;
             return true;
         }
@@ -123,13 +123,13 @@ namespace corsika
         auto ptr = new RawStreamT<Thinning, Padding>(file, filename, len64);
         if (ptr->valid()) return RawStreamPtr(ptr);
         delete ptr;
-        throw CorsikaIOException("Not a valid corsika file\n");
+        throw IOException("Not a valid corsika file\n");
     }
     
     RawStreamPtr RawStream::Create(const std::string& filename)
     {
         boost::shared_ptr<FileStream> file(FileStream::open(filename.c_str()));
-        if (!file) throw CorsikaIOException("Error opening Corsika file '" + filename + "'.\n");
+        if (!file) throw IOException("Error opening Corsika file '" + filename + "'.\n");
         
         int64_t len64;
         file->read(8, &len64);
@@ -147,6 +147,6 @@ namespace corsika
         else if (len32 == not_thinned_size)
             return create_stream<NotThinned, int32_t>(file, filename, len64); // 32bit not-thinned
         
-        throw CorsikaIOException("Can't determine type of corsika file\n");
+        throw IOException("Can't determine type of corsika file\n");
     }
 }

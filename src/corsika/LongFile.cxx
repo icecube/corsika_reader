@@ -76,12 +76,12 @@ CorsikaLongProfile
 CorsikaLongFile::GetProfile(int event)
 {
   if (event < 0) {
-    throw CorsikaIOException("event ID must be non negative.");
+    throw IOException("event ID must be non negative.");
   }
   if (event+1 > fN) {
     ostringstream msg;
     msg << "Trying to get event " << event << ", but file " << fFilename << " has only " << fN << " events (starting at zero).";
-    throw CorsikaIOException(msg.str());
+    throw IOException(msg.str());
   }
   return FetchProfile(event);
 }
@@ -122,7 +122,7 @@ CorsikaLongFile::Scan()
           "contains invalid string at                ^^^^^^^\n"
           "which is neither VERTICAL nor SLANT !";
         ERROR(err);
-        throw CorsikaIOException(err.str());
+        throw IOException(err.str());
       }
     }
 
@@ -145,7 +145,7 @@ CorsikaLongFile::Scan()
           "contains invalid string at                ^^^^^^^\n"
           " which is neither VERTICAL nor SLANT !";
         ERROR(err);
-        throw CorsikaIOException(err.str());
+        throw IOException(err.str());
       }
     }
   } // --  end scan file  ---

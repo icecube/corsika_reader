@@ -82,7 +82,7 @@ const VParticleProperties& ParticleList::Get(int code)
     {
         std::ostringstream msg;
         msg << "Cannot create particle properties for particle id " << code << ".";
-        throw CorsikaIOException(msg.str());
+        throw IOException(msg.str());
     }
     
     nuclei_.insert(std::pair<int, NucleusProperties>(code, NucleusProperties(code)));

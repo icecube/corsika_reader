@@ -46,10 +46,10 @@ namespace corsika
     {
         if (current_particle == kParticlesInBlock)
         {
-            if (!valid) throw CorsikaIOException("RawParticleIterator not valid.");
+            if (!valid) throw IOException("RawParticleIterator not valid.");
 
             if (!stream->GetNextBlock(block))
-                throw CorsikaIOException("Error reading block in CORSIKA file.");
+                throw IOException("Error reading block in CORSIKA file.");
             
             if (block.IsControl() || block.IsLongitudinal()) // end of particle records
             {

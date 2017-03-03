@@ -103,7 +103,7 @@ CorsikaShowerFile::Open(const std::string& theFileName, bool scan)
   else if (!fRawStream->IsSeekable()){
     ostringstream msg;
     msg << "File " << theFileName << " does not support random access. This class can not handle it";
-    throw CorsikaIOException(msg.str());
+    throw IOException(msg.str());
   }
   if (fIsThinned) {
     ReadRunHeader<Thinned>();
@@ -286,13 +286,13 @@ size_t CorsikaShowerFile::GetNEvents()
   if (!fRawStream) {
     const string msg = "Cannot request number of events from closed file";
     ERROR(msg);
-    throw CorsikaIOException(msg);
+    throw IOException(msg);
   }
 
   if (!fRawStream->IsSeekable()) {
     const string msg = "Cannot request number of events for this file. It is not seekable.";
     ERROR(msg);
-    throw CorsikaIOException(msg);
+    throw IOException(msg);
   }
   if (!fFileScanned) {
       fIndex.Scan(*fRawStream, false);

@@ -19,14 +19,14 @@ namespace corsika
      \ingroup corsika exceptions
      */
     
-    struct CorsikaIOException : public std::exception
+    struct IOException : public std::exception
     {
         /// Construct CORISKA IO exception with message
-        CorsikaIOException(std::string message) :
+        IOException(std::string message) :
         fMessage(message) { }
         
         /// Virtual destructor for CorsikaIOException
-        virtual ~CorsikaIOException() throw() { }
+        virtual ~IOException() throw() { }
         
         const char* what() const throw() { return fMessage.c_str(); }
         
