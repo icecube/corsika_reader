@@ -6,43 +6,31 @@
  \date 22 May 2003
  */
 
-#include <corsika/RawParticleIterator.h>
-#include <corsika/RawStream.h>
+#include <corsika/RawParticleStream.h>
 #include <corsika/IOException.h>
-#include <sstream>
 
 namespace corsika
 {
-    template <class Thinning> RawParticleIterator<Thinning>::RawParticleIterator(RawStreamPtr stream, size_t start):
+    template <class Thinning> RawParticleStream<Thinning>::RawParticleStream(RawStreamPtr stream, size_t start):
     stream(stream), start(start)
     {
         // if there is something we KNOW, it is that particles are not in block zero.
         if (this->start == 0) this->start = stream->GetNextPosition();
         Rewind();
     }
-    template <class Thinning> boost::optional<CorsikaParticle> RawParticleIterator<Thinning>::GetCorsikaParticle()
+    template <class Thinning> boost::optional<CorsikaParticle> RawParticleStream<Thinning>::NextParticle()
     {
         if (const ParticleData<Thinning>* d = GetOneParticle())
             return boost::optional<CorsikaParticle>(CorsikaParticle(*d));
         return boost::optional<CorsikaParticle>();
     }
-    template <class Thinning> CorsikaParticle* RawParticleIterator<Thinning>::Next()
-    {
-        if (const ParticleData<Thinning>* p = GetOneParticle())
-        {
-            particle = CorsikaParticle(*p);
-            return &particle;
-        }
-        return 0;
-    }
-    
-    template <class Thinning> void RawParticleIterator<Thinning>::Rewind()
+    template <class Thinning> void RawParticleStream<Thinning>::Rewind()
     {
         current_particle = kParticlesInBlock;
         valid = true;
         stream->SeekTo(start);
     }
-    template <class Thinning> const ParticleData<Thinning>* RawParticleIterator<Thinning>::GetOneParticle()
+    template <class Thinning> const ParticleData<Thinning>* RawParticleStream<Thinning>::GetOneParticle()
     {
         if (current_particle == kParticlesInBlock)
         {
@@ -61,11 +49,11 @@ namespace corsika
         return block.AsParticleBlock.fParticle + current_particle++;
     }
     
-    RawParticleIteratorPtr VRawParticleIterator::Create(RawStreamPtr stream, size_t start)
+    RawParticleStreamPtr VRawParticleStream::Create(RawStreamPtr stream, size_t start)
     {
-        if (stream->IsThinned()) return RawParticleIteratorPtr(new RawParticleIterator<Thinned>(stream, start));
-        return RawParticleIteratorPtr(new RawParticleIterator<NotThinned>(stream, start));
+        if (stream->IsThinned()) return RawParticleStreamPtr(new RawParticleStream<Thinned>(stream, start));
+        return RawParticleStreamPtr(new RawParticleStream<NotThinned>(stream, start));
     }
-    template struct RawParticleIterator<Thinned>;
-    template struct RawParticleIterator<NotThinned>;
+    template struct RawParticleStream<Thinned>;
+    template struct RawParticleStream<NotThinned>;
 }

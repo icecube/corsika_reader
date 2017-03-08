@@ -1,6 +1,6 @@
 #include "corsika_test.h"
 #include <corsika/RawStream.h>
-#include <corsika/RawParticleIterator.h>
+#include <corsika/RawParticleStream.h>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -35,16 +35,15 @@ namespace testRawStreamNS
         
         i = 0;
         int all = 0;
-        RawParticleIteratorPtr it = VRawParticleIterator::Create(stream, 2);
-        boost::optional<CorsikaParticle> p = it->GetCorsikaParticle();
-        while (p) {
+        auto particles = VRawParticleStream::Create(stream, 2);
+        while (auto p = particles->NextParticle())
+        {
             ++all;
             if (p->fDescription > 0 &&
                 p->CorsikaCode() != 75 &&  p->CorsikaCode() != 76 &&
                 p->CorsikaCode() != 85 &&  p->CorsikaCode() != 86 &&
                 p->CorsikaCode() != 95 &&  p->CorsikaCode() != 96)
                 i += 1;
-            p = it->GetCorsikaParticle();
         }
         ENSURE_EQUAL(all, 183339);
         ENSURE_EQUAL(i, 181992);

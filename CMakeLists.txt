@@ -44,7 +44,7 @@ set (Corsika_HEADERS
   include/corsika/Units.h
   include/corsika/Block.h
   include/corsika/RawStream.h
-  include/corsika/RawParticleIterator.h
+  include/corsika/RawParticleStream.h
   include/corsika/IOException.h
   include/corsika/Particle.h
   include/corsika/Shower.h
@@ -72,7 +72,7 @@ set (Corsika_SOURCES
   src/corsika/Index.cxx
   src/corsika/particle/NucleusProperties.cxx
   src/corsika/particle/ParticleList.cxx
-  src/corsika/RawParticleIterator.cxx
+  src/corsika/RawParticleStream.cxx
   src/corsika/LongFile.cxx
   src/corsika/FileStream.cxx
   src/corsika/FileIndex.cxx
@@ -145,12 +145,12 @@ install(FILES
   include/corsika/Units.h
   include/corsika/Block.h
   include/corsika/RawStream.h
-  include/corsika/RawParticleIterator.h
+  include/corsika/RawParticleStream.h
   include/corsika/IOException.h
   include/corsika/Particle.h
   include/corsika/Shower.h
   include/corsika/ShowerFile.h
-  include/corsika/ShowerFileParticleIterator.h
+  include/corsika/ShowerParticleStream.h
   include/corsika/GaisserHillasParameter.h
   DESTINATION include/corsika
 )

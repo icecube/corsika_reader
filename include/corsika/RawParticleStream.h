@@ -6,31 +6,28 @@
 
 namespace corsika
 {
-    typedef boost::shared_ptr<struct VRawParticleIterator> RawParticleIteratorPtr;
-    struct VRawParticleIterator
+    typedef boost::shared_ptr<struct VRawParticleStream> RawParticleStreamPtr;
+    struct VRawParticleStream
     {
-        virtual boost::optional<CorsikaParticle> GetCorsikaParticle() = 0;
+        virtual boost::optional<CorsikaParticle> NextParticle() = 0;
         virtual void Rewind() = 0;
         virtual bool IsValid() const = 0;
-        virtual ~VRawParticleIterator(){}
+        virtual ~VRawParticleStream(){}
         
         // Returns next particle or null if there are no more particles.
         virtual CorsikaParticle* Next(){ return 0; };
         
-        static RawParticleIteratorPtr Create(RawStreamPtr stream, size_t start=0);
+        static RawParticleStreamPtr Create(RawStreamPtr stream, size_t start=0);
     };
-    template <class Thinning> struct RawParticleIterator: VRawParticleIterator
+    template <class Thinning> struct RawParticleStream: VRawParticleStream
     {
-        RawParticleIterator(RawStreamPtr stream, size_t start);
-        boost::optional<CorsikaParticle> GetCorsikaParticle();
+        RawParticleStream(RawStreamPtr stream, size_t start);
+        boost::optional<CorsikaParticle> NextParticle();
         const ParticleData<Thinning>* GetOneParticle();
         void Rewind();
         bool IsValid() const { return valid; }
-        
-        CorsikaParticle* Next();
 
     private:
-        CorsikaParticle particle;
         RawStreamPtr stream;
         size_t start;
         size_t current_particle;

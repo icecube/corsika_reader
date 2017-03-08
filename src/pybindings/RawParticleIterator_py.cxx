@@ -1,18 +1,18 @@
 #include <boost/python.hpp>
-#include <corsika/RawParticleIterator.h>
+#include <corsika/RawParticleStream.h>
 #include <iostream>
 
 using namespace boost::python;
 using std::cout;
 using std::endl;
 
-class VRawParticleIterator: public corsika::VRawParticleIterator, public boost::python::wrapper<corsika::VRawParticleIterator>
+class RawParticleStream: public corsika::VRawParticleStream, public boost::python::wrapper<corsika::VRawParticleStream>
 {
 public:
-  VRawParticleIterator(){}
-  VRawParticleIterator(const corsika::VRawParticleIterator& it):corsika::VRawParticleIterator(it){}
+  RawParticleStream(){}
+  RawParticleStream(const corsika::VRawParticleStream& it):corsika::VRawParticleStream(it){}
 
-  boost::optional<corsika::CorsikaParticle> GetCorsikaParticle()
+  boost::optional<corsika::CorsikaParticle> NextParticle()
   {
     return this->get_override("GetCorsikaParticle")();
   }
@@ -34,7 +34,7 @@ inline object identity(object const& o) { return o; }
 
 template<typename Thinning>
 const corsika::ParticleData<Thinning>&
-next_particle(corsika::RawParticleIterator<Thinning>& o)
+next_particle(corsika::RawParticleStream<Thinning>& o)
 {
     const corsika::ParticleData<Thinning>* result = o.GetOneParticle();
   if (!result) {
@@ -46,9 +46,9 @@ next_particle(corsika::RawParticleIterator<Thinning>& o)
 
 template<typename Thinning>
 const corsika::ParticleData<Thinning>&
-next_particle_2(corsika::VRawParticleIterator& o)
+next_particle_2(corsika::VRawParticleStream& o)
 {
-  corsika::RawParticleIterator<Thinning>* ptr = dynamic_cast<corsika::RawParticleIterator<Thinning>*>(&o);
+  corsika::RawParticleStream<Thinning>* ptr = dynamic_cast<corsika::RawParticleStream<Thinning>*>(&o);
   if (!ptr) {
     PyErr_SetString(PyExc_StopIteration, "Could not cast particle iterator.");
     boost::python::throw_error_already_set();
@@ -62,7 +62,7 @@ next_particle_2(corsika::VRawParticleIterator& o)
 }
 
 template<typename Thinning>
-void Rewind(corsika::VRawParticleIterator& it)
+void Rewind(corsika::VRawParticleStream& it)
 {
   it.Rewind();
 }
@@ -70,8 +70,8 @@ void Rewind(corsika::VRawParticleIterator& it)
 template <class Thinning>
 void register_RawIterator(std::string name)
 {
-  typedef  corsika::RawParticleIterator<Thinning> RawParticleIterator;
-    class_<RawParticleIterator>(name.c_str(), init<corsika::RawStreamPtr, size_t>())
+  typedef  corsika::RawParticleStream<Thinning> RawParticleStream;
+    class_<RawParticleStream>(name.c_str(), init<corsika::RawStreamPtr, size_t>())
     // .def("next", next_particle<Thinning>,
     //      return_internal_reference<>())
     .def("next", next_particle_2<Thinning>,
@@ -81,18 +81,18 @@ void register_RawIterator(std::string name)
     .def("rewind", Rewind<Thinning>)
     ;
 
-  register_ptr_to_python<boost::shared_ptr<RawParticleIterator> >();
+  register_ptr_to_python<boost::shared_ptr<RawParticleStream> >();
 }
 
 
 
 void register_RawParticleIterator()
 {
-  class_<VRawParticleIterator,boost::noncopyable>("VRawIterator")
-    .def("rewind", &VRawParticleIterator::Rewind)
+  class_<RawParticleStream,boost::noncopyable>("VRawIterator")
+    .def("rewind", &RawParticleStream::Rewind)
     ;
 
-  register_ptr_to_python<corsika::RawParticleIteratorPtr>();
+  register_ptr_to_python<corsika::RawParticleStreamPtr>();
 
   register_RawIterator<corsika::NotThinned>("RawParticleIterator");
   register_RawIterator<corsika::Thinned>("RawParticleIterator_thin");

@@ -1,6 +1,6 @@
 #include <sstream>
 #include <corsika/RawStream.h>
-#include <corsika/RawParticleIterator.h>
+#include <corsika/RawParticleStream.h>
 #include <boost/python.hpp>
 
 using namespace boost::python;
@@ -36,13 +36,13 @@ struct RawStream
     {
         return stream->GetNextPosition();
     }
-    corsika::RawParticleIteratorPtr particles()
+    corsika::RawParticleStreamPtr particles()
     {
-        return corsika::VRawParticleIterator::Create(stream);
+        return corsika::VRawParticleStream::Create(stream);
     }
-    corsika::RawParticleIteratorPtr particles1(size_t start)
+    corsika::RawParticleStreamPtr particles1(size_t start)
     {
-        return corsika::VRawParticleIterator::Create(stream, start);
+        return corsika::VRawParticleStream::Create(stream, start);
     }
 };
 

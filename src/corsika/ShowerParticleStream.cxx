@@ -5,7 +5,7 @@ using namespace corsika;
 
 ShowerParticleStream::
 ShowerParticleStream(RawStreamPtr stream, size_t start, double timeOffset, int observationLevel, bool keepMuProd):
-    iterator_(VRawParticleIterator::Create(stream, start)), fTimeOffset(timeOffset),
+    stream(VRawParticleStream::Create(stream, start)), fTimeOffset(timeOffset),
     fObservationLevel(observationLevel), fKeepMuProd(keepMuProd)
 {
     Rewind();
@@ -16,7 +16,7 @@ boost::optional<CorsikaParticle> ShowerParticleStream::NextParticle()
     boost::optional<CorsikaParticle> parent;
     boost::optional<CorsikaParticle> grandparent;
     boost::optional<CorsikaParticle> muaddi;
-    while((value_ = iterator_->GetCorsikaParticle()))
+    while((value_ = stream->NextParticle()))
     {
         int corsika_particle_id = int(value_->fDescription/1000);
         int particleId = ParticleList::CorsikaToPDG(corsika_particle_id);
