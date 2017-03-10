@@ -12,10 +12,10 @@ namespace corsika
         ShowerParticleStream(){}
         ShowerParticleStream(RawStreamPtr stream, size_t start, double timeOffset, int observationLevel, bool keepMuProd);
         virtual void Rewind() { stream->Rewind(); }
-        boost::optional<CorsikaParticle> NextParticle();
+        boost::optional<Particle> NextParticle();
         
     private:
-        boost::optional<CorsikaParticle> value_;
+        boost::optional<Particle> value_;
         RawParticleStreamPtr stream;
         double fTimeOffset;
         int fObservationLevel;

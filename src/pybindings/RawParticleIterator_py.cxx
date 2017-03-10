@@ -12,9 +12,9 @@ public:
   RawParticleStream(){}
   RawParticleStream(const corsika::VRawParticleStream& it):corsika::VRawParticleStream(it){}
 
-  boost::optional<corsika::CorsikaParticle> NextParticle()
+  boost::optional<corsika::Particle> NextParticle()
   {
-    return this->get_override("GetCorsikaParticle")();
+    return this->get_override("GetParticle")();
   }
   void Rewind()
   {

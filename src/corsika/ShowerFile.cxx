@@ -208,7 +208,7 @@ CorsikaShowerFile::Read()
 
     INFO("CURVED version");
 
-    if (ParticleList::CorsikaToPDG(int(header.fParticleId)) == CorsikaParticle::ePhoton)
+    if (ParticleList::CorsikaToPDG(int(header.fParticleId)) == Particle::ePhoton)
       hReference = heightFirstInt;
 
     timeShift = (pow((kEarthRadius + heightObsLevel)*cosZenith, 2) +

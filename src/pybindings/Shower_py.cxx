@@ -43,13 +43,13 @@ public:
     fIterator->Rewind();
   }
 
-  CorsikaParticle next_particle()
+  Particle next_particle()
   {
     if (!fIterator) {
       PyErr_SetString(PyExc_StopIteration, "Empty particle list.");
       boost::python::throw_error_already_set();
     }
-      boost::optional<CorsikaParticle> p = fIterator->NextParticle();
+      boost::optional<Particle> p = fIterator->NextParticle();
     if (!p) {
       PyErr_SetString(PyExc_StopIteration, "No more particles.");
       boost::python::throw_error_already_set();

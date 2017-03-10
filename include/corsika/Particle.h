@@ -16,13 +16,12 @@
 
 namespace corsika
 {
-    typedef boost::shared_ptr<struct CorsikaParticle> CorsikaParticlePtr;
+    typedef boost::shared_ptr<struct Particle> ParticlePtr;
     
-    struct CorsikaParticle
+    struct Particle
     {
-        
-        
-        enum Type {
+        enum Type
+        {
             eUndefined = 0,
             eElectron = 11, ePositron = -11,
             eNuElectron = 12, eAntiNuElectron = -12,
@@ -60,10 +59,9 @@ namespace corsika
             eIron = 1000026056
         };
         
-        CorsikaParticle();
-        CorsikaParticle(const ParticleData<Thinned>& particle);
-        CorsikaParticle(const ParticleData<NotThinned>& particle);
-        ~CorsikaParticle();
+        Particle();
+        Particle(const ParticleData<Thinned>& particle);
+        Particle(const ParticleData<NotThinned>& particle);
         
         
         int PDGCode() const;
@@ -100,20 +98,20 @@ namespace corsika
         float TotalEnergy() const;
         
         bool HasParent() const { return bool(fParent); }
-        void SetParent(const CorsikaParticle& p) { fParent.reset(new CorsikaParticle(p)); }
-        CorsikaParticle& GetParent() { return *fParent; }
+        void SetParent(const Particle& p) { fParent.reset(new Particle(p)); }
+        Particle& GetParent() { return *fParent; }
         
-        void SetGrandParent(const CorsikaParticle& p) { fGrandParent.reset(new CorsikaParticle(p));  }
-        CorsikaParticle& GetGrandParent() { return *fGrandParent; }
+        void SetGrandParent(const Particle& p) { fGrandParent.reset(new Particle(p));  }
+        Particle& GetGrandParent() { return *fGrandParent; }
         
         bool HasMuonInfo() const { return bool(fMuonInfo); }
-        void SetMuonInfo(const CorsikaParticle& p) { fMuonInfo.reset(new CorsikaParticle(p));  }
-        CorsikaParticle& GetMuonInfo() { return *fMuonInfo; }
+        void SetMuonInfo(const Particle& p) { fMuonInfo.reset(new Particle(p));  }
+        Particle& GetMuonInfo() { return *fMuonInfo; }
         
         std::string String() const;
         
     private:
-        CorsikaParticlePtr fParent, fMuonInfo, fGrandParent;
+        ParticlePtr fParent, fMuonInfo, fGrandParent;
         
     };
 }

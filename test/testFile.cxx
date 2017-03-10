@@ -46,17 +46,17 @@ namespace testCorsikaFileNS {
     auto& stream = file.GetCurrentShower().ParticleStream();
     int count = 0;
       
-      boost::optional<CorsikaParticle> it = stream.NextParticle();
+      boost::optional<Particle> it = stream.NextParticle();
       
     //ShowerParticleList::iterator it = particles.begin();
-    ENSURE_EQUAL(it->PDGCode(), CorsikaParticle::eMuon);
+    ENSURE_EQUAL(it->PDGCode(), Particle::eMuon);
     ENSURE_DISTANCE(it->fTorZ, 183.053619385, 1e-8);
     //for (; it != particles.end(); ++it) {
       while(it)
       {
           it->GetName();
           const int pdg = it->PDGCode();
-          if ((pdg == CorsikaParticle::eMuon || pdg == CorsikaParticle::eMuon)) {
+          if ((pdg == Particle::eMuon || pdg == Particle::eMuon)) {
               it->KineticEnergy();
           }
           ++count;

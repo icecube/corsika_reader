@@ -18,11 +18,11 @@ namespace corsika
         if (this->start == 0) this->start = stream->GetNextPosition();
         Rewind();
     }
-    template <class Thinning> boost::optional<CorsikaParticle> RawParticleStream<Thinning>::NextParticle()
+    template <class Thinning> boost::optional<Particle> RawParticleStream<Thinning>::NextParticle()
     {
         if (const ParticleData<Thinning>* d = GetOneParticle())
-            return boost::optional<CorsikaParticle>(CorsikaParticle(*d));
-        return boost::optional<CorsikaParticle>();
+            return boost::optional<Particle>(Particle(*d));
+        return boost::optional<Particle>();
     }
     template <class Thinning> void RawParticleStream<Thinning>::Rewind()
     {

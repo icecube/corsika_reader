@@ -11,11 +11,11 @@ ShowerParticleStream(RawStreamPtr stream, size_t start, double timeOffset, int o
     Rewind();
 }
 
-boost::optional<CorsikaParticle> ShowerParticleStream::NextParticle()
+boost::optional<Particle> ShowerParticleStream::NextParticle()
 {
-    boost::optional<CorsikaParticle> parent;
-    boost::optional<CorsikaParticle> grandparent;
-    boost::optional<CorsikaParticle> muaddi;
+    boost::optional<Particle> parent;
+    boost::optional<Particle> grandparent;
+    boost::optional<Particle> muaddi;
     while((value_ = stream->NextParticle()))
     {
         int corsika_particle_id = int(value_->fDescription/1000);
@@ -34,7 +34,7 @@ boost::optional<CorsikaParticle> ShowerParticleStream::NextParticle()
             continue;
         }
         
-        if (particleId == CorsikaParticle::eUndefined || (!fKeepMuProd && (particleId == CorsikaParticle::eDecayedMuon || particleId == CorsikaParticle::eDecayedAntiMuon)) || obsLevel != fObservationLevel)
+        if (particleId == Particle::eUndefined || (!fKeepMuProd && (particleId == Particle::eDecayedMuon || particleId == Particle::eDecayedAntiMuon)) || obsLevel != fObservationLevel)
         {
             // reset and continue
             parent = boost::none;
