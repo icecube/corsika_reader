@@ -58,6 +58,7 @@ set (Corsika_HEADERS
   include/corsika/LongProfile.h
   include/corsika/LongFile.h
   include/corsika/FileStream.h
+  include/corsika/Logging.h
   DESTINATION include
 )
 
@@ -76,6 +77,7 @@ set (Corsika_SOURCES
   src/corsika/LongFile.cxx
   src/corsika/FileStream.cxx
   src/corsika/FileIndex.cxx
+  src/corsika/Logging.cxx
 )
 
 
@@ -152,6 +154,7 @@ install(FILES
   include/corsika/ShowerFile.h
   include/corsika/ShowerParticleStream.h
   include/corsika/GaisserHillasParameter.h
+  include/corsika/Logging.h
   DESTINATION include/corsika
 )
 install(FILES
