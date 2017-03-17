@@ -1,7 +1,6 @@
 #include <corsika/Index.h>
 #include <corsika/CorsikaUnits.h>
 #include <corsika/CorsikaShowerFile.h>
-#include <corsika/ShowerParticleList.h>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -34,12 +33,12 @@ int main(int argc, char* argv[])
        << "  azimuth: " << file.GetCurrentShower().GetAzimuth()/deg << "\n"
        << "  N_muons: " << file.GetCurrentShower().GetMuonNumber() << endl;
 
-  ShowerParticleList particles = file.GetCurrentShower().GetParticles();
+  CorsikaShowerFileParticleIterator& particles = file.GetCurrentShower().GetParticleIt();
   int count = 0;
   int muons = 0;
   double muon_bundle_energy = 0;
-  for (ShowerParticleList::iterator it = particles.begin();
-       it != particles.end(); ++it) {
+  for (boost::optional<CorsikaParticle> it = particles.NextParticle();
+       it; it = particles.NextParticle()) {
     const int pdg = it->PDGCode();
     if ((pdg == CorsikaParticle::eMuon || pdg == CorsikaParticle::eMuon)) {
       muon_bundle_energy += it->KineticEnergy();
