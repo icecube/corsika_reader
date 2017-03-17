@@ -1,7 +1,6 @@
 #include <corsika/Index.h>
-#include <corsika/CorsikaUnits.h>
-#include <corsika/CorsikaShowerFile.h>
-#include <corsika/ShowerParticleList.h>
+#include <corsika/Units.h>
+#include <corsika/ShowerFile.h>
 #include <string>
 #include <vector>
 #include <iostream>
@@ -16,7 +15,7 @@ int main(int argc, char* argv[])
     exit(1);
   }
 
-  CorsikaShowerFile file(argv[1]);
+  ShowerFile file(argv[1]);
   if(!file.IsOpen()) {
     cerr << "Failed to open file " << argv[1] << endl;
     exit(1);
@@ -34,14 +33,13 @@ int main(int argc, char* argv[])
        << "  azimuth: " << file.GetCurrentShower().GetAzimuth()/deg << "\n"
        << "  N_muons: " << file.GetCurrentShower().GetMuonNumber() << endl;
 
-  ShowerParticleList particles = file.GetCurrentShower().GetParticles();
+  auto particles = file.GetCurrentShower().ParticleStream();
   int count = 0;
   int muons = 0;
   double muon_bundle_energy = 0;
-  for (ShowerParticleList::iterator it = particles.begin();
-       it != particles.end(); ++it) {
+  while (auto it = particles.NextParticle()) {
     const int pdg = it->PDGCode();
-    if ((pdg == CorsikaParticle::eMuon || pdg == CorsikaParticle::eMuon)) {
+    if ((pdg == Particle::eMuon || pdg == Particle::eMuon)) {
       muon_bundle_energy += it->KineticEnergy();
       ++muons;
     }

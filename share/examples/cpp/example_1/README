@@ -1,4 +1,4 @@
-A simple example of how to use the C++ interface. To compile, open CMakeLists.txt and set the CORSIKA_READER_HOME variable to point to wherever you installed the corsika reader and then:
+A simple example of how to use the C++ interface. To compile:
 
   cmake .
   make
@@ -6,3 +6,5 @@ A simple example of how to use the C++ interface. To compile, open CMakeLists.tx
 Use it:
   ./corsika_example_1 <some_corsika_file>
 
+
+This is a very simplified build. Currently I had to link the python libraries to this executable when compiling in my mac. If you get a 'Symbol not found: _PyBaseObject_Type' error, uncomment the commented line in CMakeLists.txt. This is 'not ideal' and will be fixed in the future.

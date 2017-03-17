@@ -127,9 +127,12 @@ if (PYTHONLIBS_FOUND)
   install(DIRECTORY share/examples/
     DESTINATION share/${Corsika_PACKAGE_NAME}/examples
     FILES_MATCHING PATTERN "*.py"
-    		   PATTERN "*.cpp"
-    		   PATTERN "*.txt"
-		   PATTERN "README"
+    PATTERN "*.cpp"
+    PATTERN "README"
+    )
+  configure_file (${CMAKE_SOURCE_DIR}/share/examples/cpp/example_1/CMakeLists.txt ${CMAKE_BINARY_DIR}/share/examples/cpp/example_1/CMakeLists.txt @ONLY)
+  install (FILES ${CMAKE_BINARY_DIR}/share/examples/cpp/example_1/CMakeLists.txt
+    DESTINATION share/${Corsika_PACKAGE_NAME}/examples/cpp/example_1
     )
 
   install (TARGETS ${Corsika_PACKAGE_NAME}
@@ -140,6 +143,11 @@ endif (PYTHONLIBS_FOUND)
 install (TARGETS CorsikaReader
   LIBRARY DESTINATION lib
 )
+
+configure_file (${CMAKE_SOURCE_DIR}/share/CorsikaReaderConfig.cmake ${CMAKE_BINARY_DIR}/share/CorsikaReaderConfig.cmake @ONLY)
+install (FILES ${CMAKE_BINARY_DIR}/share/CorsikaReaderConfig.cmake
+  DESTINATION share/${Corsika_PACKAGE_NAME}
+  )
 
 install(FILES
   include/corsika/Index.h
@@ -155,6 +163,9 @@ install(FILES
   include/corsika/ShowerParticleStream.h
   include/corsika/GaisserHillasParameter.h
   include/corsika/Logging.h
+  include/corsika/LongFile.h
+  include/corsika/LongProfile.h
+  include/corsika/FileIndex.h
   DESTINATION include/corsika
 )
 install(FILES
