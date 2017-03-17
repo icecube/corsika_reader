@@ -1,70 +1,68 @@
 /**
-   \file
-   A simple list of particle properties
-
-   \author Javier Gonzalez
-   \version $Id$
-   \date 04 Jan 2015
-*/
+ \file
+ A simple list of particle properties
+ 
+ \author Javier Gonzalez
+ \version $Id$
+ \date 04 Jan 2015
+ */
 #include <corsika/particle/ParticleList.h>
 #include <corsika/Particle.h>
 #include <corsika/Units.h>
 #include <corsika/IOException.h>
 #include <vector>
 #include <sstream>
-
 using namespace corsika;
 
-namespace particle_constants {
-  // these were originally in a header file as enumerations, but I want to keep all particle information in one place
-  const double kElectronMass      = 0.510998902 * MeV;
-  const double kMuonMass          = 105.658357  * MeV;
-  const double kTauMass           = 1776.99     * MeV;
-  const double kProtonMass        = 938.271998  * MeV;
-  const double kNeutronMass       = 939.56533   * MeV;
-  const double kDeuteronMass      = 1875.612762 * MeV;
-  const double kLambdaMass        = 1115.683    * MeV;
-  const double kLambdacMass       = 2286.46     * MeV;
-  const double kSigmaZeroMass     = 1192.642    * MeV;
-  const double kSigmaPlusMass     = 1189.37     * MeV;
-  const double kSigmaMinusMass    = 1197.449    * MeV;
-  const double kXiZeroMass        = 1314.83     * MeV;
-  const double kXiMinusMass       = 1321.31     * MeV;
-  const double kOmegaMinusMass    = 1672.45     * MeV;
-  const double kPiZeroMass        = 134.9766    * MeV;
-  const double kPiChargedMass     = 139.57018   * MeV;
-  const double kKaonZeroMass      = 497.672     * MeV; // | K^0 _s - K^0 _l | ~ 10^-12 MeV
-  const double kKaonChargedMass   = 493.677     * MeV;
-  const double kEtaMass           = 547.30      * MeV;
-  const double kRhoZeroMass       = 775.49      * MeV;
-  const double kRhoPlusMass       = 775.11      * MeV;
-  const double kRhoMinusMass      = 775.11      * MeV;
-  const double kOmegaMesonMass    = 782.65      * MeV;
-  const double kDeltaMinusMass    = 1.232       * MeV;
-  const double kDeltaZeroMass     = 1.232       * MeV;
-  const double kDeltaPlusMass     = 1.232       * MeV;
-  const double kDeltaPlusPlusMass = 1.232       * MeV;
-
-   // Particle lifetimes
-  const double kMuonLifetime          = 2.19703e-6 * s;
-  const double kNeutronLifetime       = 885.7      * s;
-  const double kLambdaLifetime        = 2.632e-10  * s;
-  const double kSigmaZeroLifetime     = 7.4e-20    * s;
-  const double kSigmaPlusLifetime     = 0.8018e-10 * s;
-  const double kSigmaMinusLifetime    = 1.479e-10  * s;
-  const double kXiZeroLifetime        = 2.9e-10    * s;
-  const double kXiMinusLifetime       = 1.639e-10  * s;
-  const double kOmegaMinusLifetime    = 0.821e-10  * s;
-  const double kPiZeroLifetime        = 8.4e-17    * s;
-  const double kPiChargedLifetime     = 2.6033e-8  * s;
-  const double kKaonZeroShortLifetime = 0.8934e-10 * s;
-  const double kKaonZeroLongLifetime  = 5.17e-8    * s;
-  const double kKaonChargedLifetime   = 1.2384e-8  * s;
-
-
+namespace
+{
+    // these were originally in a header file as enumerations, but I want to keep all particle information in one place
+    const double kElectronMass      = 0.510998902 * MeV;
+    const double kMuonMass          = 105.658357  * MeV;
+    const double kTauMass           = 1776.99     * MeV;
+    const double kProtonMass        = 938.271998  * MeV;
+    const double kNeutronMass       = 939.56533   * MeV;
+    const double kDeuteronMass      = 1875.612762 * MeV;
+    const double kLambdaMass        = 1115.683    * MeV;
+    const double kLambdacMass       = 2286.46     * MeV;
+    const double kSigmaZeroMass     = 1192.642    * MeV;
+    const double kSigmaPlusMass     = 1189.37     * MeV;
+    const double kSigmaMinusMass    = 1197.449    * MeV;
+    const double kXiZeroMass        = 1314.83     * MeV;
+    const double kXiMinusMass       = 1321.31     * MeV;
+    const double kOmegaMinusMass    = 1672.45     * MeV;
+    const double kPiZeroMass        = 134.9766    * MeV;
+    const double kPiChargedMass     = 139.57018   * MeV;
+    const double kKaonZeroMass      = 497.672     * MeV; // | K^0 _s - K^0 _l | ~ 10^-12 MeV
+    const double kKaonChargedMass   = 493.677     * MeV;
+    const double kEtaMass           = 547.30      * MeV;
+    const double kRhoZeroMass       = 775.49      * MeV;
+    const double kRhoPlusMass       = 775.11      * MeV;
+    const double kRhoMinusMass      = 775.11      * MeV;
+    const double kOmegaMesonMass    = 782.65      * MeV;
+    const double kDeltaMinusMass    = 1.232       * MeV;
+    const double kDeltaZeroMass     = 1.232       * MeV;
+    const double kDeltaPlusMass     = 1.232       * MeV;
+    const double kDeltaPlusPlusMass = 1.232       * MeV;
+    
+    // Particle lifetimes
+    /*
+    const double kMuonLifetime          = 2.19703e-6 * s;
+    const double kNeutronLifetime       = 885.7      * s;
+    const double kLambdaLifetime        = 2.632e-10  * s;
+    const double kSigmaZeroLifetime     = 7.4e-20    * s;
+    const double kSigmaPlusLifetime     = 0.8018e-10 * s;
+    const double kSigmaMinusLifetime    = 1.479e-10  * s;
+    const double kXiZeroLifetime        = 2.9e-10    * s;
+    const double kXiMinusLifetime       = 1.639e-10  * s;
+    const double kOmegaMinusLifetime    = 0.821e-10  * s;
+    const double kPiZeroLifetime        = 8.4e-17    * s;
+    const double kPiChargedLifetime     = 2.6033e-8  * s;
+    const double kKaonZeroShortLifetime = 0.8934e-10 * s;
+    const double kKaonZeroLongLifetime  = 5.17e-8    * s;
+    const double kKaonChargedLifetime   = 1.2384e-8  * s;
+    */
 }
-
-using namespace particle_constants;
 
 std::map<int, int> ParticleList::corsikaToPDGMap_;
 std::map<int, ParticleProperties> ParticleList::particles_;
@@ -88,7 +86,6 @@ const VParticleProperties& ParticleList::Get(int code)
     nuclei_.insert(std::pair<int, NucleusProperties>(code, NucleusProperties(code)));
     return nuclei_.find(code)->second;
 }
-
 
 void ParticleList::SetList()
 {
@@ -229,7 +226,6 @@ void ParticleList::InitCorsikaToPDGMap()
     };
 }
 
-
 int ParticleList::CorsikaToPDG(int theCorsikaCode)
 {
     if (theCorsikaCode < 100)
@@ -252,7 +248,6 @@ int ParticleList::CorsikaToPDG(int theCorsikaCode)
     // Cherenkov
     return Particle::eUndefined;
 }
-
 
 std::string ParticleList::NameFromPDG(int pdgCode)
 {
