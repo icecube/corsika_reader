@@ -22,8 +22,7 @@ namespace corsika
     struct IOException : public std::exception
     {
         /// Construct CORISKA IO exception with message
-        IOException(std::string message) :
-        fMessage(message) { }
+        IOException(std::string message) : fMessage(message) { }
         
         /// Virtual destructor for CorsikaIOException
         virtual ~IOException() throw() { }
@@ -31,10 +30,8 @@ namespace corsika
         const char* what() const throw() { return fMessage.c_str(); }
         
         /// Retrieve verbose exception name
-        virtual std::string GetExceptionName() const
-        { return "Corsika IO exception"; }
+        virtual std::string GetExceptionName() const { return "Corsika IO exception"; }
     private:
         std::string fMessage;
-        
     };
 }

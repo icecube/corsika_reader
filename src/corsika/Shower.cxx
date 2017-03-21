@@ -14,21 +14,18 @@
 
 using namespace corsika;
 
-
-CorsikaShower::CorsikaShower(const struct EventHeader& header,
-                             const struct EventTrailer& trailer,
-                             ShowerParticleStream* particle_stream):
-  fEventHeader(header),
-  fEventTrailer(trailer),
-  fPrimaryParticle(ParticleList::CorsikaToPDG(int(header.fParticleId))),
-  fEnergy(header.fEnergy),
-  fMuonNumber(trailer.fMuons),
-  fZenith(header.fTheta),
-  fAzimuth(header.fPhi),
-  fMinRadiusCut(header.fRMaxThinning),
-  fShowerNumber(int(header.fEventNumber)),
-  //fShowerRunId(int(fRunNumber)),
-  fEMEnergyCutoff(header.fCutoffElectrons),
-  fMuonEnergyCutoff(header.fCutoffMuons),
-  particle_stream(particle_stream)
+CorsikaShower::CorsikaShower(const EventHeader& header, const EventTrailer& trailer, ShowerParticleStream* particle_stream):
+    fEventHeader(header),
+    fEventTrailer(trailer),
+    fPrimaryParticle(ParticleList::CorsikaToPDG(int(header.fParticleId))),
+    fEnergy(header.fEnergy),
+    fMuonNumber(trailer.fMuons),
+    fZenith(header.fTheta),
+    fAzimuth(header.fPhi),
+    fMinRadiusCut(header.fRMaxThinning),
+    fShowerNumber(int(header.fEventNumber)),
+    //fShowerRunId(int(fRunNumber)),
+    fEMEnergyCutoff(header.fCutoffElectrons),
+    fMuonEnergyCutoff(header.fCutoffMuons),
+    particle_stream(particle_stream)
 {}

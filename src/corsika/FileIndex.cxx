@@ -7,7 +7,8 @@ std::string FileIndex::String()
 {
     std::ostringstream str;
     str << "file index" << std::endl;
-    for (unsigned int i = 0; i != eventHeaders.size(); ++i) {
+    for (unsigned int i = 0; i != eventHeaders.size(); ++i)
+    {
         str << i << ", header " << eventHeaders[i] << ", trailer " << eventTrailers[i];
         if (longBlocks.size())
             str << ", long " << longBlocks[i];
@@ -34,10 +35,11 @@ template <class Thinning> void Scan(FileIndex& index, RawStream& stream, bool fo
     bool foundLongBlock = false;
     
     Block<Thinning> blockUnth;
-    while (stream.GetNextBlock(blockUnth) &&
-           !blockUnth.IsRunTrailer()) {
+    while (stream.GetNextBlock(blockUnth) && !blockUnth.IsRunTrailer())
+    {
         ++blockIndex;
-        if (blockUnth.IsEventHeader()) {
+        if (blockUnth.IsEventHeader())
+        {
             foundEventHeader = true;
             foundLongBlock = false;
             size_t rawPosition = stream.GetNextPosition();
@@ -46,12 +48,16 @@ template <class Thinning> void Scan(FileIndex& index, RawStream& stream, bool fo
             ++eventsSoFar;
         }
         else if (blockUnth.IsEventTrailer())
+        {
             index.eventTrailers.push_back(stream.GetNextPosition() - 1);
-        else if (blockUnth.IsRunHeader()){
+        }
+        else if (blockUnth.IsRunHeader())
+        {
             foundRunHeader = true;
             index.runNumber = int(blockUnth.AsRunHeader.fRunNumber);
         }
-        else if (!foundLongBlock && blockUnth.IsLongitudinal()) {
+        else if (!foundLongBlock && blockUnth.IsLongitudinal())
+        {
             foundLongBlock = true;
             index.longBlocks.push_back(stream.GetNextPosition() - 1);
         }
@@ -61,7 +67,8 @@ template <class Thinning> void Scan(FileIndex& index, RawStream& stream, bool fo
         if (blockIndex >400 && !foundEventHeader) break;
     }
     
-    if (!blockUnth.IsRunTrailer()) {
+    if (!blockUnth.IsRunTrailer())
+    {
         std::ostringstream msg;
         msg << "Error scanning Corsika ground file: could not find run end.";
         if (foundEventHeader)
@@ -73,7 +80,8 @@ template <class Thinning> void Scan(FileIndex& index, RawStream& stream, bool fo
     if (index.eventHeaders.size() != index.eventTrailers.size())
         throw IOException("Found different number of event-headers and -trailers");
     
-    if (index.longBlocks.size() > 0 && index.eventHeaders.size() != index.longBlocks.size()) {
+    if (index.longBlocks.size() > 0 && index.eventHeaders.size() != index.longBlocks.size())
+    {
         std::ostringstream msg;
         msg << "Found different number of event-headers and longitudinal blocks ("
         << index.eventHeaders.size() << " != " << index.longBlocks.size() << ")";

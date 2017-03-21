@@ -37,14 +37,12 @@ namespace corsika
      \date 29 Jan 2004
      \ingroup corsika
      */
-    class CorsikaShowerFile
-    {
-    public:
-        
+    struct CorsikaShowerFile
+    {   
         CorsikaShowerFile();
-        CorsikaShowerFile(const std::string& theFileName, const bool requireParticleFile = true);
+        CorsikaShowerFile(const std::string& theFileName, bool requireParticleFile = true);
         
-        virtual ~CorsikaShowerFile();
+        virtual ~CorsikaShowerFile() {}
         
         virtual void Open(const std::string& theFileName, bool scan = true);
         
@@ -92,5 +90,4 @@ namespace corsika
         
         boost::shared_ptr<CorsikaLongFile> fCorsikaLongFile;
     };
-    
 }

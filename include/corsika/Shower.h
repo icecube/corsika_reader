@@ -15,13 +15,10 @@
 
 namespace corsika
 {
-    
-    class CorsikaShower {
-    public:
+    struct CorsikaShower
+    {
         CorsikaShower(): particle_stream(0) {}
-        CorsikaShower(const EventHeader& header,
-                      const EventTrailer& trailer,
-                      ShowerParticleStream* particle_stream);
+        CorsikaShower(const EventHeader& header, const EventTrailer& trailer, ShowerParticleStream* particle_stream);
         ~CorsikaShower(){}
         
         int GetPrimary() const            {return fPrimaryParticle;   }
@@ -84,8 +81,8 @@ namespace corsika
         std::vector<double> fDepth_dE;
         
     private:
-        struct EventHeader fEventHeader;
-        struct EventTrailer fEventTrailer;
+        EventHeader fEventHeader;
+        EventTrailer fEventTrailer;
         
         int fPrimaryParticle;
         float fEnergy;

@@ -29,29 +29,27 @@ namespace corsika
      \date 14 Jul 2016
      \ingroup corsika
      */
-    class CorsikaLongFile {
+    class CorsikaLongFile
+    {
     public:
         CorsikaLongFile(std::string filename, double zenith=0.);
-        ~CorsikaLongFile(){
+        ~CorsikaLongFile()
+        {
             Close();
         }
         
-        void Close() {
+        void Close()
+        {
             if (fLongDataFile->is_open()) {fLongDataFile->close();}
         }
         
         CorsikaLongProfile GetProfile(int event);
         
-        int size() const
-        { return int(fN); }
-        float Dx() const
-        { return fDx; }
-        bool HasParticleProfile() const
-        { return fPartProfiles.size(); }
-        bool HasEnergyDeposit() const
-        { return fdEdXProfiles.size(); }
-        bool IsSlantDepth() const
-        { return fIsSlantDepthProfile; }
+        int size() const { return int(fN); }
+        float Dx() const { return fDx; }
+        bool HasParticleProfile() const { return fPartProfiles.size(); }
+        bool HasEnergyDeposit() const { return fdEdXProfiles.size(); }
+        bool IsSlantDepth() const { return fIsSlantDepthProfile; }
         
     private:
         void Scan();

@@ -38,10 +38,8 @@ namespace corsika
      \author Javier Gonzalez
      */
     
-    template<class Pointee>
-    class SquareCollision
+    template<class Pointee> struct SquareCollision
     {
-    public:
         std::vector<std::pair<unsigned int,unsigned int> > operator()(const std::vector<double>& x, const std::vector<double>& y, const Pointee& p) const
         {
             const unsigned int i_min = detail::digitize(x, p.x() - p.dx()/2);
@@ -89,10 +87,8 @@ namespace corsika
      \author Javier Gonzalez
      */
     template<class Pointee, class CollisionPolicy=SquareCollision<Pointee> >
-    class PositionIndex
-    {
-    public:
-        
+    struct PositionIndex
+    {   
         typedef Pointee value_type;
         typedef boost::shared_ptr<Pointee> pointer_type;
         typedef std::vector<boost::shared_ptr<Pointee> > pointer_list_type;

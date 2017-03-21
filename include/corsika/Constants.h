@@ -82,11 +82,8 @@ namespace corsika
     const double kMassConversionSI = eSI / (kSpeedOfLightSI*kSpeedOfLightSI);
     
     const double kEpsilonZeroSI = 1 / (kMuZeroSI * kSpeedOfLightSI*kSpeedOfLightSI);
-    const double kAlpha = (eSI*eSI) /
-    (4*kPi * kEpsilonZeroSI * kPlanckReducedSI * kSpeedOfLightSI);
-    const double kElectronRadiusSI = (eSI*eSI) /
-    (4*kPi * kEpsilonZeroSI * (0.510998902 * MeV * kMassConversionSI) * kSpeedOfLightSI * kSpeedOfLightSI);
-    const double kThomsonCrossSectionSI =
-    8*kPi * kElectronRadiusSI * kElectronRadiusSI / 3;
+    const double kAlpha = (eSI*eSI) / (4*kPi * kEpsilonZeroSI * kPlanckReducedSI * kSpeedOfLightSI);
+    const double kElectronRadiusSI = (eSI*eSI) / (4*kPi * kEpsilonZeroSI * (0.510998902 * MeV * kMassConversionSI) * kSpeedOfLightSI * kSpeedOfLightSI);
+    const double kThomsonCrossSectionSI = 8*kPi * kElectronRadiusSI * kElectronRadiusSI / 3;
     
 }
