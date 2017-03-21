@@ -22,7 +22,7 @@ namespace
     const double kTauMass           = 1776.99     * MeV;
     const double kProtonMass        = 938.271998  * MeV;
     const double kNeutronMass       = 939.56533   * MeV;
-    const double kDeuteronMass      = 1875.612762 * MeV;
+    //const double kDeuteronMass      = 1875.612762 * MeV;
     const double kLambdaMass        = 1115.683    * MeV;
     const double kLambdacMass       = 2286.46     * MeV;
     const double kSigmaZeroMass     = 1192.642    * MeV;

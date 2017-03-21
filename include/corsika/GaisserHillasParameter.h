@@ -25,7 +25,7 @@ namespace corsika
         double GetNMaxXMaxCorrelation() const { return fRhoNMaxXMax; }
         
         double GetChiSquare() const { return fChiSqr; }
-        unsigned int GetNdof() const { return fNdof; }
+        size_t GetNdof() const { return fNdof; }
         
         bool IsdEdXProfile() const { return fIsEnergyDeposit; }
         
@@ -38,7 +38,7 @@ namespace corsika
         void SetNMaxXMaxCorrelation(const double rho)
         { fRhoNMaxXMax = rho; }
         
-        void SetChiSquare(const double chi, const unsigned int ndof)
+        void SetChiSquare(double chi, size_t ndof)
         { fChiSqr = chi; fNdof = ndof; }
         
         double operator()(const double depth) const
@@ -77,7 +77,7 @@ namespace corsika
         double fNMaxError;
         double fRhoNMaxXMax;
         double fChiSqr;
-        unsigned int fNdof;
+        size_t fNdof;
         
         double fGammaIntegral;
         double fGammaError;

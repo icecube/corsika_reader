@@ -89,10 +89,10 @@ void CorsikaLongFile::Scan()
     // scan for number of bins and dX,
     // also check if there are energy deposit profiles
     
-    static const double g = 1;
-    static const double cm = 1;
-    static const double cm2 = cm*cm;
-    static const double deg = 3.14159/180;
+    //static const double g = 1;
+    //static const double cm = 1;
+    //static const double cm2 = cm*cm;
+    //static const double deg = 3.14159/180;
     
     // Read CORSIKA profile if available
     if (!fLongDataFile->is_open()) return;
@@ -105,7 +105,7 @@ void CorsikaLongFile::Scan()
         {
             fPartProfiles.push_back(fLongDataFile->tellg());
             char s1[50], s2[50], s3[50], isVertOrSlant[50];
-            sscanf(line.c_str(), "%s %s %s %i %s", s1, s2, s3, &fNBinsParticles, isVertOrSlant);
+            sscanf(line.c_str(), "%s %s %s %zu %s", s1, s2, s3, &fNBinsParticles, isVertOrSlant);
             string testStr(isVertOrSlant);
             if (testStr == "VERTICAL")
                 fIsSlantDepthProfile = false;
@@ -166,8 +166,8 @@ void CorsikaLongFile::Scan()
 CorsikaLongProfile CorsikaLongFile::FetchProfile(size_t findShower)
 {
     bool aux_flag = false;
-    int i = 0;
-    int j = 0;
+    size_t i = 0;
+    size_t j = 0;
     string line;
     
     vector<double> auxDepth(fNBinsParticles);
@@ -255,13 +255,11 @@ CorsikaLongProfile CorsikaLongFile::FetchProfile(size_t findShower)
                 muonFraction * muonCut -
                 hadronFraction * hadronCut;
                 
-                if ( j < fNBinsEnergyDeposit-1 )
+                if ( j+1 < fNBinsEnergyDeposit )
                     energyDepositSum += auxDeltaEn[j];
-                else {
-                    const double groundEnergy =
-                    (1.-hadronGroundFraction)*hadronCut
-                    + hadronIoniz + muonIoniz
-                    + emIoniz+emCut + gamma;
+                else
+                {
+                    double groundEnergy = (1.-hadronGroundFraction)*hadronCut + hadronIoniz + muonIoniz + emIoniz+emCut + gamma;
                     energyDepositSum += groundEnergy;
                 }
                 
@@ -403,10 +401,10 @@ void CorrectProfile(CorsikaLongProfile& profile, double dX)
     
     vector<double> auxDepth_dE = profile.fDepth_dE;
     vector<double> auxDeltaEn = profile.fdEdX;
-    int i = auxDepth.size();
+    size_t i = auxDepth.size();
     
-    const int nBinsEnergyDeposit = auxDepth_dE.size();
-    const int nBinsParticles = auxDepth.size();
+    size_t nBinsEnergyDeposit = auxDepth_dE.size();
+    //size_t nBinsParticles = auxDepth.size();
     
     // go three bins back, since CORSIKA sometimes has a funny second-last bin
     //const double normDepth_dedx = auxDepth_dE[nBinsEnergyDeposit-3];
@@ -430,9 +428,9 @@ void CorrectProfile(CorsikaLongProfile& profile, double dX)
     const double lastBinDepth_part = auxDepth[profile.fDepth.size()-1];
     
     // recalculate last dedx bins
-    for (int iCorrect = 0; iCorrect < 2; ++iCorrect)
+    for (size_t iCorrect = 0; iCorrect < 2; ++iCorrect)
     {
-        const int binCorrect = nBinsEnergyDeposit - 2 + iCorrect;
+        size_t binCorrect = nBinsEnergyDeposit - 2 + iCorrect;
         //const double binDepth = auxDepth_dE[binCorrect];
         auxDeltaEn[binCorrect] = normdEdX / normN_dedx;
         // auxDeltaEn[binCorrect] = normdEdX / normN_dedx *
@@ -441,8 +439,7 @@ void CorrectProfile(CorsikaLongProfile& profile, double dX)
     }
     
     // prolongate profiles by some bins
-    const int nBinAdd = 2;
-    for (int iBinAdd = 0; iBinAdd < nBinAdd; ++iBinAdd)
+    for (size_t iBinAdd = 0; iBinAdd < 2; ++iBinAdd)
     {
         const double addDepth_dEdX = lastBinDepth_dEdX + dX * (iBinAdd+1);
         const double addDepth_part = lastBinDepth_part + dX * (iBinAdd+1);

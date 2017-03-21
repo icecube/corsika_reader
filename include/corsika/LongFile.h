@@ -61,7 +61,7 @@ namespace corsika
         bool fIsSlantDepthProfile;
         size_t event_count;
         float fDx;
-        int fNBinsParticles;
+        size_t fNBinsParticles;
         int fNBinsEnergyDeposit;
         
         boost::shared_ptr<std::ifstream> fLongDataFile;
