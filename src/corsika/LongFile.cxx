@@ -62,7 +62,7 @@ CorsikaLongFile::CorsikaLongFile(string filename, double zenith):
     fFilename(filename),
     fCosZenith(cos(zenith)),
     fIsSlantDepthProfile(false),
-    fN(0),
+    event_count(0),
     fDx(0.),
     fNBinsParticles(0),
     fNBinsEnergyDeposit(0),
@@ -73,14 +73,12 @@ CorsikaLongFile::CorsikaLongFile(string filename, double zenith):
 }
 
 
-CorsikaLongProfile CorsikaLongFile::GetProfile(int event)
+CorsikaLongProfile CorsikaLongFile::GetProfile(size_t event)
 {
-    if (event < 0) throw IOException("event ID must be non negative.");
-    
-    if (event+1 > fN)
+    if (event >= event_count)
     {
         ostringstream msg;
-        msg << "Trying to get event " << event << ", but file " << fFilename << " has only " << fN << " events (starting at zero).";
+        msg << "Trying to get event " << event << ", but file " << fFilename << " has only " << event_count << " events (starting at zero).";
         throw IOException(msg.str());
     }
     return FetchProfile(event);
@@ -161,11 +159,11 @@ void CorsikaLongFile::Scan()
         if (line.find(dEdX_ProfileStr) != string::npos)
             fdEdXProfiles.push_back(fLongDataFile->tellg());
     }
-    fN = (fPartProfiles.size()?fPartProfiles.size():fdEdXProfiles.size());
+    event_count = (fPartProfiles.size()?fPartProfiles.size():fdEdXProfiles.size());
 }
 
 
-CorsikaLongProfile CorsikaLongFile::FetchProfile(int findShower)
+CorsikaLongProfile CorsikaLongFile::FetchProfile(size_t findShower)
 {
     bool aux_flag = false;
     int i = 0;

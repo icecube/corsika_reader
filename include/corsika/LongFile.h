@@ -43,9 +43,9 @@ namespace corsika
             if (fLongDataFile->is_open()) {fLongDataFile->close();}
         }
         
-        CorsikaLongProfile GetProfile(int event);
+        CorsikaLongProfile GetProfile(size_t event);
         
-        int size() const { return int(fN); }
+        size_t size() const { return event_count; }
         float Dx() const { return fDx; }
         bool HasParticleProfile() const { return fPartProfiles.size(); }
         bool HasEnergyDeposit() const { return fdEdXProfiles.size(); }
@@ -53,13 +53,13 @@ namespace corsika
         
     private:
         void Scan();
-        CorsikaLongProfile FetchProfile(int i);
+        CorsikaLongProfile FetchProfile(size_t i);
         
         std::string fFilename;
         
         float fCosZenith;
         bool fIsSlantDepthProfile;
-        float fN;
+        size_t event_count;
         float fDx;
         int fNBinsParticles;
         int fNBinsEnergyDeposit;
