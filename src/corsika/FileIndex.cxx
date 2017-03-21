@@ -7,7 +7,7 @@ std::string FileIndex::String()
 {
     std::ostringstream str;
     str << "file index" << std::endl;
-    for (unsigned int i = 0; i != eventHeaders.size(); ++i)
+    for (size_t i = 0; i != eventHeaders.size(); ++i)
     {
         str << i << ", header " << eventHeaders[i] << ", trailer " << eventTrailers[i];
         if (longBlocks.size())
@@ -27,9 +27,9 @@ template <class Thinning> void Scan(FileIndex& index, RawStream& stream, bool fo
     if (stream.IsSeekable())
         stream.SeekTo(0);
     
-    int eventsSoFar = 0;
+    unsigned int eventsSoFar = 0;
     
-    unsigned int blockIndex = 0;
+    size_t blockIndex = 0;
     bool foundEventHeader = false;
     bool foundRunHeader = false;
     bool foundLongBlock = false;
