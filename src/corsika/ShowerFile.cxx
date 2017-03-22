@@ -46,7 +46,7 @@ static void log(const std::ostringstream& mess)
 #define FATAL(mess) log(mess);
 
 
-CorsikaShowerFile::CorsikaShowerFile() :
+ShowerFile::ShowerFile() :
     fRawStream(),
     fCurrentPosition(0),
     fObservationLevel(1),
@@ -55,7 +55,7 @@ CorsikaShowerFile::CorsikaShowerFile() :
 {}
 
 
-CorsikaShowerFile::CorsikaShowerFile(const std::string& theFileName, bool requireParticleFile) :
+ShowerFile::ShowerFile(const std::string& theFileName, bool requireParticleFile) :
 fRawStream(),
 fCurrentPosition(0),
 fObservationLevel(1),
@@ -67,7 +67,7 @@ fFileScanned(false)
 }
 
 
-void CorsikaShowerFile::Open(const std::string& theFileName, bool scan)
+void ShowerFile::Open(const std::string& theFileName, bool scan)
 {
     Close();
     
@@ -100,7 +100,7 @@ void CorsikaShowerFile::Open(const std::string& theFileName, bool scan)
     else ReadRunHeader<NotThinned>();
 }
 
-void CorsikaShowerFile::Close()
+void ShowerFile::Close()
 {
     fRunHeader = corsika::RunHeader();
     fRawStream.reset();
@@ -112,7 +112,7 @@ void CorsikaShowerFile::Close()
 }
 
 
-template <class Thinning> Status CorsikaShowerFile::Read()
+template <class Thinning> Status ShowerFile::Read()
 {
     if (!fRawStream || fCurrentPosition >= fIndex.eventHeaders.size())
         return eEOF;
@@ -221,7 +221,7 @@ template <class Thinning> Status CorsikaShowerFile::Read()
                              timeShift,
                              fObservationLevel,
                              true); // last one is keepMuProd
-    fCurrentShower = CorsikaShower(header, trailer, particleIterator);
+    fCurrentShower = Shower(header, trailer, particleIterator);
     
     if (fIndex.longBlocks.size() > 0)
         ReadLongBlocks<Thinning>();
@@ -234,7 +234,7 @@ template <class Thinning> Status CorsikaShowerFile::Read()
 }
 
 
-template <class Thinning> Status CorsikaShowerFile::ReadRunHeader()
+template <class Thinning> Status ShowerFile::ReadRunHeader()
 {
     Block<Thinning> runHeaderBlock;
     if (!fRawStream->GetNextBlock(runHeaderBlock))
@@ -252,7 +252,7 @@ template <class Thinning> Status CorsikaShowerFile::ReadRunHeader()
 }
 
 
-Status CorsikaShowerFile::FindEvent(const unsigned int eventId)
+Status ShowerFile::FindEvent(const unsigned int eventId)
 {
     if (!IsOpen()) return eEOF;
     const IdToPositionMap::const_iterator iter = fIndex.IDToPosition.find(eventId);
@@ -266,7 +266,7 @@ Status CorsikaShowerFile::FindEvent(const unsigned int eventId)
 
 
 
-size_t CorsikaShowerFile::GetNEvents()
+size_t ShowerFile::GetNEvents()
 {
     if (!fRawStream) throw IOException("Cannot request number of events from closed file");
     if (!fRawStream->IsSeekable()) throw IOException("Cannot request number of events for this file. It is not seekable.");
@@ -280,15 +280,15 @@ size_t CorsikaShowerFile::GetNEvents()
 }
 
 
-Status CorsikaShowerFile::ReadLongFile()
+Status ShowerFile::ReadLongFile()
 {
     //cout << "reading long file " << fLongFile << endl;
     if (!fCorsikaLongFile)
-        fCorsikaLongFile.reset(new CorsikaLongFile(fLongFile, GetCurrentShower().GetZenith()));
+        fCorsikaLongFile.reset(new LongFile(fLongFile, GetCurrentShower().GetZenith()));
     
     if (fCorsikaLongFile->size() >= fCurrentPosition)
     {
-        CorsikaLongProfile p = fCorsikaLongFile->GetProfile(fCurrentPosition);
+        LongProfile p = fCorsikaLongFile->GetProfile(fCurrentPosition);
         fCurrentShower.fdEdX = p.fdEdX;
         fCurrentShower.fChargeProfile = p.fChargeProfile;
         fCurrentShower.fGammaProfile = p.fGammaProfile;
@@ -329,7 +329,7 @@ Status CorsikaShowerFile::ReadLongFile()
 }
 
 
-template <class Thinning> Status CorsikaShowerFile::ReadLongBlocks()
+template <class Thinning> Status ShowerFile::ReadLongBlocks()
 {
     fRawStream->SeekTo(fIndex.longBlocks[fCurrentPosition]);
     

@@ -9,25 +9,25 @@ using namespace corsika;
 inline object identity(object const& o) { return o; }
 
 object
-expose_vector_as_array(CorsikaShower& self, std::vector<double> CorsikaShower::*member) {
+expose_vector_as_array(Shower& self, std::vector<double> Shower::*member) {
   object numpy = import("numpy");
   object asarray = numpy.attr("asarray");
   return asarray(object(self.*member));
 }
 object
-expose_vector_as_array(CorsikaShower& self, std::vector<double> member) {
+expose_vector_as_array(Shower& self, std::vector<double> member) {
   object numpy = import("numpy");
   object asarray = numpy.attr("asarray");
   return asarray(object(member));
 }
 
-object depth_de(CorsikaShower& self) { return expose_vector_as_array(self, self.fDepth_dE); }
-object de_dx(CorsikaShower& self) { return expose_vector_as_array(self, self.fdEdX); }
-object depth(CorsikaShower& self) { return expose_vector_as_array(self, self.fDepth); }
-object charge_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fChargeProfile); }
-object gamma_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fGammaProfile); }
-object electron_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fElectronProfile); }
-object muon_profile(CorsikaShower& self) { return expose_vector_as_array(self, self.fMuonProfile); }
+object depth_de(Shower& self) { return expose_vector_as_array(self, self.fDepth_dE); }
+object de_dx(Shower& self) { return expose_vector_as_array(self, self.fdEdX); }
+object depth(Shower& self) { return expose_vector_as_array(self, self.fDepth); }
+object charge_profile(Shower& self) { return expose_vector_as_array(self, self.fChargeProfile); }
+object gamma_profile(Shower& self) { return expose_vector_as_array(self, self.fGammaProfile); }
+object electron_profile(Shower& self) { return expose_vector_as_array(self, self.fElectronProfile); }
+object muon_profile(Shower& self) { return expose_vector_as_array(self, self.fMuonProfile); }
 
 
 class ParticleIterator {
@@ -62,12 +62,12 @@ private:
 };
 
 
-ParticleIterator get_particle_iterator(CorsikaShower& shower)
+ParticleIterator get_particle_iterator(Shower& shower)
 {
   return ParticleIterator(&shower.ParticleStream());
 }
 
-void register_CorsikaShower()
+void register_Shower()
 {
   class_<std::vector<double> >("vector_double")
     .def(vector_indexing_suite<std::vector<double> >())
@@ -79,24 +79,24 @@ void register_CorsikaShower()
     .def("rewind", &ParticleIterator::Rewind)
     ;
 
-  class_<CorsikaShower>("CorsikaShower")
-    .add_property("primary", &CorsikaShower::GetPrimary)
-    .add_property("energy", &CorsikaShower::GetEnergy)
-    .add_property("muon_number", &CorsikaShower::GetMuonNumber)
-    .add_property("zenith", &CorsikaShower::GetZenith)
-    .add_property("azimuth", &CorsikaShower::GetAzimuth)
-    .add_property("min_radius_cut", &CorsikaShower::GetMinRadiusCut)
-    .add_property("shower_number", &CorsikaShower::GetShowerNumber)
-    .add_property("em_energy_cutoff", &CorsikaShower::GetEMEnergyCutoff)
-    .add_property("muon_energy_cutoff", &CorsikaShower::GetMuonEnergyCutoff)
-    .add_property("high_energy_hadronic_model", &CorsikaShower::HighEnergyHadronicModel)
-    .add_property("low_energy_hadronic_model", &CorsikaShower::LowEnergyHadronicModel)
-    .add_property("array_rotation", &CorsikaShower::ArrayRotation)
-    .add_property("calorimetric_energy", &CorsikaShower::GetCalorimetricEnergy, &CorsikaShower::SetCalorimetricEnergy)
-    //.def("particles", &CorsikaShower::GetParticleIt, return_internal_reference<>())
+  class_<Shower>("Shower")
+    .add_property("primary", &Shower::GetPrimary)
+    .add_property("energy", &Shower::GetEnergy)
+    .add_property("muon_number", &Shower::GetMuonNumber)
+    .add_property("zenith", &Shower::GetZenith)
+    .add_property("azimuth", &Shower::GetAzimuth)
+    .add_property("min_radius_cut", &Shower::GetMinRadiusCut)
+    .add_property("shower_number", &Shower::GetShowerNumber)
+    .add_property("em_energy_cutoff", &Shower::GetEMEnergyCutoff)
+    .add_property("muon_energy_cutoff", &Shower::GetMuonEnergyCutoff)
+    .add_property("high_energy_hadronic_model", &Shower::HighEnergyHadronicModel)
+    .add_property("low_energy_hadronic_model", &Shower::LowEnergyHadronicModel)
+    .add_property("array_rotation", &Shower::ArrayRotation)
+    .add_property("calorimetric_energy", &Shower::GetCalorimetricEnergy, &Shower::SetCalorimetricEnergy)
+    //.def("particles", &Shower::GetParticleIt, return_internal_reference<>())
     .add_property("particles", get_particle_iterator) // memory management?
-    .add_property("header", make_function(&CorsikaShower::GetEventHeader, return_internal_reference<>()))
-    .add_property("gaisser_hillas", &CorsikaShower::GetGaisserHillasParams)
+    .add_property("header", make_function(&Shower::GetEventHeader, return_internal_reference<>()))
+    .add_property("gaisser_hillas", &Shower::GetGaisserHillasParams)
     //evt::GaisserHillas6Parameter GetGaisserHillasParams const
     .add_property("charge_profile", charge_profile)
     .add_property("gamma_profile", gamma_profile)

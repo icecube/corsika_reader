@@ -5,16 +5,16 @@
 using namespace boost::python;
 using namespace corsika;
 
-void register_CorsikaLongFile()
+void register_LongFile()
 {
-  class_<CorsikaLongFile>("CorsikaLongFile", no_init)
+  class_<LongFile>("LongFile", no_init)
     .def(init<const std::string&>())
     .def(init<const std::string&, float>())
-    .add_property("size", &CorsikaLongFile::size)
-    .add_property("dx", &CorsikaLongFile::Dx)
-    .add_property("has_particle_profile", &CorsikaLongFile::HasParticleProfile)
-    .add_property("has_energy_deposit", &CorsikaLongFile::HasEnergyDeposit)
-    .add_property("is_slant_depth", &CorsikaLongFile::IsSlantDepth)
-    .def("get_profile", &CorsikaLongFile::GetProfile)
+    .add_property("size", &LongFile::size)
+    .add_property("dx", &LongFile::Dx)
+    .add_property("has_particle_profile", &LongFile::HasParticleProfile)
+    .add_property("has_energy_deposit", &LongFile::HasEnergyDeposit)
+    .add_property("is_slant_depth", &LongFile::IsSlantDepth)
+    .def("get_profile", &LongFile::GetProfile)
     ;
 }

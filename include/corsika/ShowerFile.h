@@ -37,12 +37,12 @@ namespace corsika
      \date 29 Jan 2004
      \ingroup corsika
      */
-    struct CorsikaShowerFile
+    struct ShowerFile
     {   
-        CorsikaShowerFile();
-        CorsikaShowerFile(const std::string& theFileName, bool requireParticleFile = true);
+        ShowerFile();
+        ShowerFile(const std::string& theFileName, bool requireParticleFile = true);
         
-        virtual ~CorsikaShowerFile() {}
+        virtual ~ShowerFile() {}
         
         virtual void Open(const std::string& theFileName, bool scan = true);
         
@@ -58,8 +58,8 @@ namespace corsika
         
         static bool IsValid(const std::string& theFileName);
         
-        const CorsikaShower& GetCurrentShower() const {return fCurrentShower;}
-        CorsikaShower& GetCurrentShower() {return fCurrentShower;}
+        const Shower& GetCurrentShower() const {return fCurrentShower;}
+        Shower& GetCurrentShower() {return fCurrentShower;}
         
         const corsika::RunHeader& GetRunHeader() const { return fRunHeader; }
         
@@ -77,7 +77,7 @@ namespace corsika
         template <class Thinning>
         Status ReadLongBlocks();
         
-        CorsikaShower fCurrentShower;
+        Shower fCurrentShower;
         corsika::RunHeader fRunHeader;
         
         RawStreamPtr fRawStream;
@@ -88,6 +88,6 @@ namespace corsika
         bool fIsThinned;
         bool fFileScanned;
         
-        boost::shared_ptr<CorsikaLongFile> fCorsikaLongFile;
+        boost::shared_ptr<LongFile> fCorsikaLongFile;
     };
 }

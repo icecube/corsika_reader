@@ -15,11 +15,11 @@
 
 namespace corsika
 {
-    struct CorsikaShower
+    struct Shower
     {
-        CorsikaShower(): particle_stream(0) {}
-        CorsikaShower(const EventHeader& header, const EventTrailer& trailer, ShowerParticleStream* particle_stream);
-        ~CorsikaShower(){}
+        Shower(): particle_stream(0) {}
+        Shower(const EventHeader& header, const EventTrailer& trailer, ShowerParticleStream* particle_stream);
+        ~Shower(){}
         
         int GetPrimary() const            {return fPrimaryParticle;   }
         float GetEnergy() const           {return fEnergy;         }

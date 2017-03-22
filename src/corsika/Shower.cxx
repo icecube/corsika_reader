@@ -14,7 +14,7 @@
 
 using namespace corsika;
 
-CorsikaShower::CorsikaShower(const EventHeader& header, const EventTrailer& trailer, ShowerParticleStream* particle_stream):
+Shower::Shower(const EventHeader& header, const EventTrailer& trailer, ShowerParticleStream* particle_stream):
     fEventHeader(header),
     fEventTrailer(trailer),
     fPrimaryParticle(ParticleList::CorsikaToPDG(int(header.fParticleId))),

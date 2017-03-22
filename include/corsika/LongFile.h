@@ -29,11 +29,10 @@ namespace corsika
      \date 14 Jul 2016
      \ingroup corsika
      */
-    class CorsikaLongFile
+    struct LongFile
     {
-    public:
-        CorsikaLongFile(std::string filename, double zenith=0.);
-        ~CorsikaLongFile()
+        LongFile(std::string filename, double zenith=0.);
+        ~LongFile()
         {
             Close();
         }
@@ -43,7 +42,7 @@ namespace corsika
             if (fLongDataFile->is_open()) {fLongDataFile->close();}
         }
         
-        CorsikaLongProfile GetProfile(size_t event);
+        LongProfile GetProfile(size_t event);
         
         size_t size() const { return event_count; }
         float Dx() const { return fDx; }
@@ -53,7 +52,7 @@ namespace corsika
         
     private:
         void Scan();
-        CorsikaLongProfile FetchProfile(size_t i);
+        LongProfile FetchProfile(size_t i);
         
         std::string fFilename;
         

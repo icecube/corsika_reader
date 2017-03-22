@@ -58,7 +58,7 @@ namespace
     
 }
 
-CorsikaLongFile::CorsikaLongFile(string filename, double zenith):
+LongFile::LongFile(string filename, double zenith):
     fFilename(filename),
     fCosZenith(cos(zenith)),
     fIsSlantDepthProfile(false),
@@ -73,7 +73,7 @@ CorsikaLongFile::CorsikaLongFile(string filename, double zenith):
 }
 
 
-CorsikaLongProfile CorsikaLongFile::GetProfile(size_t event)
+LongProfile LongFile::GetProfile(size_t event)
 {
     if (event >= event_count)
     {
@@ -84,7 +84,7 @@ CorsikaLongProfile CorsikaLongFile::GetProfile(size_t event)
     return FetchProfile(event);
 }
 
-void CorsikaLongFile::Scan()
+void LongFile::Scan()
 {
     // scan for number of bins and dX,
     // also check if there are energy deposit profiles
@@ -163,7 +163,7 @@ void CorsikaLongFile::Scan()
 }
 
 
-CorsikaLongProfile CorsikaLongFile::FetchProfile(size_t findShower)
+LongProfile LongFile::FetchProfile(size_t findShower)
 {
     bool aux_flag = false;
     size_t i = 0;
@@ -191,7 +191,7 @@ CorsikaLongProfile CorsikaLongFile::FetchProfile(size_t findShower)
     if (!fLongDataFile->is_open())
     {
         ERROR("Reading failed for some reason.");
-        return CorsikaLongProfile();
+        return LongProfile();
     }
     fLongDataFile->clear();
     fLongDataFile->seekg(fPartProfiles[findShower]);
@@ -349,7 +349,7 @@ CorsikaLongProfile CorsikaLongFile::FetchProfile(size_t findShower)
         }
     }
     
-    CorsikaLongProfile profile;
+    LongProfile profile;
     profile.fChargeProfile = auxCharge;
     profile.fGammaProfile = auxGammas;
     profile.fElectronProfile = auxElectrons;
@@ -369,7 +369,7 @@ CorsikaLongProfile CorsikaLongFile::FetchProfile(size_t findShower)
 }
 
 
-void CorrectProfile(CorsikaLongProfile& profile, double dX)
+void CorrectProfile(LongProfile& profile, double dX)
 {
     // This code is quarantined because is mostly dead code, very
     // specific for other purposes, so maybe it should not be here at

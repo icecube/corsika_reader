@@ -14,12 +14,12 @@ public:
     fIndex(0),
     fFile(0)
   {}
-  ShowerIterator(CorsikaShowerFile& f):
+  ShowerIterator(ShowerFile& f):
     fIndex(0),
     fFile(&f)
   {}
 
-  CorsikaShower& next_shower()
+  Shower& next_shower()
   {
     ++fIndex;
     if (fFile->FindEvent(fIndex) != eSuccess) {
@@ -30,23 +30,23 @@ public:
   }
 private:
   int fIndex;
-  CorsikaShowerFile* fFile;
+  ShowerFile* fFile;
 };
 
 
-ShowerIterator get_shower_iterator(CorsikaShowerFile& f)
+ShowerIterator get_shower_iterator(ShowerFile& f)
 {
   return ShowerIterator(f);
 }
 
-CorsikaShower&
-get_shower(CorsikaShowerFile& f, int i)
+Shower&
+get_shower(ShowerFile& f, int i)
 {
   f.FindEvent(i);
   return f.GetCurrentShower();
 }
 
-void register_CorsikaShowerFile()
+void register_ShowerFile()
 {
 
   enum_<Status>("Status")
@@ -60,16 +60,16 @@ void register_CorsikaShowerFile()
     .def("next", &ShowerIterator::next_shower, return_internal_reference<>())
     ;
 
-  CorsikaShower& (CorsikaShowerFile::*get_current)() = &CorsikaShowerFile::GetCurrentShower;
+  Shower& (ShowerFile::*get_current)() = &ShowerFile::GetCurrentShower;
 
-  class_<CorsikaShowerFile, boost::noncopyable>("CorsikaShowerFile")
+  class_<ShowerFile, boost::noncopyable>("ShowerFile")
     .def(init<const std::string&, bool>())
     .def(init<const std::string&>())
-    .def("open", &CorsikaShowerFile::Open) // would need to overload for the default second parameter (true)
-    .def("close", &CorsikaShowerFile::Close)
-    .def("find_event", &CorsikaShowerFile::FindEvent)
-    .add_property("run_header", make_function(&CorsikaShowerFile::GetRunHeader, return_internal_reference<>()))
-    .add_property("n_events", &CorsikaShowerFile::GetNEvents)
+    .def("open", &ShowerFile::Open) // would need to overload for the default second parameter (true)
+    .def("close", &ShowerFile::Close)
+    .def("find_event", &ShowerFile::FindEvent)
+    .add_property("run_header", make_function(&ShowerFile::GetRunHeader, return_internal_reference<>()))
+    .add_property("n_events", &ShowerFile::GetNEvents)
     .def("events", get_shower_iterator)
     //.staticmethod("IsValid")
     .add_property("current_shower", make_function(get_current, return_internal_reference<>()))

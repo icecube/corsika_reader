@@ -13,11 +13,8 @@
 
 namespace corsika
 {
-    struct CorsikaLongProfile
+    struct LongProfile
     {
-        CorsikaLongProfile(){}
-        ~CorsikaLongProfile(){}
-        
         std::vector<double> fChargeProfile;
         std::vector<double> fGammaProfile;
         std::vector<double> fElectronProfile;
@@ -33,6 +30,5 @@ namespace corsika
         
         double fCalorimetricEnergy;
         GaisserHillasParameter fGaisserHillas;
-        
     };    
 }

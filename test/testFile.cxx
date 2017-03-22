@@ -1,8 +1,4 @@
-const static char CVSId[] =
-  "$Id$";
-
 #include "corsika_test.h"
-
 #include <corsika/Index.h>
 #include <corsika/Units.h>
 #include <corsika/ShowerFile.h>
@@ -19,10 +15,10 @@ namespace testCorsikaFileNS {
 
   void test_header(string filename)
   {
-    CorsikaShowerFile file(filename);
+    ShowerFile file(filename);
     ENSURE(file.IsOpen(), "File is open");
 
-    const corsika::RunHeader& run_header = file.GetRunHeader();
+    auto& run_header = file.GetRunHeader();
     ENSURE_EQUAL(run_header.fRunNumber, 2);
 
     corsika::Status status = file.FindEvent(1);
@@ -41,7 +37,7 @@ namespace testCorsikaFileNS {
 
   void test_particles(string filename)
   {
-    CorsikaShowerFile file(filename);
+    ShowerFile file(filename);
     file.FindEvent(1);
     auto& stream = file.GetCurrentShower().ParticleStream();
     int count = 0;
@@ -78,7 +74,7 @@ TEST(testCorsikaFile)
   filenames.push_back("/DAT000002-32.bz2");
   filenames.push_back("/DAT000002-32.gz");
 
-  CorsikaShowerFile file;
+  ShowerFile file;
   ENSURE(!file.IsOpen());
 
   for (unsigned int i = 0; i != filenames.size(); ++i) {
@@ -88,11 +84,3 @@ TEST(testCorsikaFile)
     test_particles(dir + filenames[i]);
   }
 }
-
-
-
-
-// Configure (x)emacs for this file ...
-// Local Variables:
-// mode:c++
-// End:
