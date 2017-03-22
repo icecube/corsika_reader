@@ -13,10 +13,6 @@ namespace corsika
         virtual void Rewind() = 0;
         virtual bool IsValid() const = 0;
         virtual ~VRawParticleStream(){}
-        
-        // Returns next particle or null if there are no more particles.
-        virtual Particle* Next(){ return 0; };
-        
         static RawParticleStreamPtr Create(RawStreamPtr stream, size_t start=0);
     };
     template <class Thinning> struct RawParticleStream: VRawParticleStream
