@@ -1,3 +1,4 @@
+#undef NDEBUG
 #include <corsika/RawStream.h>
 #include <corsika/Block.h>
 #include <corsika/ShowerFile.h>
