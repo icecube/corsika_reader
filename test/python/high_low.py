@@ -51,7 +51,7 @@ class HighLowTest(unittest.TestCase):
         assert os.path.exists(filename)
 
         #print 'opening', filename
-        f = corsika.CorsikaShowerFile(filename)
+        f = corsika.ShowerFile(filename)
         f.find_event(1)
         shower = f.current_shower
         particle_it = shower.particles

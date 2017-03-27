@@ -56,7 +56,7 @@ class ReadTest(unittest.TestCase):
         global filename
         if filename is None: filename = corsika.example_data_dir + '/DAT000002-32'
         assert os.path.exists(filename)
-        f = corsika.CorsikaShowerFile(filename)
+        f = corsika.ShowerFile(filename)
         assert f.find_event(1) == corsika.Status.eSuccess
 
         shower = f.current_shower
