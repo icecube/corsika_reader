@@ -2,6 +2,8 @@
 
 import unittest
 import numpy
+import sys
+import os
 try:
     import icecube
     with_icecube = True
