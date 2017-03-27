@@ -3,10 +3,13 @@
 import unittest
 import numpy
 try:
-    import corsika
+    import icecube
+    with_icecube = True
 except:
-    from icecube import corsika
-import sys, os
+    with_icecube = False
+
+if with_icecube: from icecube import corsika
+else: import corsika
 
 files = []
 

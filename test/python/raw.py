@@ -2,9 +2,13 @@
 import unittest
 import sys, os
 try:
-    import corsika
+    import icecube
+    with_icecube = True
 except:
-    from icecube import corsika
+    with_icecube = False
+
+if with_icecube: from icecube import corsika
+else: import corsika
 
 import numpy
 
