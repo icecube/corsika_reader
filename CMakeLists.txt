@@ -142,6 +142,11 @@ install (TARGETS CorsikaReader
   LIBRARY DESTINATION lib
 )
 
+configure_file (${CMAKE_SOURCE_DIR}/share/CorsikaReaderConfig.cmake ${CMAKE_BINARY_DIR}/share/CorsikaReaderConfig.cmake @ONLY)
+install (FILES ${CMAKE_BINARY_DIR}/share/CorsikaReaderConfig.cmake
+  DESTINATION share/${Corsika_PACKAGE_NAME}
+  )
+
 install(FILES
   include/corsika/Index.h
   include/corsika/Constants.h
