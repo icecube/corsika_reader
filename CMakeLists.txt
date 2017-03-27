@@ -185,7 +185,7 @@ add_executable(test_corsika
 target_link_libraries(test_corsika CorsikaReader ${PYTHON_LIBRARIES})
 
 enable_testing()
-add_test(corsika test_corsika)
+add_test(corsika test_corsika ${CMAKE_SOURCE_DIR}/share/data)
 add_test(raw ${CMAKE_SOURCE_DIR}/share/examples/python/raw_example.py ${CMAKE_SOURCE_DIR}/share/data/DAT000002-32)
 add_test(raw_2 ${CMAKE_SOURCE_DIR}/share/examples/python/raw_example_2.py ${CMAKE_SOURCE_DIR}/share/data/DAT000002-32)
 add_test(read ${CMAKE_SOURCE_DIR}/share/examples/python/read_example.py ${CMAKE_SOURCE_DIR}/share/data/DAT000002-32)
