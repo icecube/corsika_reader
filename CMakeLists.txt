@@ -36,7 +36,7 @@ message (STATUS "Python libs version: ${PYTHONLIBS_VERSION_STRING}")
 message (STATUS "Python version: ${PYTHON_VERSION_STRING}")
 
 if (NOT ${PYTHON_VERSION_STRING} VERSION_EQUAL ${PYTHONLIBS_VERSION_STRING})
-  message (SEND_ERROR "Python interpreter and libraries have different versions (${PYTHON_VERSION_STRING} != ${PYTHONLIBS_VERSION_STRING}). Perhaps you need to specify PYTHON_INCLUDE_DIR and PYTHON_LIBRARY.")
+  message (WARNING "Python interpreter and libraries have different versions (${PYTHON_VERSION_STRING} != ${PYTHONLIBS_VERSION_STRING}). Perhaps you need to specify PYTHON_INCLUDE_DIR and PYTHON_LIBRARY.")
 endif (NOT ${PYTHON_VERSION_STRING} VERSION_EQUAL ${PYTHONLIBS_VERSION_STRING})
 
 add_definitions(
