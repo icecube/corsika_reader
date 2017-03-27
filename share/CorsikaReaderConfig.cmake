@@ -3,8 +3,8 @@ find_package (PythonLibs)
 find_package (Boost REQUIRED COMPONENTS iostreams python unit_test_framework)
 
 # the library
-find_library (CORSIKA_READER_LIBRARY CorsikaReader PATHS @CMAKE_INSTALL_PREFIX@/lib NO_DEFAULT_PATH)
-set (CORSIKA_READER_INCLUDE_DIR @CMAKE_INSTALL_PREFIX@/include)
+find_library (CORSIKA_READER_LIBRARY CorsikaReader PATHS /usr/local/lib NO_DEFAULT_PATH)
+set (CORSIKA_READER_INCLUDE_DIR /usr/local/include)
 
 # all dependencies included
 set (CorsikaReader_INCLUDE_DIRS ${CORSIKA_READER_INCLUDE_DIR} ${Boost_INCLUDE_DIR})

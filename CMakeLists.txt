@@ -180,7 +180,11 @@ install(DIRECTORY share/data DESTINATION share/corsika)
 
 
 add_executable(test_corsika
-  test/test_corsika.cxx
+  test/main.cxx
+  test/test_file.cxx
+  test/test_low_high.cxx
+  test/test_rawstream.cxx
+  test/test_index.cxx
 )
 
 target_link_libraries(test_corsika CorsikaReader ${PYTHON_LIBRARIES})
