@@ -4,7 +4,7 @@ dist: trusty
 python:
   - 2.7
 compiler:
-  - gcc
+  - clang
 os: linux
 before_script:
   - sudo apt-get update -qq
