@@ -4,7 +4,7 @@ dist: trusty
 python:
   - 2.7
 compiler:
-  - clang
+  - gcc
 os: linux
 before_script:
   - sudo apt-get update -qq
@@ -12,7 +12,8 @@ before_script:
 script:
   - mkdir build
   - cd build
-  - cmake .. && make
+  - env
+  - cmake .. && make VERBOSE=1
   - pwd
   - export PYTHONPATH=$(pwd)
   - echo $PYTHONPATH
