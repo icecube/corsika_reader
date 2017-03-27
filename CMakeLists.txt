@@ -19,6 +19,7 @@ set (CMAKE_CXX_FLAGS_DEBUG "-O3")
 set (CMAKE_INCLUDE_CURRENT_DIR TRUE)
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
+find_package(PythonInterp) # this is to make the libraries consistent with the interpreter
 find_package (PythonLibs)
 find_package (ZLIB REQUIRED)
 find_package (BZip2 REQUIRED)
