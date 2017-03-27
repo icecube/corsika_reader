@@ -29,7 +29,13 @@ message (STATUS "zlib library: ${ZLIB_LIBRARIES}")
 message (STATUS "BZip2 library: ${BZIP2_LIBRARIES}")
 message (STATUS "Boost lib dir: ${Boost_LIBRARY_DIRS}")
 message (STATUS "Boost libraries: ${Boost_LIBRARIES}")
-message (STATUS "Python library: ${PYTHON_LIBRARIES}")
+message (STATUS "Python libraries:   ${PYTHON_LIBRARIES}")
+message (STATUS "Python libs version: ${PYTHONLIBS_VERSION_STRING}")
+message (STATUS "Python version: ${PYTHON_VERSION_STRING}")
+
+if (NOT ${PYTHON_VERSION_STRING} VERSION_EQUAL ${PYTHONLIBS_VERSION_STRING})
+  message (SEND_ERROR "Python interpreter and libraries have different versions (${PYTHON_VERSION_STRING} != ${PYTHONLIBS_VERSION_STRING}). Perhaps you need to specify PYTHON_INCLUDE_DIR and PYTHON_LIBRARY.")
+endif (NOT ${PYTHON_VERSION_STRING} VERSION_EQUAL ${PYTHONLIBS_VERSION_STRING})
 
 add_definitions(
   -DCORSIKA_TEST_DIR="${CMAKE_SOURCE_DIR}/share/data"
