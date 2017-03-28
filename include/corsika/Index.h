@@ -42,14 +42,14 @@ namespace corsika
     {
         std::vector<std::pair<unsigned int,unsigned int> > operator()(const std::vector<double>& x, const std::vector<double>& y, const Pointee& p) const
         {
-            const unsigned int i_min = detail::digitize(x, p.x() - p.dx()/2);
-            const unsigned int i_max = detail::digitize(x, p.x() + p.dx()/2);
-            const unsigned int j_min = detail::digitize(y, p.y() - p.dy()/2);
-            const unsigned int j_max = detail::digitize(y, p.y() + p.dy()/2);
+            size_t i_min = detail::digitize(x, p.x() - p.dx()/2);
+            size_t i_max = detail::digitize(x, p.x() + p.dx()/2);
+            size_t j_min = detail::digitize(y, p.y() - p.dy()/2);
+            size_t j_max = detail::digitize(y, p.y() + p.dy()/2);
             std::vector<std::pair<unsigned int,unsigned int> > bins;
-            for (unsigned int i = i_min; i <= i_max; ++i) {
-                for (unsigned int j = j_min; j <= j_max; ++j) {
-                    bins.push_back(std::pair<int,int>(i,j));
+            for (size_t i = i_min; i <= i_max; ++i) {
+                for (size_t j = j_min; j <= j_max; ++j) {
+                    bins.push_back(std::pair<unsigned,unsigned>((unsigned)i,(unsigned)j));
                 }
             }
             return bins;
