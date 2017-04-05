@@ -127,7 +127,7 @@ void LongFile::Scan()
             fdEdXProfiles.push_back(fLongDataFile->tellg());
             char s1[50], s2[50], s3[50], s4[50], isVertOrSlant[50], s5 [50], s6 [50];
             sscanf(line.c_str(),
-                   "%s %s %s %s %i %s %s %s %f",
+                   "%s %s %s %s %zu %s %s %s %f",
                    s1, s2, s3, s4, &fNBinsEnergyDeposit, isVertOrSlant, s5, s6, &fDx);
             string testStr(isVertOrSlant);
             if (testStr == "VERTICAL")

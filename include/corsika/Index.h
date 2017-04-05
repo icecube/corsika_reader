@@ -55,7 +55,7 @@ namespace corsika
             return bins;
         }
     private:
-        int GetIndex(const std::vector<double>& arr, double x) const
+        size_t GetIndex(const std::vector<double>& arr, double x) const
         {
             if (x<arr[0])
                 return 0;
@@ -145,11 +145,11 @@ namespace corsika
         
         ~PositionIndex() {}
         
-        double GetSize(unsigned int i) const
+        double GetSize(size_t i) const
         { return fSize[i]; }
-        double GetSpacing(unsigned int i) const
+        double GetSpacing(size_t i) const
         { return fSpacing[i]; }
-        int GetBins(unsigned int i) const
+        int GetBins(size_t i) const
         { return fBinEdges[i].size() - 1; }
         
         void Add(boost::shared_ptr<Pointee> p)
@@ -194,8 +194,8 @@ namespace corsika
         
         void Clear()
         {
-            for (unsigned int i=0; i!=fGrid.size(); ++i) {
-                for (unsigned int j=0; j!=fGrid[i].size(); ++j) {
+            for (size_t i=0; i!=fGrid.size(); ++i) {
+                for (size_t j=0; j!=fGrid[i].size(); ++j) {
                     fGrid[i][j].clear();
                 }
             }
@@ -205,7 +205,7 @@ namespace corsika
         { return fGrid[GetIndex(0, x)][GetIndex(1, y)].empty(); }
         
     private:
-        unsigned int GetIndex(unsigned int i, double x) const
+        size_t GetIndex(size_t i, double x) const
         {
             return detail::digitize(fBinEdges[i], x);
         }

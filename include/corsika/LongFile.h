@@ -61,7 +61,7 @@ namespace corsika
         size_t event_count;
         float fDx;
         size_t fNBinsParticles;
-        int fNBinsEnergyDeposit;
+        size_t fNBinsEnergyDeposit;
         
         boost::shared_ptr<std::ifstream> fLongDataFile;
         std::vector<std::streampos> fPartProfiles;
