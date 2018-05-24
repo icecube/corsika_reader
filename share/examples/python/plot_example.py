@@ -17,7 +17,7 @@ if len(sys.argv)>1:
 else:
     filename = corsika.example_data_dir + '/DAT000002-32'
 
-f = corsika.CorsikaShowerFile(filename)
+f = corsika.ShowerFile(filename)
 
 h = TH2F('ground_particles', 'Ground Particles', 100, -5000, 5000, 100, -5000, 5000)
 h.GetXaxis().SetTitle('X/m')

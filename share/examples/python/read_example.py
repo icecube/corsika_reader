@@ -14,7 +14,7 @@ if len(sys.argv)>1:
     filename = sys.argv[1]
 else:
     filename = corsika.example_data_dir + '/DAT000002-32'
-f = corsika.CorsikaShowerFile(filename)
+f = corsika.ShowerFile(filename)
 f.find_event(1)
 events = [f.current_shower]
 

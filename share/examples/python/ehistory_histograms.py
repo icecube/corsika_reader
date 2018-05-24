@@ -18,7 +18,7 @@ if len(sys.argv)>1:
 else:
     filename = corsika.example_data_dir + '/DAT000011-proton-EHISTORY-MUPROD'
 
-f = corsika.CorsikaShowerFile(filename)
+f = corsika.ShowerFile(filename)
 f.find_event(1)
 
 shower = f.current_shower
