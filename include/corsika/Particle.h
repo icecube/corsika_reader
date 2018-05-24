@@ -18,6 +18,11 @@ namespace corsika
 {
     typedef boost::shared_ptr<struct Particle> ParticlePtr;
     
+    /**
+     \class Particle Particle.h "corsika/Particle.h"
+     
+     \ingroup corsika
+     */
     struct Particle
     {
         enum Type

@@ -10,17 +10,17 @@ The python interface currently does not show in readthedocs. It requires that th
 High-level Interface
 --------------------
 
-.. autoclass:: corsika.CorsikaShowerFile
+.. autoclass:: corsika.ShowerFile
    :members:
 
-.. autoclass:: corsika.CorsikaParticle
+.. autoclass:: corsika.Particle
    :members:
 
 Low-level Interface
 -------------------
 
-.. autoclass:: corsika.RawFile
-   :members: open, close, get_next_block, particles, is_open, is_valid
+.. autoclass:: corsika.RawStream
+   :members: close, get_next_block, particles, is_open
 .. autoclass:: corsika.Block
    :members:
 

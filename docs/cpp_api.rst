@@ -8,17 +8,17 @@ C++ Interface Reference
 High-level Interface
 --------------------
 
-.. doxygenclass:: corsika::CorsikaShowerFile
+.. doxygenclass:: corsika::ShowerFile
    :members:
 
-.. doxygenclass:: corsika::CorsikaParticle
+.. doxygenclass:: corsika::Particle
    :members:
 
 Low-level Interface
 -------------------
 
-.. doxygenclass:: corsika::Corsika::RawFile
-   :members: open, close, get_next_block, particles, is_open, is_valid
-.. doxygenclass:: corsika::Corsika::Block
+.. doxygenclass:: corsika::RawStream
+   :members: Create, SeekTo, IsSeekable, IsThinned, GetNextBlock, GetNextPosition
+.. doxygenclass:: corsika::Block
    :members:
 

@@ -13,7 +13,7 @@ one, and consists of the minimum required code to iterate over the blocks in
 a file, and to cast these blocks into C++ structures:
 
 * Block
-* RawCorsikaFile
+* RawStream
 * RawParticleIterator
 
 The high-level interface has a similar structure, but these classes
@@ -23,12 +23,12 @@ PDG), coordinate systems (flat versus curved atmosphere), sorting out
 special particles (muon additional information, EHISTORY), whatever
 else:
 
-* CorsikaParticle
+* Particle
 * ShowerParticleList
-* CorsikaShowerFile
-* CorsikaShowerFileParticleIterator
+* ShowerFile
+* ShowerIterator
 * GaisserHillasParameter
-* CorsikaLongProfile
+* LongProfile
 * ParticleList
 
 The rest of the classes are some utilities:

@@ -17,7 +17,7 @@ namespace corsika
     typedef boost::shared_ptr<struct RawStream> RawStreamPtr;
     
     /**
-     \struct VRawStream
+     \class RawStream RawStream.h "corsika/RawStream.h"
      
      \brief Raw disk file.
      
@@ -28,9 +28,6 @@ namespace corsika
      block with padding. It doesn't provide tools for unpacking the
      individual particles from a block.
      
-     \author Lukas Nellen
-     \author Javier Gonzalez
-     \date 08 Dec 2003
      \ingroup corsika
      */
     struct RawStream
@@ -44,8 +41,10 @@ namespace corsika
         
         /// Seek to a given block, the next block will be \a thePosition
         virtual void SeekTo(size_t thePosition) = 0;
+        /// It is possible to call SeekTo
         virtual bool IsSeekable() const = 0;
         
+        /// This is a stream of a thinned corsika file
         virtual bool IsThinned() const = 0;
         
         static RawStreamPtr Create(const std::string& theName);

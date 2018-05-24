@@ -28,13 +28,10 @@ namespace corsika
     };
     
     /**
-     \class CorsikaShowerFile CorsikaShowerFile.h "corsika/CorsikaShowerFile.h"
+     \class ShowerFile ShowerFile.h "corsika/ShowerFile.h"
      
      \brief Read data from the output of CORSIKA
      
-     \author Lukas Nellen
-     \author Javier Gonzalez
-     \date 29 Jan 2004
      \ingroup corsika
      */
     struct ShowerFile
@@ -44,25 +41,34 @@ namespace corsika
         
         virtual ~ShowerFile() {}
         
+        /// Open file
         virtual void Open(const std::string& theFileName, bool scan = true);
         
+        /// Close file
         virtual void Close();
         
+        /// Find an event and position to read it
         virtual Status FindEvent(unsigned int eventId);
         
+        /// Get number of showers in file
         virtual size_t GetNEvents();
         
         
+        /// File is open
         bool IsOpen()
         { return bool(fRawStream); }
         
+        /// File is valid
         static bool IsValid(const std::string& theFileName);
         
+        /// Get the shower in the current position
         const Shower& GetCurrentShower() const {return fCurrentShower;}
         Shower& GetCurrentShower() {return fCurrentShower;}
         
+        /// Get the run header
         const corsika::RunHeader& GetRunHeader() const { return fRunHeader; }
         
+        /// Shower is thinned
         const bool IsThinned() const { return fIsThinned; }
         
     private:

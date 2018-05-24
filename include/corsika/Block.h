@@ -370,6 +370,11 @@ namespace corsika
         LongitudinalEntry fEntries[kLongEntriesPerBlock];
     };
     
+    /**
+     \class Block Block.h "corsika/Block.h"
+     
+     \ingroup corsika
+     */
     template <typename Thinning> struct Block
     {
         struct ParticleBlock

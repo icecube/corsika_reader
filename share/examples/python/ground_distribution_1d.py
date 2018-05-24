@@ -18,7 +18,7 @@ else:
     filename = corsika.example_data_dir + '/DAT000002-32'
 
 print("opening " + filename)
-f = corsika.CorsikaShowerFile(filename)
+f = corsika.ShowerFile(filename)
 
 print("File has %d showers"%f.n_events)
 
