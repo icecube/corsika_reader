@@ -59,26 +59,25 @@ interface. This interface provides an iterator over Blocks, which
 correspond to the blocks described in the CORSIKA manual. The Block
 class has a method to access the data buffer as a numpy array:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">corsika</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">corsika</span><span class="o">.</span><span class="n">RawCorsikaFile</span><span class="p">()</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">corsika</span><span class="o">.</span><span class="n">RawStream</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 <span class="n">block</span> <span class="o">=</span> <span class="n">corsika</span><span class="o">.</span><span class="n">Block</span><span class="p">()</span>
-<span class="n">f</span><span class="o">.</span><span class="n">GetNextBlock</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">block</span><span class="o">.</span><span class="n">ID</span><span class="p">()</span>
-<span class="n">f</span><span class="o">.</span><span class="n">GetNextBlock</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">block</span><span class="o">.</span><span class="n">ID</span><span class="p">()</span>
+<span class="n">f</span><span class="o">.</span><span class="n">get_next_block</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">block</span><span class="o">.</span><span class="n">ID</span>
+<span class="n">f</span><span class="o">.</span><span class="n">get_next_block</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">block</span><span class="o">.</span><span class="n">ID</span>
 <span class="k">print</span> <span class="n">block</span><span class="o">.</span><span class="n">data</span>
 </pre></div>
 </div>
 <p>The particles in a low-level file (RawCorsikaFile) can be accessed
 using the particle iterator. In this case, the iteration over blocks
 is done behind the scenes:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">particles</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span><span class="o">.</span><span class="n">fX</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">fY</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">fZ</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">particles</span><span class="p">()]</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">particles</span> <span class="o">=</span> <span class="p">[(</span><span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">t_or_z</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">particles</span><span class="p">()]</span>
 </pre></div>
 </div>
 <p>Inspecting a CORSIKA file using the high-level interface in python:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">corsika</span>
-<span class="n">f</span> <span class="o">=</span> <span class="n">corsika</span><span class="o">.</span><span class="n">CorsikaShowerFile</span><span class="p">()</span>
-<span class="n">shower</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">GetEvent</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">particles</span> <span class="o">=</span> <span class="n">shower</span><span class="o">.</span><span class="n">particles</span><span class="p">()</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">corsika</span><span class="o">.</span><span class="n">ShowerFile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="n">particles</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">current_shower</span><span class="o">.</span><span class="n">particles</span>
 <span class="k">print</span> <span class="nb">len</span><span class="p">([</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">particles</span><span class="p">]),</span> <span class="s1">&#39;particles&#39;</span>
 <span class="n">particles</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
 </pre></div>

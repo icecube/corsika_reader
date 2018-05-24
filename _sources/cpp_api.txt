@@ -8,89 +8,17 @@ C++ Interface Reference
 High-level Interface
 --------------------
 
-CorsikaShowerFile
-`````````````````
+.. doxygenclass:: corsika::ShowerFile
+   :members:
 
-.. doxygenclass:: corsika::CorsikaShowerFile
-
-
-CorsikaShower
-`````````````
-
-.. doxygenclass:: corsika::CorsikaShower
-
-
-CorsikaShowerFileParticleIterator
-`````````````````````````````````
-
-.. doxygenclass:: corsika::CorsikaShowerFileParticleIterator
-
-
-CorsikaParticle
-```````````````
-
-.. doxygenclass:: corsika::CorsikaParticle
-
-CorsikaLongProfile
-``````````````````
-
-.. doxygenclass:: corsika::CorsikaLongProfile
-
+.. doxygenclass:: corsika::Particle
+   :members:
 
 Low-level Interface
 -------------------
 
-RawFile
-```````
-
-.. doxygenclass:: corsika::Corsika::RawFile
-   :members: open, close, get_next_block, particles, is_open, is_valid
-
-Block
-`````
-
-.. doxygenclass:: corsika::Corsika::Block
-
-EventHeader
-```````````
-
-.. doxygenstruct:: corsika::Corsika::EventHeader
-
-RawParticleIterator
-```````````````````
-
-.. doxygenclass:: corsika::RawParticleIterator
-
-ParticleData
-````````````
-
-.. doxygenstruct:: corsika::Corsika::ParticleData
-
-
-Utilities
----------
-
-Constants
-`````````
-
-.. doxygenfile:: Constants.h
-
-
-
-CorsikaUnits
-````````````
-
-.. doxygenfile:: CorsikaUnits.h
-
-
-Index
-`````
-
-.. doxygenclass:: corsika::PositionIndex
-
-
-CorsikaIOException
-``````````````````
-
-.. doxygenclass:: corsika::CorsikaIOException
+.. doxygenclass:: corsika::RawStream
+   :members: Create, SeekTo, IsSeekable, IsThinned, GetNextBlock, GetNextPosition
+.. doxygenclass:: corsika::Block
+   :members:
 

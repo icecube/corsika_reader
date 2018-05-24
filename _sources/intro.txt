@@ -5,7 +5,7 @@ Introduction
 The CORSIKA reader provides a (more or less) generic interface to
 `CORSIKA`_ files. CORSIKA files can be accessed using either a C++ or
 a Python interface. The reader can also handle CORSIKA files
-compressed with gzip or bzip2.
+compressed with gzip or bzip2. The source can be found in `github`_.
 
 The CORSIKA reader library is composed of two major parts, a low- and
 a high-level interface. The low-level interface is the more general
@@ -13,7 +13,7 @@ one, and consists of the minimum required code to iterate over the blocks in
 a file, and to cast these blocks into C++ structures:
 
 * Block
-* RawCorsikaFile
+* RawStream
 * RawParticleIterator
 
 The high-level interface has a similar structure, but these classes
@@ -23,12 +23,12 @@ PDG), coordinate systems (flat versus curved atmosphere), sorting out
 special particles (muon additional information, EHISTORY), whatever
 else:
 
-* CorsikaParticle
+* Particle
 * ShowerParticleList
-* CorsikaShowerFile
-* CorsikaShowerFileParticleIterator
+* ShowerFile
+* ShowerIterator
 * GaisserHillasParameter
-* CorsikaLongProfile
+* LongProfile
 * ParticleList
 
 The rest of the classes are some utilities:
@@ -49,3 +49,4 @@ classes with a well defined purpose so they can be unit-tested.
 
 
 .. _`CORSIKA`: http://www.ikp.kit.edu/corsika/
+.. _`github`: https://github.com/IceCube-SPNO/corsika_reader

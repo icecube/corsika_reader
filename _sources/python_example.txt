@@ -11,26 +11,25 @@ correspond to the blocks described in the CORSIKA manual. The Block
 class has a method to access the data buffer as a numpy array::
 
 	import corsika
-	f = corsika.RawCorsikaFile()
+	f = corsika.RawStream(filename)
 	block = corsika.Block()
-	f.GetNextBlock(block)
-	print block.ID()
-	f.GetNextBlock(block)
-	print block.ID()
+	f.get_next_block(block)
+	print block.ID
+	f.get_next_block(block)
+	print block.ID
 	print block.data
 
 The particles in a low-level file (RawCorsikaFile) can be accessed
 using the particle iterator. In this case, the iteration over blocks
 is done behind the scenes::
 
-	particles = [(p.fX, p.fY, p.fZ) for p in f.particles()]
+	particles = [(p.x, p.y, p.t_or_z) for p in f.particles()]
 
 Inspecting a CORSIKA file using the high-level interface in python::
 
 	import corsika
-	f = corsika.CorsikaShowerFile()
-	shower = f.GetEvent(1)
-	particles = shower.particles()
+	f = corsika.ShowerFile(filename)
+	particles = f.current_shower.particles
 	print len([p for p in particles]), 'particles'
 	particles.rewind()
 

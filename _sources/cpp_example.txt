@@ -7,7 +7,7 @@ Reading CORSIKA Files in C++
 One normally does not use the low-level interface in C++.
 Inspecting a CORSIKA file using the high-level interface in C++::
 
-    CorsikaShowerFile file(filename);
+    ShowerFile file(filename);
     corsika::Status status = file.FindEvent(1);
 
     cout << "Shower " << file.GetCurrentShower().GetShowerNumber() << ":\n"
@@ -17,8 +17,8 @@ Inspecting a CORSIKA file using the high-level interface in C++::
          << "  azimuth: " << file.GetCurrentShower().GetAzimuth()/deg << "\n"
          << "  N_muons: " << file.GetCurrentShower().GetMuonNumber() << endl;
 
-    ShowerParticleList particles = file.GetCurrentShower().GetParticles();
-    for (ShowerParticleList::iterator it = particles.begin();
+    auto particles = file.GetCurrentShower().ParticleStream();
+    while (auto it = particles.NextParticle()) {
          it != particles.end(); ++it) {
          ...
     }

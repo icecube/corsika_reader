@@ -5,7 +5,7 @@
 Installation
 =============
 
-Installation is simple::
+First `get the source <https://github.com/IceCube-SPNO/corsika_reader>`_. Installation is simple::
 
     cmake /path/to/source -DCMAKE_INSTALL_PREFIX=/path/to/install
     make
@@ -43,5 +43,4 @@ or::
   -DBOOST_INCLUDEDIR=$I3_PORTS/include/boost-1.38.0 -DBOOST_LIBRARYDIR=$I3_PORTS/lib/boost-1.38.0
   -DPYTHON_INCLUDE_DIR=/cvmfs/icecube.opensciencegrid.org/standard/RHEL_6_x86_64/include/python2.7
   -DPYTHON_LIBRARY=/cvmfs/icecube.opensciencegrid.org/standard/RHEL_6_x86_64/lib/libpython2.7.so
-
 
