@@ -3,6 +3,7 @@ import unittest
 import os, sys
 import numpy
 
+sys.path.append('')
 try:
     import icecube
     within_icecube = True

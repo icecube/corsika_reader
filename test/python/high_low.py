@@ -4,6 +4,7 @@ import unittest
 import numpy
 import sys, os
 
+sys.path.append('')
 try:
     import icecube
     with_icecube = True
