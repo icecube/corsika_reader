@@ -3,6 +3,9 @@ project(corsika_reader CXX)
 enable_language(C)
 
 set(CMAKE_MACOSX_RPATH True)
+set (CMAKE_SKIP_BUILD_RPATH  FALSE)
+set (CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+
 # the RPATH to be used when installing, but only if it's not a system directory
 LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
 IF("${isSystemDir}" STREQUAL "-1")
