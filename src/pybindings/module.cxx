@@ -37,7 +37,7 @@ namespace bp = boost::python;
 #define REGISTER_THESE_THINGS                                           \
   (CorsikaBlock)(RawParticleIterator)(RawStream)                        \
   (CorsikaUnits)(MathConstants)(PhysicalConstants)                      \
-  (Particle)(Shower)(ShowerFile)                   \
+  (Particle)(Shower)(ShowerFile)                                        \
   (CorsikaShowerFileParticleIterator)(ParticleList)(ParticleProperties) \
   (LongProfile) (LongFile)
 
