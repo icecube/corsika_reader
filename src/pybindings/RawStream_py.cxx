@@ -1,7 +1,7 @@
+#include <boost/python.hpp>
 #include <sstream>
 #include <corsika/RawStream.h>
 #include <corsika/RawParticleStream.h>
-#include <boost/python.hpp>
 
 using namespace boost::python;
 

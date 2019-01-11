@@ -1,8 +1,8 @@
+#include <boost/python.hpp>
 #include <sstream>
 #include <corsika/particle/ParticleProperties.h>
 #include <corsika/particle/NucleusProperties.h>
 #include <corsika/Particle.h>
-#include <boost/python.hpp>
 
 using namespace boost::python;
 using namespace corsika;
