@@ -3,8 +3,8 @@ project(corsika_reader CXX)
 enable_language(C)
 
 set (CMAKE_MACOSX_RPATH True)
-set (CMAKE_SKIP_BUILD_RPATH  FALSE)
-set (CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+set (CMAKE_SKIP_BUILD_RPATH  False)
+set (CMAKE_BUILD_WITH_INSTALL_RPATH False)
 
 # the RPATH to be used when installing, but only if it's not a system directory
 LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
@@ -80,9 +80,10 @@ if (NOT ${PYTHON_VERSION_STRING} VERSION_EQUAL ${PYTHONLIBS_VERSION_STRING})
   message (SEND_ERROR "Python interpreter and libraries have different versions (${PYTHON_VERSION_STRING} != ${PYTHONLIBS_VERSION_STRING}). Perhaps you need to specify PYTHON_INCLUDE_DIR and PYTHON_LIBRARY.")
 endif (NOT ${PYTHON_VERSION_STRING} VERSION_EQUAL ${PYTHONLIBS_VERSION_STRING})
 
+set ("CORSIKA_EXAMPLE_DATA_DIR ${CMAKE_INSTALL_PREFIX}/share/${Corsika_PACKAGE_NAME}/data")
 add_definitions(
   -DCORSIKA_TEST_DIR="${CMAKE_SOURCE_DIR}/share/data"
-  -DCORSIKA_EXAMPLE_DATA_DIR="${CMAKE_INSTALL_PREFIX}/share/${Corsika_PACKAGE_NAME}/data"
+  -DCORSIKA_EXAMPLE_DATA_DIR="${CORSIKA_EXAMPLE_DATA_DIR}"
 )
 add_definitions(-std=c++0x)
 
