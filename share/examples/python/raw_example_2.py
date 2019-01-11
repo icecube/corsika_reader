@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys
+sys.path.append('')
 try:
     import icecube
     within_icecube = True
