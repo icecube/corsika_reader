@@ -30,7 +30,7 @@ void register_CorsikaShowerFileParticleIterator()
 {
 
   class_<ShowerParticleStream>("ShowerParticleStream")
-    .def("next", next_particle, return_internal_reference<>())
+    .def("__next__", next_particle, return_internal_reference<>())
     .def("__iter__", identity)
     .def("rewind", &ShowerParticleStream::Rewind)
     ;
