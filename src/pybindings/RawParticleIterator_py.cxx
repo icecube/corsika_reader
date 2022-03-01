@@ -74,7 +74,7 @@ void register_RawIterator(std::string name)
     class_<RawParticleStream>(name.c_str(), init<corsika::RawStreamPtr, size_t>())
     // .def("next", next_particle<Thinning>,
     //      return_internal_reference<>())
-    .def("next", next_particle_2<Thinning>,
+    .def("__next__", next_particle_2<Thinning>,
          return_internal_reference<>())
     .def("__iter__", identity)
     // .def("rewind", &RawParticleIterator::Rewind)

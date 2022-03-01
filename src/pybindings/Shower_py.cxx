@@ -79,7 +79,7 @@ void register_Shower()
 
   class_<ParticleIterator>("ParticleIterator")
     .def("__iter__", identity)
-    .def("next", &ParticleIterator::next_particle)
+    .def("__next__", &ParticleIterator::next_particle)
     .def("rewind", &ParticleIterator::Rewind)
     ;
 
