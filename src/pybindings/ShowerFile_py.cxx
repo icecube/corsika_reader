@@ -57,7 +57,7 @@ void register_ShowerFile()
 
   class_<ShowerIterator>("ShowerIterator")
     .def("__iter__", identity)
-    .def("next", &ShowerIterator::next_shower, return_internal_reference<>())
+    .def("__next__", &ShowerIterator::next_shower, return_internal_reference<>())
     ;
 
   Shower& (ShowerFile::*get_current)() = &ShowerFile::GetCurrentShower;
